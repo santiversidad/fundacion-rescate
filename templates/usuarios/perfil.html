@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Mi perfil{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <h2 class="mb-4">👤 Mi perfil</h2>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.username }}</h5>
+                <p class="text-muted">{{ user.email }}</p>
+                <p class="text-muted">
+                    Miembro desde {{ user.date_joined|date:"d/m/Y" }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h1>🐾</h1>
+                        <h5>Mis solicitudes</h5>
+                        <p>Revisa el estado de tus solicitudes de adopción.</p>
+                        <a href="{% url 'adopciones:mis_solicitudes' %}"
+                            class="btn btn-primary">Ver solicitudes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h1>❤️</h1>
+                        <h5>Mis donaciones</h5>
+                        <p>Revisa el historial de tus donaciones.</p>
+                        <a href="{% url 'donaciones:mis_donaciones' %}"
+                            class="btn btn-primary">Ver donaciones</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

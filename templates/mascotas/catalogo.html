@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Mascotas en adopción{% endblock %}
+
+{% block contenido %}
+
+<h2 class="mb-4">🐾 Mascotas disponibles para adopción</h2>
+
+{% if mascotas %}
+    <div class="row">
+        {% for mascota in mascotas %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    {% with mascota.fotos.filter as fotos %}
+                        {% with mascota.fotos.first as foto_principal %}
+                            {% if foto_principal %}
+                                <img src="{{ foto_principal.foto.url }}"
+                                     class="card-img-top"
+                                     style="height: 220px; object-fit: cover;"
+                                     alt="{{ mascota.nombre }}">
+                            {% else %}
+                                <div class="bg-secondary text-white text-center py-5">
+                                    <h1>🐾</h1>
+                                    <p>Sin foto aún</p>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ mascota.nombre }}</h5>
+                        <p class="card-text text-muted">
+                            {{ mascota.especie|capfirst }} •
+                            {{ mascota.edad_anios }} año{% if mascota.edad_anios != 1 %}s{% endif %} •
+                            {{ mascota.sexo|capfirst }}
+                        </p>
+                        <p class="card-text">{{ mascota.descripcion|truncatewords:15 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'mascotas:detalle' mascota.pk %}"
+                            class="btn btn-primary w-100">
+                            Ver más
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info text-center">
+        <h4>No hay mascotas disponibles por el momento.</h4>
+        <p>Vuelve pronto, constantemente rescatamos nuevos animales.</p>
+    </div>
+{% endif %}
+
+{% endblock %}

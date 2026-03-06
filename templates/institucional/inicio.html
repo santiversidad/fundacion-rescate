@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Inicio — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<!-- HERO -->
+<div class="p-5 mb-4 bg-dark text-white rounded-3 text-center">
+    <h1 class="display-4">🐾 Dale un hogar a quien más lo necesita</h1>
+    <p class="lead">Somos una fundación dedicada al rescate y adopción responsable de animales.</p>
+    <a href="{% url 'mascotas:catalogo' %}" class="btn btn-warning btn-lg me-2">
+        Ver mascotas en adopción
+    </a>
+    <a href="{% url 'donaciones:info' %}" class="btn btn-outline-light btn-lg">
+        Quiero donar
+    </a>
+</div>
+
+<!-- TARJETAS DE INFORMACIÓN -->
+<div class="row text-center mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h1>🐶</h1>
+                <h5 class="card-title">Adopta</h5>
+                <p class="card-text">Encuentra a tu compañero ideal entre nuestras mascotas rescatadas.</p>
+                <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary">Ver mascotas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h1>❤️</h1>
+                <h5 class="card-title">Dona</h5>
+                <p class="card-text">Tu contribución ayuda a cubrir alimentación, veterinaria y cuidados.</p>
+                <a href="{% url 'donaciones:info' %}" class="btn btn-primary">Donar ahora</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h1>🏠</h1>
+                <h5 class="card-title">Nosotros</h5>
+                <p class="card-text">Conoce nuestra misión, visión y el equipo detrás de la fundación.</p>
+                <a href="{% url 'institucional:nosotros' %}" class="btn btn-primary">Conocernos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
