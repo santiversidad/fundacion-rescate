@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
@@ -10,6 +11,7 @@ def registro(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, f'✅ Bienvenido {user.username}, tu cuenta fue creada correctamente.')
             return redirect('institucional:inicio')
     else:
         form = UserCreationForm()

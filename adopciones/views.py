@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from mascotas.models import Mascota
 from .models import SolicitudAdopcion
 
@@ -16,6 +17,7 @@ def solicitar_adopcion(request, mascota_pk):
             tipo_vivienda=request.POST['tipo_vivienda'],
             tiene_otros_animales='tiene_otros_animales' in request.POST,
         )
+        messages.success(request, '✅ Tu solicitud fue enviada correctamente. Te notificaremos cuando sea revisada.')
         return redirect('adopciones:mis_solicitudes')
 
     return render(request, 'adopciones/solicitar.html', {

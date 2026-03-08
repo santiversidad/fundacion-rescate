@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Donacion
 
 
@@ -18,6 +19,7 @@ def registrar_donacion(request):
             fecha_donacion=request.POST['fecha_donacion'],
             comprobante=request.FILES.get('comprobante'),
         )
+        messages.success(request, '✅ Tu donación fue registrada correctamente. La verificaremos en 24 horas.')
         return redirect('donaciones:mis_donaciones')
 
     return render(request, 'donaciones/registrar.html')
