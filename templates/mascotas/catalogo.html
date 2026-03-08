@@ -6,26 +6,71 @@
 
 <h2 class="mb-4">🐾 Mascotas disponibles para adopción</h2>
 
+<!-- FILTROS -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Especie</label>
+                <select name="especie" class="form-select">
+                    <option value="">Todas</option>
+                    <option value="perro" {% if especie_activa == 'perro' %}selected{% endif %}>
+                        Perro
+                    </option>
+                    <option value="gato" {% if especie_activa == 'gato' %}selected{% endif %}>
+                        Gato
+                    </option>
+                    <option value="otro" {% if especie_activa == 'otro' %}selected{% endif %}>
+                        Otro
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Sexo</label>
+                <select name="sexo" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="macho" {% if sexo_activo == 'macho' %}selected{% endif %}>
+                        Macho
+                    </option>
+                    <option value="hembra" {% if sexo_activo == 'hembra' %}selected{% endif %}>
+                        Hembra
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Filtrar
+                </button>
+                <a href="{% url 'mascotas:catalogo' %}" class="btn btn-outline-secondary w-100">
+                    Limpiar
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
 {% if mascotas %}
     <div class="row">
         {% for mascota in mascotas %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
 
-                    {% with mascota.fotos.filter as fotos %}
-                        {% with mascota.fotos.first as foto_principal %}
-                            {% if foto_principal %}
-                                <img src="{{ foto_principal.foto.url }}"
-                                     class="card-img-top"
-                                     style="height: 220px; object-fit: cover;"
-                                     alt="{{ mascota.nombre }}">
-                            {% else %}
-                                <div class="bg-secondary text-white text-center py-5">
-                                    <h1>🐾</h1>
-                                    <p>Sin foto aún</p>
-                                </div>
-                            {% endif %}
-                        {% endwith %}
+                    {% with mascota.fotos.first as foto_principal %}
+                        {% if foto_principal %}
+                            <img src="{{ foto_principal.foto.url }}"
+                                class="card-img-top"
+                                style="height: 220px; object-fit: cover;"
+                                alt="{{ mascota.nombre }}">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5">
+                                <h1>🐾</h1>
+                                <p>Sin foto aún</p>
+                            </div>
+                        {% endif %}
                     {% endwith %}
 
                     <div class="card-body">
@@ -50,8 +95,10 @@
     </div>
 {% else %}
     <div class="alert alert-info text-center">
-        <h4>No hay mascotas disponibles por el momento.</h4>
-        <p>Vuelve pronto, constantemente rescatamos nuevos animales.</p>
+        <h4>No hay mascotas disponibles con esos filtros.</h4>
+        <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary mt-2">
+            Ver todas las mascotas
+        </a>
     </div>
 {% endif %}
 
