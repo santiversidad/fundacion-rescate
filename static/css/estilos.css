@@ -1,0 +1,256 @@
+/* =============================================
+    FUNDACIÓN RESCATE ANIMAL — Design System
+   ============================================= */
+
+/* --- IMPORTAR FUENTES --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
+/* --- VARIABLES CSS (Design Tokens) --- */
+:root {
+    --color-primary:    #FF6B35;
+    --color-primary-dark: #E85520;
+    --color-secondary:  #2D6A4F;
+    --color-dark:       #1B1B2F;
+    --color-light:      #FFF8F0;
+    --color-accent:     #FFD166;
+    --color-gray:       #6B7280;
+    --color-gray-light: #F3F4F6;
+
+    --font-title: 'Poppins', sans-serif;
+    --font-body:  'Inter', sans-serif;
+
+    --radius:     12px;
+    --radius-sm:  8px;
+    --radius-lg:  20px;
+
+    --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md:  0 4px 16px rgba(0,0,0,0.12);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,0.16);
+
+    --transition: all 0.25s ease;
+}
+
+/* --- BASE --- */
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-light);
+    color: var(--color-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-title);
+    font-weight: 600;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    background-color: var(--color-dark) !important;
+    padding: 1rem 0;
+    box-shadow: var(--shadow-md);
+}
+
+.navbar-brand {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-accent) !important;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-sm);
+}
+
+.nav-link:hover {
+    color: var(--color-accent) !important;
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* --- BOTONES --- */
+.btn {
+    font-family: var(--font-title);
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1.4rem;
+    transition: var(--transition);
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-success {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #1F4D38;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline-secondary {
+    border: 2px solid var(--color-gray);
+    color: var(--color-gray);
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--color-gray);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* --- CARDS --- */
+.card {
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-footer {
+    background-color: white;
+    border-top: 1px solid var(--color-gray-light);
+    padding: 1rem;
+}
+
+/* --- HERO --- */
+.hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);
+    border-radius: var(--radius-lg);
+    padding: 4rem 2rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+}
+
+/* --- BADGES --- */
+.badge {
+    font-family: var(--font-title);
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+    border-radius: var(--radius-sm);
+}
+
+/* --- FORMULARIOS --- */
+.form-control, .form-select {
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--color-gray-light);
+    padding: 0.7rem 1rem;
+    font-family: var(--font-body);
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
+}
+
+.form-label {
+    font-family: var(--font-title);
+    font-weight: 500;
+    color: var(--color-dark);
+    margin-bottom: 0.4rem;
+}
+
+/* --- ALERTS --- */
+.alert {
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 500;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: var(--color-dark) !important;
+    color: rgba(255,255,255,0.7);
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+/* --- TABLA --- */
+.table {
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.table th {
+    background-color: var(--color-gray-light);
+    font-family: var(--font-title);
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+/* --- PAGINACIÓN --- */
+.pagination .page-link {
+    border-radius: var(--radius-sm) !important;
+    margin: 0 3px;
+    border: none;
+    color: var(--color-primary);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* --- UTILIDADES --- */
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--color-primary) !important;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: var(--color-gray);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
