@@ -1,18 +1,24 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from .models import Mascota
 
 
 def catalogo(request):
-    mascotas = Mascota.objects.filter(estado='disponible')
+    mascotas_lista = Mascota.objects.filter(estado='disponible')
 
     # Filtros
     especie = request.GET.get('especie')
     sexo    = request.GET.get('sexo')
 
     if especie:
-        mascotas = mascotas.filter(especie=especie)
+        mascotas_lista = mascotas_lista.filter(especie=especie)
     if sexo:
-        mascotas = mascotas.filter(sexo=sexo)
+        mascotas_lista = mascotas_lista.filter(sexo=sexo)
+
+    # Paginación
+    paginador = Paginator(mascotas_lista, 9)
+    pagina_num = request.GET.get('pagina', 1)
+    mascotas = paginador.get_page(pagina_num)
 
     return render(request, 'mascotas/catalogo.html', {
         'mascotas': mascotas,

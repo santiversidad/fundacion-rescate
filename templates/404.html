@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Página no encontrada{% endblock %}
+
+{% block contenido %}
+
+<div class="text-center py-5">
+    <h1 style="font-size: 8rem;">🐾</h1>
+    <h2 class="mb-3">¡Ups! Esta página no existe</h2>
+    <p class="lead text-muted mb-4">
+        La página que buscas no fue encontrada.<br>
+        Pero tenemos muchas mascotas esperando un hogar.
+    </p>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary btn-lg">
+            🐶 Ver mascotas
+        </a>
+        <a href="{% url 'institucional:inicio' %}" class="btn btn-outline-secondary btn-lg">
+            Volver al inicio
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+```
+
+---
+
+## Paso 2 — Activar el modo producción temporalmente
+
+> ⚠️ Aquí viene algo importante. Django solo muestra páginas 404 personalizadas cuando `DEBUG=False`. En modo desarrollo con `DEBUG=True` siempre muestra la página técnica de error.
+
+Abre tu `.env` y cambia temporalmente:
+```
+DEBUG=False

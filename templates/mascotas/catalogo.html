@@ -102,4 +102,37 @@
     </div>
 {% endif %}
 
+<!-- PAGINACIÓN -->
+{% if mascotas.has_other_pages %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            {% if mascotas.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?pagina={{ mascotas.previous_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                        ← Anterior
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in mascotas.paginator.page_range %}
+                <li class="page-item {% if mascotas.number == num %}active{% endif %}">
+                    <a class="page-link" href="?pagina={{ num }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if mascotas.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?pagina={{ mascotas.next_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                        Siguiente →
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+{% endif %}
+
 {% endblock %}
