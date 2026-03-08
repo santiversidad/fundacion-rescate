@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Registrar donación{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+
+        <h2 class="mb-1">📎 Registrar mi donación</h2>
+        <p class="text-muted mb-4">
+            Completa el formulario con los datos de tu transferencia.
+        </p>
+
+        <div class="card shadow">
+            <div class="card-body p-4">
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Monto donado</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" name="monto" class="form-control"
+                                    min="1" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Método de pago</label>
+                        <select name="metodo" class="form-select" required>
+                            <option value="">Selecciona un método</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                            <option value="deposito">Depósito bancario</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Fecha de la donación</label>
+                        <input type="date" name="fecha_donacion"
+                                class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            Comprobante <span class="text-muted fw-normal">(opcional)</span>
+                        </label>
+                        <input type="file" name="comprobante"
+                                class="form-control" accept="image/*">
+                        <div class="form-text">
+                            Sube una foto o captura de pantalla del comprobante.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 mt-2">
+                        Enviar donación
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a href="{% url 'donaciones:info' %}" class="btn btn-outline-secondary">
+                ← Volver
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

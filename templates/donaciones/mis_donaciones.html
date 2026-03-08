@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Mis donaciones{% endblock %}
+
+{% block contenido %}
+
+<h2 class="mb-4">❤️ Mis donaciones</h2>
+
+{% if donaciones %}
+    <div class="row">
+        {% for donacion in donaciones %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title mb-0">${{ donacion.monto }}</h5>
+                            {% if donacion.estado == 'pendiente' %}
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% elif donacion.estado == 'verificada' %}
+                                <span class="badge bg-success">Verificada</span>
+                            {% elif donacion.estado == 'rechazada' %}
+                                <span class="badge bg-danger">Rechazada</span>
+                            {% endif %}
+                        </div>
+
+                        <p class="text-muted small mb-1">
+                            Fecha: {{ donacion.fecha_donacion|date:"d/m/Y" }}
+                        </p>
+                        <p class="mb-1">
+                            <strong>Método:</strong> {{ donacion.metodo|capfirst }}
+                        </p>
+
+                        {% if donacion.comprobante %}
+                            <div class="mt-2">
+                                <a href="{{ donacion.comprobante.url }}"
+                                    target="_blank"
+                                    class="btn btn-outline-secondary btn-sm">
+                                    📎 Ver comprobante
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if donacion.observaciones %}
+                            <div class="alert alert-secondary mt-2 mb-0">
+                                <strong>Nota:</strong> {{ donacion.observaciones }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info text-center">
+        <h5>No has registrado donaciones aún.</h5>
+        <a href="{% url 'donaciones:info' %}" class="btn btn-primary mt-2">
+            Quiero donar
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}

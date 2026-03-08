@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Donar — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <h2 class="mb-2">❤️ Apoya nuestra causa</h2>
+        <p class="lead text-muted mb-4">
+            Tu donación nos ayuda a cubrir alimentación, veterinaria y cuidados
+            de los animales rescatados.
+        </p>
+
+        <!-- MÉTODOS DE PAGO -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">💳 Métodos de donación</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h6 class="fw-bold">🏦 Transferencia bancaria</h6>
+                        <p class="mb-1">Banco: Bancolombia</p>
+                        <p class="mb-1">Cuenta corriente: 123-456789-00</p>
+                        <p class="mb-0">A nombre de: Fundación Rescate Animal</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h6 class="fw-bold">📱 Nequi / Daviplata</h6>
+                        <p class="mb-1">Nequi: 300 123 4567</p>
+                        <p class="mb-0">Daviplata: 300 123 4567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUCCIONES -->
+        <div class="alert alert-info">
+            <h6 class="fw-bold">📋 ¿Cómo registrar tu donación?</h6>
+            <ol class="mb-0">
+                <li>Realiza la transferencia por el método de tu preferencia.</li>
+                <li>Toma una foto o captura del comprobante.</li>
+                <li>Haz clic en el botón de abajo y completa el formulario.</li>
+                <li>Adjunta el comprobante y envía.</li>
+                <li>Nuestro equipo verificará tu donación en 24 horas.</li>
+            </ol>
+        </div>
+
+        <a href="{% url 'donaciones:registrar' %}" class="btn btn-success btn-lg w-100">
+            📎 Registrar mi donación
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}
