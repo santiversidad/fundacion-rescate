@@ -1,5 +1,24 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
+
+def validar_fecha_ingreso(fecha):
+    hoy = timezone.now().date()
+    minima = hoy - timedelta(days=7)
+    maxima = hoy + timedelta(days=30)
+
+    if fecha < minima:
+        raise ValidationError(
+            f'La fecha de ingreso no puede ser anterior a {minima.strftime("%d/%m/%Y")}. '
+            f'Solo se permiten fechas desde 7 días atrás.'
+        )
+    if fecha > maxima:
+        raise ValidationError(
+            f'La fecha de ingreso no puede ser posterior a {maxima.strftime("%d/%m/%Y")}. '
+            f'Solo se permiten fechas hasta 30 días en el futuro.'
+        )
 
 class Mascota(models.Model):
 
@@ -31,7 +50,7 @@ class Mascota(models.Model):
     estado        = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='disponible')
     esterilizado  = models.BooleanField(default=False)
     vacunado      = models.BooleanField(default=False)
-    fecha_ingreso = models.DateField()
+    fecha_ingreso = models.DateField(validators=[validar_fecha_ingreso])
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
     class Meta:

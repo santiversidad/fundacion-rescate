@@ -9,6 +9,20 @@ from .models import SolicitudAdopcion
 def solicitar_adopcion(request, mascota_pk):
     mascota = get_object_or_404(Mascota, pk=mascota_pk, estado='disponible')
 
+    # Verificar si ya existe una solicitud activa
+    solicitud_activa = SolicitudAdopcion.objects.filter(
+        usuario=request.user,
+        mascota=mascota,
+    ).exclude(estado='rechazada').first()
+
+    if solicitud_activa:
+        messages.warning(
+            request,
+            f'⚠️ Ya tienes una solicitud {solicitud_activa.get_estado_display()} '
+            f'para {mascota.nombre}. No puedes enviar otra hasta que sea resuelta.'
+        )
+        return redirect('adopciones:mis_solicitudes')
+
     if request.method == 'POST':
         SolicitudAdopcion.objects.create(
             usuario=request.user,
@@ -17,7 +31,10 @@ def solicitar_adopcion(request, mascota_pk):
             tipo_vivienda=request.POST['tipo_vivienda'],
             tiene_otros_animales='tiene_otros_animales' in request.POST,
         )
-        messages.success(request, '✅ Tu solicitud fue enviada correctamente. Te notificaremos cuando sea revisada.')
+        messages.success(
+            request,
+            '✅ Tu solicitud fue enviada correctamente. Te notificaremos cuando sea revisada.'
+        )
         return redirect('adopciones:mis_solicitudes')
 
     return render(request, 'adopciones/solicitar.html', {
