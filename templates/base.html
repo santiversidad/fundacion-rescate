@@ -79,31 +79,140 @@
     </main>
 
     <!-- FOOTER -->
+<!-- FOOTER -->
 <footer>
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                <span style="font-family: var(--font-title); font-size: 1.2rem; font-weight: 700; color: var(--color-accent);">
+        <div class="row g-4 py-4">
+
+            <!-- COLUMNA 1 — MARCA -->
+            <div class="col-md-4">
+                <h5 style="font-family: var(--font-title); font-weight: 700; color: var(--color-accent); margin-bottom: 1rem;">
                     🐾 Fundación Rescate Animal
-                </span>
-            </div>
-            <div class="col-md-4 text-center mb-3 mb-md-0">
-                <p class="mb-0" style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">
-                    © 2026 Todos los derechos reservados
+                </h5>
+                <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.8;">
+                    Dedicados al rescate, rehabilitación y adopción responsable de animales
+                    en situación de vulnerabilidad.
                 </p>
+                <!-- REDES SOCIALES -->
+                <div class="d-flex gap-2 mt-3">
+                    <a href="#" style="width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: var(--transition);"
+                       onmouseover="this.style.background='var(--color-primary)'"
+                       onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" style="width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: var(--transition);"
+                       onmouseover="this.style.background='var(--color-primary)'"
+                       onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" style="width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: var(--transition);"
+                       onmouseover="this.style.background='var(--color-primary)'"
+                       onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="#" style="width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: var(--transition);"
+                       onmouseover="this.style.background='var(--color-primary)'"
+                       onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-4 text-center text-md-end">
-                <a href="{% url 'institucional:contacto' %}" 
-                    style="color: rgba(255,255,255,0.6); font-size: 0.9rem; text-decoration: none;">
+
+            <!-- COLUMNA 2 — ENLACES -->
+            <div class="col-md-2 offset-md-1">
+                <h6 style="font-family: var(--font-title); font-weight: 600; color: white; margin-bottom: 1rem;">
+                    Navegación
+                </h6>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="{% url 'institucional:inicio' %}"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition);"
+                           onmouseover="this.style.color='var(--color-accent)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            Inicio
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="{% url 'mascotas:catalogo' %}"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition);"
+                           onmouseover="this.style.color='var(--color-accent)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            Adoptar
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="{% url 'donaciones:info' %}"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition);"
+                           onmouseover="this.style.color='var(--color-accent)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            Donar
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="{% url 'institucional:nosotros' %}"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition);"
+                           onmouseover="this.style.color='var(--color-accent)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            Nosotros
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'institucional:contacto' %}"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition);"
+                           onmouseover="this.style.color='var(--color-accent)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                            Contacto
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- COLUMNA 3 — CONTACTO -->
+            <div class="col-md-4 offset-md-1">
+                <h6 style="font-family: var(--font-title); font-weight: 600; color: white; margin-bottom: 1rem;">
                     Contacto
-                </a>
-                <span style="color: rgba(255,255,255,0.3); margin: 0 0.5rem;">|</span>
-                <a href="{% url 'institucional:nosotros' %}" 
-                    style="color: rgba(255,255,255,0.6); font-size: 0.9rem; text-decoration: none;">
-                    Nosotros
-                </a>
+                </h6>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.7rem; color: rgba(255,255,255,0.6); font-size: 0.9rem;">
+                        <i class="bi bi-geo-alt-fill me-2" style="color: var(--color-accent);"></i>
+                        Calle 123 #45-67, Villavicencio, Meta
+                    </li>
+                    <li style="margin-bottom: 0.7rem; font-size: 0.9rem;">
+                        <i class="bi bi-telephone-fill me-2" style="color: var(--color-accent);"></i>
+                        <a href="tel:+573001234567"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                            +57 300 123 4567
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0.7rem; font-size: 0.9rem;">
+                        <i class="bi bi-envelope-fill me-2" style="color: var(--color-accent);"></i>
+                        <a href="mailto:contacto@fundacionrescate.org"
+                           style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                            contacto@fundacionrescate.org
+                        </a>
+                    </li>
+                    <li style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">
+                        <i class="bi bi-clock-fill me-2" style="color: var(--color-accent);"></i>
+                        Lunes a Sábado: 8am — 6pm
+                    </li>
+                </ul>
             </div>
+
         </div>
+
+        <!-- LÍNEA DIVISORIA -->
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 0;">
+
+        <!-- COPYRIGHT -->
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin: 0;">
+                © 2026 Fundación Rescate Animal. Todos los derechos reservados.
+            </p>
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin: 0;">
+                Hecho con <i class="bi bi-heart-fill" style="color: var(--color-primary);"></i> por la fundación
+            </p>
+        </div>
+
     </div>
 </footer>
 
