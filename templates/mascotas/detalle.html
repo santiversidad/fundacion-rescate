@@ -4,31 +4,42 @@
 
 {% block contenido %}
 
-<div class="row">
+<div class="mb-4">
+    <a href="{% url 'mascotas:catalogo' %}" 
+       style="color: var(--color-gray); text-decoration: none; font-weight: 500;">
+        ← Volver al catálogo
+    </a>
+</div>
+
+<div class="row g-4">
 
     <!-- FOTOS -->
     <div class="col-md-6">
         {% with mascota.fotos.first as foto_principal %}
             {% if foto_principal %}
                 <img src="{{ foto_principal.foto.url }}"
-                     class="img-fluid rounded shadow"
+                     class="img-fluid rounded"
+                     style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius) !important;"
                      alt="{{ mascota.nombre }}">
             {% else %}
-                <div class="bg-secondary text-white text-center py-5 rounded">
-                    <h1>🐾</h1>
-                    <p>Sin foto aún</p>
+                <div class="d-flex align-items-center justify-content-center"
+                     style="width: 100%; height: 400px; background: var(--color-gray-light); border-radius: var(--radius);">
+                    <div class="text-center">
+                        <div style="font-size: 4rem;">🐾</div>
+                        <p style="color: var(--color-gray);">Sin foto aún</p>
+                    </div>
                 </div>
             {% endif %}
         {% endwith %}
 
         <!-- GALERÍA -->
         {% if mascota.fotos.count > 1 %}
-            <div class="row mt-2">
+            <div class="row g-2 mt-2">
                 {% for foto in mascota.fotos.all %}
                     <div class="col-3">
                         <img src="{{ foto.foto.url }}"
-                             class="img-fluid rounded"
-                             style="height: 80px; object-fit: cover;"
+                             class="img-fluid"
+                             style="height: 80px; width: 100%; object-fit: cover; border-radius: var(--radius-sm);"
                              alt="Foto de {{ mascota.nombre }}">
                     </div>
                 {% endfor %}
@@ -38,56 +49,64 @@
 
     <!-- INFORMACIÓN -->
     <div class="col-md-6">
-        <h2>{{ mascota.nombre }}</h2>
 
-        <table class="table table-bordered mt-3">
-            <tr>
-                <th>Especie</th>
-                <td>{{ mascota.especie|capfirst }}</td>
-            </tr>
+        <h2 style="font-size: 2.2rem; font-weight: 700;">{{ mascota.nombre }}</h2>
+        <p style="color: var(--color-gray);">
+            {{ mascota.especie|capfirst }} • {{ mascota.sexo|capfirst }} • {{ mascota.edad_anios }} año{% if mascota.edad_anios != 1 %}s{% endif %}
+        </p>
+
+        <!-- BADGES DE SALUD -->
+        <div class="d-flex gap-2 mb-4">
+            {% if mascota.esterilizado %}
+                <span class="badge" style="background-color: var(--color-secondary); padding: 0.5em 1em;">
+                    ✅ Esterilizado
+                </span>
+            {% endif %}
+            {% if mascota.vacunado %}
+                <span class="badge" style="background-color: var(--color-secondary); padding: 0.5em 1em;">
+                    💉 Vacunado
+                </span>
+            {% endif %}
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="mb-4" style="background: var(--color-gray-light); padding: 1.5rem; border-radius: var(--radius);">
+            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.5rem;">
+                Sobre {{ mascota.nombre }}
+            </h6>
+            <p style="color: var(--color-gray); margin-bottom: 0;">
+                {{ mascota.descripcion|default:"Sin descripción disponible." }}
+            </p>
+        </div>
+
+        <!-- TABLA DE DATOS -->
+        <table class="table mb-4">
             <tr>
                 <th>Raza</th>
                 <td>{{ mascota.raza|default:"Mestizo" }}</td>
             </tr>
             <tr>
-                <th>Edad</th>
-                <td>{{ mascota.edad_anios }} año{% if mascota.edad_anios != 1 %}s{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Sexo</th>
-                <td>{{ mascota.sexo|capfirst }}</td>
-            </tr>
-            <tr>
-                <th>Esterilizado</th>
-                <td>{% if mascota.esterilizado %}✅ Sí{% else %}❌ No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Vacunado</th>
-                <td>{% if mascota.vacunado %}✅ Sí{% else %}❌ No{% endif %}</td>
+                <th>Fecha de ingreso</th>
+                <td>{{ mascota.fecha_ingreso|date:"d/m/Y" }}</td>
             </tr>
         </table>
 
-        <p class="mt-3">{{ mascota.descripcion }}</p>
-
+        <!-- BOTÓN DE ADOPCIÓN -->
         {% if user.is_authenticated %}
             <a href="{% url 'adopciones:solicitar' mascota.pk %}"
-                class="btn btn-success btn-lg w-100 mt-3">
+               class="btn btn-primary btn-lg w-100">
                 🐾 Quiero adoptarla
             </a>
         {% else %}
-            <div class="alert alert-warning mt-3">
-                <a href="{% url 'usuarios:login' %}">Inicia sesión</a>
+            <div class="alert alert-warning">
+                <a href="{% url 'usuarios:login' %}" style="color: inherit; font-weight: 600;">
+                    Inicia sesión
+                </a>
                 para enviar una solicitud de adopción.
             </div>
         {% endif %}
 
     </div>
-</div>
-
-<div class="mt-4">
-    <a href="{% url 'mascotas:catalogo' %}" class="btn btn-outline-secondary">
-        ← Volver al catálogo
-    </a>
 </div>
 
 {% endblock %}

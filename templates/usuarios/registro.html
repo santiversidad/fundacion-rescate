@@ -1,27 +1,37 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Registrarse{% endblock %}
+{% block titulo %}Crear cuenta{% endblock %}
 
 {% block contenido %}
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-body p-4">
+        <div class="card">
+            <div class="card-body p-5">
 
-                <h3 class="text-center mb-4">🐾 Crear cuenta</h3>
+                <div class="text-center mb-4">
+                    <div style="font-size: 3rem;">🐾</div>
+                    <h3 style="font-family: var(--font-title); font-weight: 700;">
+                        Crear cuenta
+                    </h3>
+                    <p style="color: var(--color-gray);">
+                        Únete y ayuda a dar hogares a nuestras mascotas
+                    </p>
+                </div>
 
                 <form method="POST">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="mb-3">
-                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            <label class="form-label">{{ field.label }}</label>
                             <input type="{{ field.field.widget.input_type }}"
-                                    name="{{ field.html_name }}"
-                                    class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                    {% if field.value %}value="{{ field.value }}"{% endif %}>
+                                   name="{{ field.html_name }}"
+                                   class="form-control {% if field.errors %}is-invalid{% endif %}"
+                                   {% if field.value %}value="{{ field.value }}"{% endif %}>
                             {% if field.help_text %}
-                                <div class="form-text text-muted">{{ field.help_text }}</div>
+                                <div class="form-text" style="color: var(--color-gray); font-size: 0.8rem;">
+                                    {{ field.help_text }}
+                                </div>
                             {% endif %}
                             {% for error in field.errors %}
                                 <div class="invalid-feedback">{{ error }}</div>
@@ -34,10 +44,14 @@
                     </button>
                 </form>
 
-                <hr>
-                <p class="text-center mb-0">
+                <hr style="margin: 1.5rem 0; border-color: var(--color-gray-light);">
+
+                <p class="text-center mb-0" style="color: var(--color-gray);">
                     ¿Ya tienes cuenta?
-                    <a href="{% url 'usuarios:login' %}">Inicia sesión</a>
+                    <a href="{% url 'usuarios:login' %}"
+                       style="color: var(--color-primary); font-weight: 600;">
+                        Inicia sesión
+                    </a>
                 </p>
 
             </div>
