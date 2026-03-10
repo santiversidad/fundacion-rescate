@@ -7,41 +7,68 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
 
-        <h2 class="mb-4">👤 Mi perfil</h2>
-
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h5 class="card-title">{{ user.username }}</h5>
-                <p class="text-muted">{{ user.email }}</p>
-                <p class="text-muted">
-                    Miembro desde {{ user.date_joined|date:"d/m/Y" }}
-                </p>
+        <!-- HEADER DEL PERFIL -->
+        <div class="card mb-4" style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
+            <div class="card-body p-4 text-white d-flex align-items-center gap-4">
+                <div style="width: 80px; height: 80px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0;">
+                    👤
+                </div>
+                <div>
+                    <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.2rem;">
+                        {{ user.username }}
+                    </h3>
+                    <p style="opacity: 0.7; margin-bottom: 0.2rem;">{{ user.email }}</p>
+                    <p style="opacity: 0.5; font-size: 0.85rem; margin-bottom: 0;">
+                        Miembro desde {{ user.date_joined|date:"d/m/Y" }}
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h1>🐾</h1>
-                        <h5>Mis solicitudes</h5>
-                        <p>Revisa el estado de tus solicitudes de adopción.</p>
+        <!-- ACCIONES -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🐾</div>
+                        <h5 style="font-family: var(--font-title); font-weight: 600;">
+                            Mis solicitudes
+                        </h5>
+                        <p style="color: var(--color-gray);">
+                            Revisa el estado de tus solicitudes de adopción.
+                        </p>
                         <a href="{% url 'adopciones:mis_solicitudes' %}"
-                            class="btn btn-primary">Ver solicitudes</a>
+                           class="btn btn-primary w-100">
+                            Ver solicitudes
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h1>❤️</h1>
-                        <h5>Mis donaciones</h5>
-                        <p>Revisa el historial de tus donaciones.</p>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">❤️</div>
+                        <h5 style="font-family: var(--font-title); font-weight: 600;">
+                            Mis donaciones
+                        </h5>
+                        <p style="color: var(--color-gray);">
+                            Revisa el historial de tus donaciones.
+                        </p>
                         <a href="{% url 'donaciones:mis_donaciones' %}"
-                            class="btn btn-primary">Ver donaciones</a>
+                           class="btn btn-primary w-100">
+                            Ver donaciones
+                        </a>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="text-center mt-4">
+            <a href="{% url 'usuarios:logout' %}"
+               style="color: var(--color-gray); font-weight: 500; text-decoration: none;">
+                Cerrar sesión
+            </a>
         </div>
 
     </div>
