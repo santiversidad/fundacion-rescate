@@ -5,57 +5,108 @@
 {% block contenido %}
 
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-9">
 
-        <h2 class="mb-4">🐾 Quiénes somos</h2>
-
-        <!-- MISIÓN -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h4 class="card-title text-primary">🎯 Misión</h4>
-                <p class="card-text">
-                    Somos una fundación dedicada al rescate, rehabilitación y adopción
-                    responsable de animales en situación de vulnerabilidad. Trabajamos
-                    con voluntarios comprometidos para dar una segunda oportunidad a
-                    cada animal rescatado.
-                </p>
-            </div>
+        <!-- HEADER -->
+        <div class="text-center mb-5">
+            <h2 class="section-title">🐾 Quiénes somos</h2>
+            <p class="section-subtitle">
+                Conoce la historia y los valores que nos mueven cada día.
+            </p>
         </div>
 
-        <!-- VISIÓN -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h4 class="card-title text-primary">🔭 Visión</h4>
-                <p class="card-text">
-                    Ser una organización referente en bienestar animal, promoviendo
-                    una cultura de adopción responsable y cero abandono en nuestra
-                    comunidad.
-                </p>
+        <!-- MISIÓN Y VISIÓN -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; color: var(--color-primary);">
+                            Misión
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8;">
+                            Somos una fundación dedicada al rescate, rehabilitación y adopción
+                            responsable de animales en situación de vulnerabilidad. Trabajamos
+                            con voluntarios comprometidos para dar una segunda oportunidad a
+                            cada animal rescatado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔭</div>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; color: var(--color-primary);">
+                            Visión
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8;">
+                            Ser una organización referente en bienestar animal, promoviendo
+                            una cultura de adopción responsable y cero abandono en nuestra
+                            comunidad.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- VALORES -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h4 class="card-title text-primary">💛 Valores</h4>
-                <div class="row mt-3">
-                    <div class="col-md-4 text-center mb-3">
-                        <h2>❤️</h2>
-                        <h6 class="fw-bold">Amor</h6>
-                        <p class="small text-muted">Cada animal merece amor y cuidado.</p>
+        <div class="mb-5">
+            <h4 class="text-center mb-4" style="font-family: var(--font-title); font-weight: 700;">
+                💛 Nuestros valores
+            </h4>
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">❤️</div>
+                            <h6 style="font-family: var(--font-title); font-weight: 600;">Amor</h6>
+                            <p style="color: var(--color-gray); font-size: 0.95rem;">
+                                Cada animal merece amor y cuidado incondicional.
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-md-4 text-center mb-3">
-                        <h2>🤝</h2>
-                        <h6 class="fw-bold">Compromiso</h6>
-                        <p class="small text-muted">Nos comprometemos con cada rescate.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🤝</div>
+                            <h6 style="font-family: var(--font-title); font-weight: 600;">Compromiso</h6>
+                            <p style="color: var(--color-gray); font-size: 0.95rem;">
+                                Nos comprometemos con cada rescate hasta encontrar un hogar.
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-md-4 text-center mb-3">
-                        <h2>🌱</h2>
-                        <h6 class="fw-bold">Responsabilidad</h6>
-                        <p class="small text-muted">Promovemos la adopción responsable.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌱</div>
+                            <h6 style="font-family: var(--font-title); font-weight: 600;">Responsabilidad</h6>
+                            <p style="color: var(--color-gray); font-size: 0.95rem;">
+                                Promovemos la adopción responsable y el bienestar animal.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center p-5 rounded" 
+             style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
+            <h4 style="font-family: var(--font-title); font-weight: 700; color: white;">
+                ¿Quieres ser parte del cambio?
+            </h4>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">
+                Adopta, dona o simplemente comparte nuestra causa.
+            </p>
+            <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary me-2">
+                Ver mascotas
+            </a>
+            <a href="{% url 'donaciones:info' %}" class="btn btn-outline-light">
+                Donar
+            </a>
         </div>
 
     </div>
