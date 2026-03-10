@@ -31,10 +31,21 @@
 }
 
 /* --- BASE --- */
+html {
+    height: 100%;
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--color-light);
     color: var(--color-dark);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {

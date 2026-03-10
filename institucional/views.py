@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import MiembroEquipo, ContenidoNosotros
 
 
 def inicio(request):
@@ -6,7 +7,13 @@ def inicio(request):
 
 
 def nosotros(request):
-    return render(request, 'institucional/nosotros.html')
+    contenido = ContenidoNosotros.objects.first()
+    equipo = MiembroEquipo.objects.filter(activo=True)
+
+    return render(request, 'institucional/nosotros.html', {
+        'contenido': contenido,
+        'equipo': equipo,
+    })
 
 
 def contacto(request):
