@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from .models import MiembroEquipo, ContenidoNosotros
+from mascotas.models import Mascota
 
 
 def inicio(request):
-    return render(request, 'institucional/inicio.html')
+    mascotas_destacadas = Mascota.objects.filter(
+        estado='disponible'
+    ).order_by('-fecha_ingreso')[:3]
+
+    return render(request, 'institucional/inicio.html', {
+        'mascotas_destacadas': mascotas_destacadas,
+    })
 
 
 def nosotros(request):
