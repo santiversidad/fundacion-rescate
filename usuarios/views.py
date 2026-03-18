@@ -6,19 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def registro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, f'✅ Bienvenido {user.username}, tu cuenta fue creada correctamente.')
-            return redirect('institucional:inicio')
-    else:
-        form = UserCreationForm()
-
-    return render(request, 'usuarios/registro.html', {
-        'form': form
-    })
+    return redirect('usuarios:login')
 
 
 def login_view(request):

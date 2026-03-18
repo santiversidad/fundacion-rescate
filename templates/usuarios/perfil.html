@@ -38,7 +38,7 @@
                             Revisa el estado de tus solicitudes de adopción.
                         </p>
                         <a href="{% url 'adopciones:mis_solicitudes' %}"
-                           class="btn btn-primary w-100">
+                            class="btn btn-primary w-100">
                             Ver solicitudes
                         </a>
                     </div>
@@ -55,7 +55,7 @@
                             Revisa el historial de tus donaciones.
                         </p>
                         <a href="{% url 'donaciones:mis_donaciones' %}"
-                           class="btn btn-primary w-100">
+                            class="btn btn-primary w-100">
                             Ver donaciones
                         </a>
                     </div>
@@ -64,12 +64,19 @@
         </div>
 
         <!-- CERRAR SESIÓN -->
-        <div class="text-center mt-4">
-            <a href="{% url 'usuarios:logout' %}"
-               style="color: var(--color-gray); font-weight: 500; text-decoration: none;">
-                Cerrar sesión
-            </a>
-        </div>
+        <!-- CERRAR SESIÓN -->
+<div class="text-center mt-4 d-flex justify-content-center gap-4">
+    <a href="{% url 'usuarios:logout' %}"
+        style="color: var(--color-gray); font-weight: 500; text-decoration: none;">
+        Cerrar sesión
+    </a>
+    <span style="color: var(--color-gray-light);">|</span>
+    <a href="https://accounts.google.com/AccountChooser"
+        target="_blank"
+        style="color: var(--color-gray); font-weight: 500; text-decoration: none;">
+        Cambiar cuenta de Google
+    </a>
+</div>
 
     </div>
 </div>

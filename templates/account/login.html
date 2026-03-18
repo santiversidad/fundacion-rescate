@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Iniciar sesión{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body p-5 text-center">
+
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🐾</div>
+                <h3 style="font-family: var(--font-title); font-weight: 700;">
+                    Iniciar sesión
+                </h3>
+                <p style="color: var(--color-gray); margin-bottom: 2rem;">
+                    Usa tu cuenta para continuar
+                </p>
+
+                <a href="{% url 'usuarios:login' %}"
+                    class="btn btn-primary w-100">
+                    Ir al inicio de sesión
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
