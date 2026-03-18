@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Panel Admin{% endblock %} — Fundación Rescate Animal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        body { background-color: #F3F4F6; }
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--color-dark);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            padding: 0;
+            overflow-y: auto;
+        }
+        .sidebar-brand {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-brand h6 {
+            color: var(--color-accent);
+            font-family: var(--font-title);
+            font-weight: 700;
+            margin: 0;
+        }
+        .sidebar-brand p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            margin: 0.2rem 0 0;
+        }
+        .sidebar-nav { padding: 1rem 0; }
+        .sidebar-section {
+            padding: 0.5rem 1.5rem 0.3rem;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+            border-left-color: var(--color-primary);
+        }
+        .sidebar-link.active {
+            color: white;
+            background: rgba(255,107,53,0.15);
+            border-left-color: var(--color-primary);
+        }
+        .sidebar-link i { font-size: 1.1rem; width: 20px; }
+        .main-content { margin-left: 260px; min-height: 100vh; }
+        .topbar {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .content-area { padding: 1.5rem; }
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .badge-pendiente  { background: #FEF3C7; color: #92400E; }
+        .badge-revision   { background: #DBEAFE; color: #1E40AF; }
+        .badge-aprobada   { background: #D1FAE5; color: #065F46; }
+        .badge-rechazada  { background: #FEE2E2; color: #991B1B; }
+        .badge-verificada { background: #D1FAE5; color: #065F46; }
+        .badge-disponible { background: #D1FAE5; color: #065F46; }
+        .badge-adoptada   { background: #DBEAFE; color: #1E40AF; }
+        .badge-inactiva   { background: #F3F4F6; color: #6B7280; }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h6>🐾 Fundación Rescate</h6>
+            <p>Panel de administración</p>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">Principal</div>
+            <a href="{% url 'dashboard:inicio' %}"
+                class="sidebar-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+
+            <div class="sidebar-section mt-2">Gestión</div>
+            <a href="{% url 'dashboard:mascotas' %}"
+                class="sidebar-link {% if 'mascota' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-heart-fill"></i> Mascotas
+            </a>
+            <a href="{% url 'dashboard:adopciones' %}"
+                class="sidebar-link {% if 'adopcion' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-house-heart"></i> Adopciones
+            </a>
+            <a href="{% url 'dashboard:donaciones' %}"
+                class="sidebar-link {% if 'donacion' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-gift"></i> Donaciones
+            </a>
+            <a href="{% url 'dashboard:eventos' %}"
+                class="sidebar-link {% if 'evento' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-calendar-event"></i> Eventos
+            </a>
+
+            <div class="sidebar-section mt-2">Contenido</div>
+            <a href="{% url 'dashboard:equipo' %}"
+                class="sidebar-link {% if 'miembro' in request.resolver_match.url_name or request.resolver_match.url_name == 'equipo' %}active{% endif %}">
+                <i class="bi bi-people"></i> Equipo
+            </a>
+            <a href="{% url 'dashboard:testimonios' %}"
+                class="sidebar-link {% if 'testimonio' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-chat-quote"></i> Testimonios
+            </a>
+            <a href="{% url 'dashboard:faq' %}"
+                class="sidebar-link {% if 'faq' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-question-circle"></i> Preguntas frecuentes
+            </a>
+            <a href="{% url 'dashboard:contenido_institucional' %}"
+                class="sidebar-link {% if request.resolver_match.url_name == 'contenido_institucional' %}active{% endif %}">
+                <i class="bi bi-building"></i> Contenido institucional
+            </a>
+
+            <div class="sidebar-section mt-2">Sistema</div>
+            <a href="{% url 'institucional:inicio' %}" class="sidebar-link">
+                <i class="bi bi-eye"></i> Ver sitio web
+            </a>
+            <a href="{% url 'usuarios:logout' %}" class="sidebar-link">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </a>
+        </nav>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="topbar">
+            <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0;">
+                {% block topbar_titulo %}Dashboard{% endblock %}
+            </h6>
+            <div class="d-flex align-items-center gap-3">
+                {% if request.user.perfil.foto %}
+                    <img src="{{ request.user.perfil.foto.url }}"
+                        style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                {% endif %}
+                <span style="font-size: 0.9rem; color: var(--color-gray);">
+                    {{ request.user.username }}
+                </span>
+            </div>
+        </div>
+
+        <div class="content-area">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% block contenido %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

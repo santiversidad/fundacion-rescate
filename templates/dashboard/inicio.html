@@ -1,0 +1,165 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Dashboard{% endblock %}
+
+{% block contenido %}
+
+<div class="row g-4 mb-4">
+
+    <!-- ESTADÍSTICAS -->
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-heart-fill" style="font-size: 2rem; color: var(--color-primary);"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.total_mascotas }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Mascotas disponibles
+            </p>
+        </div>
+    </div>
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-house-heart-fill" style="font-size: 2rem; color: var(--color-secondary);"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.total_adopciones }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Adopciones exitosas
+            </p>
+        </div>
+    </div>
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-clock-fill" style="font-size: 2rem; color: #F59E0B;"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.solicitudes_pendientes }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Solicitudes pendientes
+            </p>
+        </div>
+    </div>
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-gift-fill" style="font-size: 2rem; color: #8B5CF6;"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.total_donaciones }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Donaciones verificadas
+            </p>
+        </div>
+    </div>
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-exclamation-circle-fill" style="font-size: 2rem; color: #EF4444;"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.donaciones_pendientes }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Donaciones pendientes
+            </p>
+        </div>
+    </div>
+    <div class="col-md-2 col-6">
+        <div class="stat-card text-center">
+            <i class="bi bi-calendar-event-fill" style="font-size: 2rem; color: var(--color-primary);"></i>
+            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
+                {{ stats.total_eventos }}
+            </h3>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                Eventos próximos
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <!-- SOLICITUDES RECIENTES -->
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0;">
+                    Solicitudes recientes
+                </h6>
+                <a href="{% url 'dashboard:adopciones' %}"
+                    style="color: var(--color-primary); font-size: 0.85rem; text-decoration: none;">
+                    Ver todas
+                </a>
+            </div>
+            {% if solicitudes_recientes %}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Mascota</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in solicitudes_recientes %}
+                            <tr>
+                                <td style="font-size: 0.85rem;">{{ s.usuario.username }}</td>
+                                <td style="font-size: 0.85rem;">{{ s.mascota.nombre }}</td>
+                                <td>
+                                    <span class="badge badge-{{ s.estado }}" style="font-size: 0.75rem;">
+                                        {{ s.get_estado_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p style="color: var(--color-gray); font-size: 0.9rem;">No hay solicitudes aún.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- DONACIONES RECIENTES -->
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0;">
+                    Donaciones recientes
+                </h6>
+                <a href="{% url 'dashboard:donaciones' %}"
+                    style="color: var(--color-primary); font-size: 0.85rem; text-decoration: none;">
+                    Ver todas
+                </a>
+            </div>
+            {% if donaciones_recientes %}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Monto</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in donaciones_recientes %}
+                            <tr>
+                                <td style="font-size: 0.85rem;">{{ d.usuario.username }}</td>
+                                <td style="font-size: 0.85rem;">${{ d.monto }}</td>
+                                <td>
+                                    <span class="badge badge-{{ d.estado }}" style="font-size: 0.75rem;">
+                                        {{ d.get_estado_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p style="color: var(--color-gray); font-size: 0.9rem;">No hay donaciones aún.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'donaciones',
     'usuarios',
     'institucional',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
