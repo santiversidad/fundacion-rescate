@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Preguntas Frecuentes — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <p class="section-subtitle">
+                Resolvemos las dudas más comunes sobre adopción y nuestra fundación.
+            </p>
+        </div>
+
+        {% if preguntas %}
+            <div class="accordion" id="faqAccordion">
+                {% for pregunta in preguntas %}
+                    <div class="accordion-item mb-3"
+                        style="border: none; border-radius: var(--radius) !important; overflow: hidden; box-shadow: var(--shadow-sm);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq{{ pregunta.pk }}"
+                                    style="font-family: var(--font-title); font-weight: 600; background: white;">
+                                <i class="bi bi-question-circle-fill me-2"
+                                    style="color: var(--color-primary);"></i>
+                                {{ pregunta.pregunta }}
+                            </button>
+                        </h2>
+                        <div id="faq{{ pregunta.pk }}"
+                            class="accordion-collapse collapse"
+                            data-bs-parent="#faqAccordion">
+                            <div class="accordion-body"
+                                style="color: var(--color-gray); line-height: 1.8;">
+                                {{ pregunta.respuesta }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <h5>No hay preguntas frecuentes aún.</h5>
+                <p>Escríbenos directamente si tienes alguna duda.</p>
+                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary mt-2">
+                    Contáctanos
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- CTA -->
+        <div class="text-center mt-5 p-4 rounded"
+            style="background: var(--color-gray-light);">
+            <h5 style="font-family: var(--font-title); font-weight: 600;">
+                ¿No encontraste tu respuesta?
+            </h5>
+            <p style="color: var(--color-gray);">
+                Escríbenos directamente y te responderemos a la brevedad.
+            </p>
+            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
+                Contactar
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

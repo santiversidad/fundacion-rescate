@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block titulo %}¿Cómo puedo ayudar? — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-9">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">¿Cómo puedo ayudar?</h2>
+            <p class="section-subtitle">
+                Hay muchas formas de sumarte a nuestra causa. Cada acción importa.
+            </p>
+        </div>
+
+        <div class="row g-4 mb-5">
+
+            <!-- ADOPTAR -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="margin-bottom: 1rem;">
+                            <i class="bi bi-house-heart-fill"
+                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                        </div>
+                        <h5 style="font-family: var(--font-title); font-weight: 700;">Adoptar</h5>
+                        <p style="color: var(--color-gray);">
+                            La forma más directa de ayudar. Dale un hogar permanente a un animal
+                            rescatado y cambia su vida para siempre.
+                        </p>
+                        <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary">
+                            Ver mascotas disponibles
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DONAR -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="margin-bottom: 1rem;">
+                            <i class="bi bi-gift-fill"
+                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                        </div>
+                        <h5 style="font-family: var(--font-title); font-weight: 700;">Donar</h5>
+                        <p style="color: var(--color-gray);">
+                            Tu aporte económico nos permite cubrir alimentación, atención
+                            veterinaria, medicamentos y el cuidado diario de los animales.
+                        </p>
+                        <a href="{% url 'donaciones:info' %}" class="btn btn-primary">
+                            Quiero donar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VOLUNTARIADO -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="margin-bottom: 1rem;">
+                            <i class="bi bi-people-fill"
+                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                        </div>
+                        <h5 style="font-family: var(--font-title); font-weight: 700;">Voluntariado</h5>
+                        <p style="color: var(--color-gray);">
+                            Dedica tu tiempo a cuidar, socializar y pasear a los animales.
+                            También necesitamos voluntarios para eventos y actividades.
+                        </p>
+                        <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
+                            Contáctanos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIFUNDIR -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div style="margin-bottom: 1rem;">
+                            <i class="bi bi-share-fill"
+                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                        </div>
+                        <h5 style="font-family: var(--font-title); font-weight: 700;">Difundir</h5>
+                        <p style="color: var(--color-gray);">
+                            Comparte nuestras publicaciones en redes sociales. Ayúdanos a
+                            encontrar hogares para los animales compartiendo su historia.
+                        </p>
+                        <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
+                            Nuestras redes
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center p-5 rounded"
+            style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
+            <h4 style="font-family: var(--font-title); font-weight: 700; color: white;">
+                ¿Tienes otra idea para ayudar?
+            </h4>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">
+                Escríbenos y encontremos juntos la mejor forma de colaborar.
+            </p>
+            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary btn-lg">
+                Contáctanos
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

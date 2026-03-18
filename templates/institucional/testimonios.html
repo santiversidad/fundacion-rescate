@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Testimonios — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Testimonios</h2>
+            <p class="section-subtitle">
+                Familias que abrieron su corazón y cambiaron una vida para siempre.
+            </p>
+        </div>
+
+        {% if testimonios %}
+            <div class="row g-4">
+                {% for testimonio in testimonios %}
+                    <div class="col-md-6 mb-2">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+
+                                <!-- COMILLAS -->
+                                <i class="bi bi-quote"
+                                    style="font-size: 2.5rem; color: var(--color-primary); opacity: 0.3;"></i>
+
+                                <p style="color: var(--color-gray); line-height: 1.8; font-style: italic;">
+                                    {{ testimonio.mensaje }}
+                                </p>
+
+                                <hr style="border-color: var(--color-gray-light);">
+
+                                <!-- AUTOR -->
+                                <div class="d-flex align-items-center gap-3">
+                                    {% if testimonio.foto %}
+                                        <img src="{{ testimonio.foto.url }}"
+                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
+                                            alt="{{ testimonio.nombre }}">
+                                    {% else %}
+                                        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-person-fill"
+                                                style="color: var(--color-gray);"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.1rem;">
+                                            {{ testimonio.nombre }}
+                                        </h6>
+                                        <p style="color: var(--color-primary); font-size: 0.85rem; margin-bottom: 0;">
+                                            Adoptó a {{ testimonio.mascota }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <h5>Aún no hay testimonios publicados.</h5>
+                <p>¿Adoptaste con nosotros? Cuéntanos tu historia.</p>
+                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary mt-2">
+                    Compartir mi historia
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
