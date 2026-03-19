@@ -1,0 +1,59 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Adopciones{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Solicitudes de adopción
+    </h4>
+</div>
+
+<div class="stat-card">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Mascota</th>
+                <th>Fecha</th>
+                <th>Vivienda</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitud in solicitudes %}
+                <tr>
+                    <td style="font-weight: 500;">{{ solicitud.usuario.username }}</td>
+                    <td>{{ solicitud.mascota.nombre }}</td>
+                    <td style="font-size: 0.85rem; color: var(--color-gray);">
+                        {{ solicitud.fecha_solicitud|date:"d/m/Y" }}
+                    </td>
+                    <td>{{ solicitud.tipo_vivienda|capfirst }}</td>
+                    <td>
+                        <span class="badge badge-{{ solicitud.estado }}"
+                            style="padding: 0.4em 0.8em; border-radius: 6px; font-size: 0.8rem;">
+                            {{ solicitud.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'dashboard:detalle_adopcion' solicitud.pk %}"
+                            class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center"
+                        style="color: var(--color-gray); padding: 2rem;">
+                        No hay solicitudes aún.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Mascotas{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Mascotas
+    </h4>
+    <a href="{% url 'dashboard:agregar_mascota' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Agregar mascota
+    </a>
+</div>
+
+<div class="stat-card">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Especie</th>
+                <th>Edad</th>
+                <th>Sexo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mascota in mascotas %}
+                <tr>
+                    <td>
+                        {% with mascota.fotos.first as foto %}
+                            {% if foto %}
+                                <img src="{{ foto.foto.url }}"
+                                    style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+                            {% else %}
+                                <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-image" style="color: var(--color-gray);"></i>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td style="font-weight: 500;">{{ mascota.nombre }}</td>
+                    <td>{{ mascota.especie|capfirst }}</td>
+                    <td>{{ mascota.edad_anios }} año{% if mascota.edad_anios != 1 %}s{% endif %}</td>
+                    <td>{{ mascota.sexo|capfirst }}</td>
+                    <td>
+                        <span class="badge badge-{{ mascota.estado }}"
+                            style="padding: 0.4em 0.8em; border-radius: 6px; font-size: 0.8rem;">
+                            {{ mascota.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'dashboard:editar_mascota' mascota.pk %}"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'dashboard:eliminar_mascota' mascota.pk %}"
+                                class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center" style="color: var(--color-gray); padding: 2rem;">
+                        No hay mascotas registradas aún.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

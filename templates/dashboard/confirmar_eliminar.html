@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Confirmar eliminación{% endblock %}
+
+{% block contenido %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="stat-card text-center">
+
+            <div style="font-size: 3rem; margin-bottom: 1rem;">
+                <i class="bi bi-exclamation-triangle-fill" style="color: #EF4444;"></i>
+            </div>
+
+            <h4 style="font-family: var(--font-title); font-weight: 700;">
+                ¿Estás seguro?
+            </h4>
+            <p style="color: var(--color-gray);">
+                Estás a punto de eliminar <strong>{{ objeto }}</strong>.
+                Esta acción no se puede deshacer.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Sí, eliminar
+                    </button>
+                    <a href="javascript:history.back()"
+                        class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
