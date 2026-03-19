@@ -1,0 +1,73 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Testimonios{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Testimonios
+    </h4>
+</div>
+
+<div class="row g-4">
+    {% for testimonio in testimonios %}
+        <div class="col-md-6">
+            <div class="stat-card">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    {% if testimonio.foto %}
+                        <img src="{{ testimonio.foto.url }}"
+                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person-fill" style="color: var(--color-gray);"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.1rem;">
+                            {{ testimonio.nombre }}
+                        </h6>
+                        <p style="color: var(--color-primary); font-size: 0.85rem; margin: 0;">
+                            Adoptó a {{ testimonio.mascota }}
+                        </p>
+                    </div>
+                    <div class="ms-auto">
+                        <span class="badge {% if testimonio.aprobado %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {% if testimonio.aprobado %}Aprobado{% else %}Pendiente{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <p style="color: var(--color-gray); font-style: italic; font-size: 0.9rem;">
+                    "{{ testimonio.mensaje|truncatewords:30 }}"
+                </p>
+
+                <div class="d-flex gap-2 mt-3">
+                    {% if not testimonio.aprobado %}
+                        <a href="{% url 'dashboard:aprobar_testimonio' testimonio.pk %}"
+                            class="btn btn-sm btn-success">
+                            <i class="bi bi-check-lg me-1"></i>Aprobar
+                        </a>
+                    {% else %}
+                        <a href="{% url 'dashboard:rechazar_testimonio' testimonio.pk %}"
+                            class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-x-lg me-1"></i>Rechazar
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="stat-card text-center" style="padding: 3rem;">
+                <i class="bi bi-chat-quote" style="font-size: 3rem; color: var(--color-gray);"></i>
+                <p style="color: var(--color-gray); margin-top: 1rem;">
+                    No hay testimonios aún.
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Equipo{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Equipo de trabajo
+    </h4>
+    <a href="{% url 'dashboard:agregar_miembro' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Agregar miembro
+    </a>
+</div>
+
+<div class="row g-4">
+    {% for miembro in equipo %}
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                {% if miembro.foto %}
+                    <img src="{{ miembro.foto.url }}"
+                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem;">
+                {% else %}
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i class="bi bi-person-fill" style="font-size: 2rem; color: var(--color-gray);"></i>
+                    </div>
+                {% endif %}
+                <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.2rem;">
+                    {{ miembro.nombre }}
+                </h6>
+                <p style="color: var(--color-primary); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                    {{ miembro.cargo }}
+                </p>
+                <span class="badge {% if miembro.activo %}bg-success{% else %}bg-secondary{% endif %} mb-3">
+                    {% if miembro.activo %}Activo{% else %}Inactivo{% endif %}
+                </span>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="{% url 'dashboard:editar_miembro' miembro.pk %}"
+                        class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'dashboard:eliminar_miembro' miembro.pk %}"
+                        class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="stat-card text-center" style="padding: 3rem;">
+                <i class="bi bi-people" style="font-size: 3rem; color: var(--color-gray);"></i>
+                <p style="color: var(--color-gray); margin-top: 1rem;">
+                    No hay miembros del equipo aún.
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Eventos{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Eventos
+    </h4>
+    <a href="{% url 'dashboard:agregar_evento' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Agregar evento
+    </a>
+</div>
+
+<div class="stat-card">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Lugar</th>
+                <th>Capacidad</th>
+                <th>Inscritos</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in eventos %}
+                <tr>
+                    <td style="font-weight: 500;">{{ evento.titulo }}</td>
+                    <td style="font-size: 0.85rem; color: var(--color-gray);">
+                        {{ evento.fecha|date:"d/m/Y H:i" }}
+                    </td>
+                    <td style="font-size: 0.85rem;">{{ evento.lugar }}</td>
+                    <td>{{ evento.capacidad }}</td>
+                    <td>{{ evento.inscripciones.count }}</td>
+                    <td>
+                        <span class="badge badge-{{ evento.estado }}"
+                                style="padding: 0.4em 0.8em; border-radius: 6px; font-size: 0.8rem;">
+                            {{ evento.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'dashboard:editar_evento' evento.pk %}"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'dashboard:eliminar_evento' evento.pk %}"
+                                class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center"
+                        style="color: var(--color-gray); padding: 2rem;">
+                        No hay eventos registrados aún.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Editar evento{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+    <a href="{% url 'dashboard:eventos' %}"
+        style="color: var(--color-gray); text-decoration: none;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+        Editar — {{ evento.titulo }}
+    </h4>
+</div>
+
+<div class="stat-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label">Título</label>
+                <input type="text" name="titulo" class="form-control"
+                        value="{{ evento.titulo }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Fecha y hora</label>
+                <input type="datetime-local" name="fecha" class="form-control"
+                        value="{{ evento.fecha|date:'Y-m-d\TH:i' }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Capacidad</label>
+                <input type="number" name="capacidad" class="form-control"
+                        value="{{ evento.capacidad }}" min="1" required>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Lugar</label>
+                <input type="text" name="lugar" class="form-control"
+                        value="{{ evento.lugar }}" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Estado</label>
+                <select name="estado" class="form-select">
+                    <option value="proximo" {% if evento.estado == 'proximo' %}selected{% endif %}>Próximo</option>
+                    <option value="en_curso" {% if evento.estado == 'en_curso' %}selected{% endif %}>En curso</option>
+                    <option value="finalizado" {% if evento.estado == 'finalizado' %}selected{% endif %}>Finalizado</option>
+                    <option value="cancelado" {% if evento.estado == 'cancelado' %}selected{% endif %}>Cancelado</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Descripción</label>
+                <textarea name="descripcion" class="form-control"
+                            rows="4">{{ evento.descripcion }}</textarea>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Imagen</label>
+                {% if evento.imagen %}
+                    <div class="mb-2">
+                        <img src="{{ evento.imagen.url }}"
+                            style="height: 100px; border-radius: var(--radius-sm);">
+                    </div>
+                {% endif %}
+                <input type="file" name="imagen" class="form-control" accept="image/*">
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-lg me-2"></i>Guardar cambios
+            </button>
+            <a href="{% url 'dashboard:eventos' %}" class="btn btn-outline-secondary">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
