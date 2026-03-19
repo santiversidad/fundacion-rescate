@@ -3,10 +3,10 @@
 {% block titulo %}{{ mascota.nombre }} — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
-
+<div class="container my-4">
 <div class="mb-4">
     <a href="{% url 'mascotas:catalogo' %}" 
-       style="color: var(--color-gray); text-decoration: none; font-weight: 500;">
+        style="color: var(--color-gray); text-decoration: none; font-weight: 500;">
         ← Volver al catálogo
     </a>
 </div>
@@ -18,12 +18,12 @@
         {% with mascota.fotos.first as foto_principal %}
             {% if foto_principal %}
                 <img src="{{ foto_principal.foto.url }}"
-                     class="img-fluid rounded"
-                     style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius) !important;"
-                     alt="{{ mascota.nombre }}">
+                    class="img-fluid rounded"
+                    style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius) !important;"
+                    alt="{{ mascota.nombre }}">
             {% else %}
                 <div class="d-flex align-items-center justify-content-center"
-                     style="width: 100%; height: 400px; background: var(--color-gray-light); border-radius: var(--radius);">
+                    style="width: 100%; height: 400px; background: var(--color-gray-light); border-radius: var(--radius);">
                     <div class="text-center">
                         <div style="font-size: 4rem;">🐾</div>
                         <p style="color: var(--color-gray);">Sin foto aún</p>
@@ -38,9 +38,9 @@
                 {% for foto in mascota.fotos.all %}
                     <div class="col-3">
                         <img src="{{ foto.foto.url }}"
-                             class="img-fluid"
-                             style="height: 80px; width: 100%; object-fit: cover; border-radius: var(--radius-sm);"
-                             alt="Foto de {{ mascota.nombre }}">
+                            class="img-fluid"
+                            style="height: 80px; width: 100%; object-fit: cover; border-radius: var(--radius-sm);"
+                            alt="Foto de {{ mascota.nombre }}">
                     </div>
                 {% endfor %}
             </div>
@@ -94,7 +94,7 @@
         <!-- BOTÓN DE ADOPCIÓN -->
         {% if user.is_authenticated %}
             <a href="{% url 'adopciones:solicitar' mascota.pk %}"
-               class="btn btn-primary btn-lg w-100">
+                class="btn btn-primary btn-lg w-100">
                 🐾 Quiero adoptarla
             </a>
         {% else %}
@@ -108,5 +108,5 @@
 
     </div>
 </div>
-
+</div>
 {% endblock %}

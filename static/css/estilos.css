@@ -7,14 +7,14 @@
 
 /* --- VARIABLES CSS (Design Tokens) --- */
 :root {
-    --color-primary:    #FF6B35;
-    --color-primary-dark: #E85520;
-    --color-secondary:  #2D6A4F;
-    --color-dark:       #1B1B2F;
-    --color-light:      #FFF8F0;
-    --color-accent:     #FFD166;
-    --color-gray:       #6B7280;
-    --color-gray-light: #F3F4F6;
+    --color-primary:      #5C8A3C;
+    --color-primary-dark: #4A7230;
+    --color-secondary:    #8B5E3C;
+    --color-dark:         #2C2C2C;
+    --color-light:        #F9F6F0;
+    --color-accent:       #E8C547;
+    --color-gray:         #6B7280;
+    --color-gray-light:   #F3F4F6;
 
     --font-title: 'Poppins', sans-serif;
     --font-body:  'Inter', sans-serif;
@@ -54,30 +54,42 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- NAVBAR --- */
+/* --- NAVBAR --- */
 .navbar {
-    background-color: var(--color-dark) !important;
+    background-color: white !important;
     padding: 1rem 0;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    transition: var(--transition);
 }
 
 .navbar-brand {
     font-family: var(--font-title);
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--color-accent) !important;
+    color: var(--color-primary) !important;
     letter-spacing: -0.5px;
 }
 
 .nav-link {
     font-weight: 500;
+    color: var(--color-dark) !important;
     transition: var(--transition);
     padding: 0.5rem 1rem !important;
     border-radius: var(--radius-sm);
 }
 
 .nav-link:hover {
-    color: var(--color-accent) !important;
-    background-color: rgba(255,255,255,0.05);
+    color: var(--color-primary) !important;
+    background-color: rgba(92,138,60,0.08);
+}
+
+.nav-active {
+    color: var(--color-primary) !important;
+    font-weight: 600;
+}
+
+.navbar-toggler {
+    border-color: var(--color-gray-light);
 }
 
 /* --- BOTONES --- */

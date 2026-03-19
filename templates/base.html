@@ -12,59 +12,68 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'institucional:inicio' %}">
-                🐾 Fundación Rescate Animal
-            </a>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'institucional:inicio' %}">
+                <img src="{% static 'img/Logo.png' %}"
+                    style="height: 80px; width: auto; object-fit: contain;"
+                    alt="Fundación Rescate Animal">
+                </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'institucional:inicio' %}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mascotas:catalogo' %}">Adoptar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'donaciones:info' %}">Donar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'institucional:nosotros' %}">Nosotros</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Comunidad
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'institucional:eventos' %}">
-                                    <i class="bi bi-calendar-event me-2"></i>Eventos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'institucional:testimonios' %}">
-                                    <i class="bi bi-chat-quote me-2"></i>Testimonios
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'institucional:como_ayudar' %}">
-                                    <i class="bi bi-heart me-2"></i>¿Cómo ayudar?
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{% url 'institucional:preguntas_frecuentes' %}">
-                                    <i class="bi bi-question-circle me-2"></i>Preguntas frecuentes
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'institucional:contacto' %}">Contacto</a>
-                    </li>
-                </ul>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'inicio' %}nav-active{% endif %}"
+            href="{% url 'institucional:inicio' %}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'mascotas' %}nav-active{% endif %}"
+            href="{% url 'mascotas:catalogo' %}">Adoptar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'donaciones' %}nav-active{% endif %}"
+            href="{% url 'donaciones:info' %}">Donar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'nosotros' %}nav-active{% endif %}"
+            href="{% url 'institucional:nosotros' %}">Nosotros</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'eventos,testimonios,como_ayudar,preguntas_frecuentes' %}nav-active{% endif %}"
+            href="#" data-bs-toggle="dropdown">
+            Comunidad
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="{% url 'institucional:eventos' %}">
+                    <i class="bi bi-calendar-event me-2"></i>Eventos
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'institucional:testimonios' %}">
+                    <i class="bi bi-chat-quote me-2"></i>Testimonios
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'institucional:como_ayudar' %}">
+                    <i class="bi bi-heart me-2"></i>¿Cómo ayudar?
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'institucional:preguntas_frecuentes' %}">
+                    <i class="bi bi-question-circle me-2"></i>Preguntas frecuentes
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'contacto' %}nav-active{% endif %}"
+            href="{% url 'institucional:contacto' %}">Contacto</a>
+    </li>
+</ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
@@ -108,8 +117,8 @@
     {% endif %}
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="container my-4">
-        {% block contenido %}{% endblock %}
+    <main>
+    {% block contenido %}{% endblock %}
     </main>
 
     <!-- FOOTER -->

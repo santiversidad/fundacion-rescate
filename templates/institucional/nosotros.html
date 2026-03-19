@@ -3,6 +3,7 @@
 {% block titulo %}Nosotros — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
+<div class="container my-4">
 
 <div class="row justify-content-center">
     <div class="col-md-10">
@@ -21,9 +22,9 @@
                 <div class="card h-100">
                     {% if contenido and contenido.imagen_mision %}
                         <img src="{{ contenido.imagen_mision.url }}"
-                             class="card-img-top"
-                             style="height: 220px; object-fit: cover;"
-                             alt="Misión">
+                            class="card-img-top"
+                            style="height: 220px; object-fit: cover;"
+                            alt="Misión">
                     {% else %}
                         <div style="height: 220px; background: linear-gradient(135deg, var(--color-primary) 0%, #E85520 100%); display: flex; align-items: center; justify-content: center;">
                             <i class="bi bi-bullseye" style="font-size: 4rem; color: white;"></i>
@@ -48,9 +49,9 @@
                 <div class="card h-100">
                     {% if contenido and contenido.imagen_vision %}
                         <img src="{{ contenido.imagen_vision.url }}"
-                             class="card-img-top"
-                             style="height: 220px; object-fit: cover;"
-                             alt="Visión">
+                            class="card-img-top"
+                            style="height: 220px; object-fit: cover;"
+                            alt="Visión">
                     {% else %}
                         <div style="height: 220px; background: linear-gradient(135deg, var(--color-secondary) 0%, #1F4D38 100%); display: flex; align-items: center; justify-content: center;">
                             <i class="bi bi-eye-fill" style="font-size: 4rem; color: white;"></i>
@@ -84,7 +85,7 @@
                         <div class="card-body p-4">
                             <div style="margin-bottom: 1rem;">
                                 <i class="bi bi-heart-fill"
-                                   style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
                             </div>
                             <h6 style="font-family: var(--font-title); font-weight: 600;">Amor</h6>
                             <p style="color: var(--color-gray); font-size: 0.95rem;">
@@ -98,7 +99,7 @@
                         <div class="card-body p-4">
                             <div style="margin-bottom: 1rem;">
                                 <i class="bi bi-people-fill"
-                                   style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
                             </div>
                             <h6 style="font-family: var(--font-title); font-weight: 600;">Compromiso</h6>
                             <p style="color: var(--color-gray); font-size: 0.95rem;">
@@ -112,7 +113,7 @@
                         <div class="card-body p-4">
                             <div style="margin-bottom: 1rem;">
                                 <i class="bi bi-shield-check"
-                                   style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
                             </div>
                             <h6 style="font-family: var(--font-title); font-weight: 600;">Responsabilidad</h6>
                             <p style="color: var(--color-gray); font-size: 0.95rem;">
@@ -139,9 +140,9 @@
                         <div class="card h-100 text-center">
                             {% if miembro.foto %}
                                 <img src="{{ miembro.foto.url }}"
-                                     class="card-img-top"
-                                     style="height: 200px; object-fit: cover;"
-                                     alt="{{ miembro.nombre }}">
+                                    class="card-img-top"
+                                    style="height: 200px; object-fit: cover;"
+                                    alt="{{ miembro.nombre }}">
                             {% else %}
                                 <div style="height: 200px; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
                                     <i class="bi bi-person-fill" style="font-size: 4rem; color: var(--color-gray);"></i>
@@ -169,7 +170,7 @@
 
         <!-- CTA -->
         <div class="text-center p-5 rounded"
-             style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
+            style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
             <h4 style="font-family: var(--font-title); font-weight: 700; color: white;">
                 ¿Quieres ser parte del cambio?
             </h4>
@@ -185,6 +186,7 @@
         </div>
 
     </div>
+</div>
 </div>
 
 {% endblock %}
