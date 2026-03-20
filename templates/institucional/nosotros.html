@@ -1,192 +1,366 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Nosotros — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
-<div class="container my-4">
 
-<div class="row justify-content-center">
-    <div class="col-md-10">
+<!-- =============================================
+    HEADER DE SECCIÓN
+    Fondo oscuro con título
+    ============================================= -->
+<section style="background-color: var(--color-dark); padding: 4rem 0;">
+    <div class="container text-center">
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;">
+            Quiénes somos
+        </h1>
+        <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem; margin: 0;">
+            Conoce la historia y los valores que nos mueven cada día.
+        </p>
+    </div>
+</section>
 
-        <!-- HEADER -->
+<!-- Onda: oscuro → crema -->
+<div class="wave-divider" style="background-color: var(--color-dark);">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    MISIÓN
+    Fondo crema - imagen izquierda, texto derecha
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <!-- Imagen -->
+            <div class="col-md-6">
+                {% if contenido and contenido.imagen_mision %}
+                    <img src="{{ contenido.imagen_mision.url }}"
+                        class="img-fluid"
+                        style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius);"
+                        alt="Misión">
+                {% else %}
+                    <div style="
+                        height: 400px;
+                        background: linear-gradient(135deg, var(--color-primary) 0%, #4A7230 100%);
+                        border-radius: var(--radius);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;">
+                        <i class="bi bi-bullseye" style="font-size: 5rem; color: white; opacity: 0.5;"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Texto -->
+            <div class="col-md-6">
+                <span style="
+                    color: var(--color-primary);
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;">
+                    Nuestra misión
+                </span>
+                <h2 style="
+                    font-family: var(--font-title);
+                    font-weight: 700;
+                    font-size: 2.2rem;
+                    margin: 0.5rem 0 1.5rem;">
+                    Lo que nos mueve cada día
+                </h2>
+                <p style="color: var(--color-gray); line-height: 1.9; font-size: 1.05rem;">
+                    {% if contenido %}
+                        {{ contenido.mision }}
+                    {% else %}
+                        Somos una fundación dedicada al rescate, rehabilitación y adopción
+                        responsable de animales en situación de vulnerabilidad. Trabajamos
+                        con voluntarios comprometidos para dar una segunda oportunidad a
+                        cada animal rescatado.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Onda: crema → blanco -->
+<div class="wave-divider" style="background-color: var(--color-light);">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
+        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    VISIÓN
+    Fondo blanco - texto izquierda, imagen derecha
+    ============================================= -->
+<section style="background-color: white; padding: 5rem 0;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <!-- Texto -->
+            <div class="col-md-6">
+                <span style="
+                    color: var(--color-primary);
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;">
+                    Nuestra visión
+                </span>
+                <h2 style="
+                    font-family: var(--font-title);
+                    font-weight: 700;
+                    font-size: 2.2rem;
+                    margin: 0.5rem 0 1.5rem;">
+                    Hacia dónde vamos
+                </h2>
+                <p style="color: var(--color-gray); line-height: 1.9; font-size: 1.05rem;">
+                    {% if contenido %}
+                        {{ contenido.vision }}
+                    {% else %}
+                        Ser una organización referente en bienestar animal, promoviendo
+                        una cultura de adopción responsable y cero abandono en nuestra
+                        comunidad.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Imagen -->
+            <div class="col-md-6">
+                {% if contenido and contenido.imagen_vision %}
+                    <img src="{{ contenido.imagen_vision.url }}"
+                        class="img-fluid"
+                        style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius);"
+                        alt="Visión">
+                {% else %}
+                    <div style="
+                        height: 400px;
+                        background: linear-gradient(135deg, var(--color-secondary) 0%, #6B4A2C 100%);
+                        border-radius: var(--radius);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;">
+                        <i class="bi bi-eye-fill" style="font-size: 5rem; color: white; opacity: 0.5;"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Onda: blanco → crema -->
+<div class="wave-divider" style="background-color: white;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
+        <path d="M0,60 C300,0 900,80 1200,20 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    VALORES
+    Fondo crema con iconos circulares
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title">Quiénes somos</h2>
-            <p class="section-subtitle">
-                Conoce la historia y los valores que nos mueven cada día.
-            </p>
-        </div>
-
-        <!-- MISIÓN Y VISIÓN -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-6">
-                <div class="card h-100">
-                    {% if contenido and contenido.imagen_mision %}
-                        <img src="{{ contenido.imagen_mision.url }}"
-                            class="card-img-top"
-                            style="height: 220px; object-fit: cover;"
-                            alt="Misión">
-                    {% else %}
-                        <div style="height: 220px; background: linear-gradient(135deg, var(--color-primary) 0%, #E85520 100%); display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-bullseye" style="font-size: 4rem; color: white;"></i>
-                        </div>
-                    {% endif %}
-                    <div class="card-body p-4">
-                        <h4 style="font-family: var(--font-title); font-weight: 700; color: var(--color-primary);">
-                            Misión
-                        </h4>
-                        <p style="color: var(--color-gray); line-height: 1.8;">
-                            {% if contenido %}
-                                {{ contenido.mision }}
-                            {% else %}
-                                Somos una fundación dedicada al rescate, rehabilitación y adopción
-                                responsable de animales en situación de vulnerabilidad.
-                            {% endif %}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card h-100">
-                    {% if contenido and contenido.imagen_vision %}
-                        <img src="{{ contenido.imagen_vision.url }}"
-                            class="card-img-top"
-                            style="height: 220px; object-fit: cover;"
-                            alt="Visión">
-                    {% else %}
-                        <div style="height: 220px; background: linear-gradient(135deg, var(--color-secondary) 0%, #1F4D38 100%); display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-eye-fill" style="font-size: 4rem; color: white;"></i>
-                        </div>
-                    {% endif %}
-                    <div class="card-body p-4">
-                        <h4 style="font-family: var(--font-title); font-weight: 700; color: var(--color-primary);">
-                            Visión
-                        </h4>
-                        <p style="color: var(--color-gray); line-height: 1.8;">
-                            {% if contenido %}
-                                {{ contenido.vision }}
-                            {% else %}
-                                Ser una organización referente en bienestar animal, promoviendo
-                                una cultura de adopción responsable y cero abandono.
-                            {% endif %}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VALORES -->
-        <div class="mb-5">
-            <h4 class="text-center mb-4" style="font-family: var(--font-title); font-weight: 700;">
+            <h2 style="font-family: var(--font-title); font-weight: 700;">
                 Nuestros valores
-            </h4>
-            <div class="row g-4 text-center">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body p-4">
-                            <div style="margin-bottom: 1rem;">
-                                <i class="bi bi-heart-fill"
-                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
-                            </div>
-                            <h6 style="font-family: var(--font-title); font-weight: 600;">Amor</h6>
-                            <p style="color: var(--color-gray); font-size: 0.95rem;">
-                                Cada animal merece amor y cuidado incondicional.
-                            </p>
-                        </div>
+            </h2>
+        </div>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div style="padding: 2rem;">
+                    <div style="
+                        width: 70px;
+                        height: 70px;
+                        background: rgba(92,138,60,0.1);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;">
+                        <i class="bi bi-heart-fill" style="font-size: 1.8rem; color: var(--color-primary);"></i>
                     </div>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Amor</h6>
+                    <p style="color: var(--color-gray);">
+                        Cada animal merece amor y cuidado incondicional.
+                    </p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body p-4">
-                            <div style="margin-bottom: 1rem;">
-                                <i class="bi bi-people-fill"
-                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
-                            </div>
-                            <h6 style="font-family: var(--font-title); font-weight: 600;">Compromiso</h6>
-                            <p style="color: var(--color-gray); font-size: 0.95rem;">
-                                Nos comprometemos con cada rescate hasta encontrar un hogar.
-                            </p>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div style="padding: 2rem;">
+                    <div style="
+                        width: 70px;
+                        height: 70px;
+                        background: rgba(92,138,60,0.1);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;">
+                        <i class="bi bi-people-fill" style="font-size: 1.8rem; color: var(--color-primary);"></i>
                     </div>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Compromiso</h6>
+                    <p style="color: var(--color-gray);">
+                        Nos comprometemos con cada rescate hasta encontrar un hogar.
+                    </p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body p-4">
-                            <div style="margin-bottom: 1rem;">
-                                <i class="bi bi-shield-check"
-                                    style="font-size: 2.5rem; color: var(--color-primary);"></i>
-                            </div>
-                            <h6 style="font-family: var(--font-title); font-weight: 600;">Responsabilidad</h6>
-                            <p style="color: var(--color-gray); font-size: 0.95rem;">
-                                Promovemos la adopción responsable y el bienestar animal.
-                            </p>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div style="padding: 2rem;">
+                    <div style="
+                        width: 70px;
+                        height: 70px;
+                        background: rgba(92,138,60,0.1);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;">
+                        <i class="bi bi-shield-check" style="font-size: 1.8rem; color: var(--color-primary);"></i>
                     </div>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Responsabilidad</h6>
+                    <p style="color: var(--color-gray);">
+                        Promovemos la adopción responsable y el bienestar animal.
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- EQUIPO -->
-        {% if equipo %}
-        <div class="mb-5">
-            <h4 class="text-center mb-2" style="font-family: var(--font-title); font-weight: 700;">
+<!-- Onda: crema → blanco (equipo) -->
+<div class="wave-divider" style="background-color: var(--color-light);">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="white"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    EQUIPO
+    Fondo blanco con fotos del equipo
+    ============================================= -->
+{% if equipo %}
+<section style="background-color: white; padding: 5rem 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 style="font-family: var(--font-title); font-weight: 700;">
                 Nuestro equipo
-            </h4>
-            <p class="text-center mb-4" style="color: var(--color-gray);">
+            </h2>
+            <p style="color: var(--color-gray);">
                 Las personas que hacen posible nuestra misión cada día.
             </p>
-            <div class="row g-4 justify-content-center">
-                {% for miembro in equipo %}
-                    <div class="col-md-3 col-sm-6">
-                        <div class="card h-100 text-center">
-                            {% if miembro.foto %}
-                                <img src="{{ miembro.foto.url }}"
-                                    class="card-img-top"
-                                    style="height: 200px; object-fit: cover;"
-                                    alt="{{ miembro.nombre }}">
-                            {% else %}
-                                <div style="height: 200px; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
-                                    <i class="bi bi-person-fill" style="font-size: 4rem; color: var(--color-gray);"></i>
-                                </div>
-                            {% endif %}
-                            <div class="card-body p-3">
-                                <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.2rem;">
-                                    {{ miembro.nombre }}
-                                </h6>
-                                <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
-                                    {{ miembro.cargo }}
-                                </p>
-                                {% if miembro.descripcion %}
-                                    <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 0;">
-                                        {{ miembro.descripcion }}
-                                    </p>
-                                {% endif %}
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for miembro in equipo %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 text-center" style="border: none; box-shadow: var(--shadow-sm);">
+                        {% if miembro.foto %}
+                            <img src="{{ miembro.foto.url }}"
+                                class="card-img-top"
+                                style="height: 220px; object-fit: cover;"
+                                alt="{{ miembro.nombre }}">
+                        {% else %}
+                            <div style="
+                                height: 220px;
+                                background: var(--color-gray-light);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;">
+                                <i class="bi bi-person-fill" style="font-size: 4rem; color: var(--color-gray);"></i>
                             </div>
+                        {% endif %}
+                        <div class="card-body p-3">
+                            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.2rem;">
+                                {{ miembro.nombre }}
+                            </h6>
+                            <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
+                                {{ miembro.cargo }}
+                            </p>
+                            {% if miembro.descripcion %}
+                                <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                                    {{ miembro.descripcion }}
+                                </p>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
-        {% endif %}
+    </div>
+</section>
 
-        <!-- CTA -->
-        <div class="text-center p-5 rounded"
-            style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
-            <h4 style="font-family: var(--font-title); font-weight: 700; color: white;">
-                ¿Quieres ser parte del cambio?
-            </h4>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">
-                Adopta, dona o simplemente comparte nuestra causa.
-            </p>
-            <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary me-2">
+<!-- Onda: blanco → verde -->
+<div class="wave-divider" style="background-color: white;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
+        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
+                fill="#5C8A3C"/>
+    </svg>
+</div>
+{% endif %}
+
+<!-- =============================================
+    CTA FINAL
+    Fondo verde con llamado a la acción
+    ============================================= -->
+<section style="background-color: var(--color-primary); padding: 5rem 0;">
+    <div class="container text-center">
+        <h3 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;">
+            ¿Quieres ser parte del cambio?
+        </h3>
+        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
+            Adopta, dona o simplemente comparte nuestra causa.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'mascotas:catalogo' %}"
+                style="
+                padding: 0.9rem 2.5rem;
+                background: white;
+                color: var(--color-primary);
+                border-radius: var(--radius-sm);
+                text-decoration: none;
+                font-weight: 600;
+                font-family: var(--font-title);
+                transition: var(--transition);"
+                onmouseover="this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.transform='translateY(0)'">
                 Ver mascotas
             </a>
-            <a href="{% url 'donaciones:info' %}" class="btn btn-outline-light">
+            <a href="{% url 'donaciones:info' %}"
+                style="
+                padding: 0.9rem 2.5rem;
+                border: 2px solid white;
+                color: white;
+                border-radius: var(--radius-sm);
+                text-decoration: none;
+                font-weight: 600;
+                font-family: var(--font-title);
+                transition: var(--transition);"
+                onmouseover="this.style.background='white'; this.style.color='var(--color-primary)'"
+                onmouseout="this.style.background='transparent'; this.style.color='white'">
                 Donar
             </a>
         </div>
-
     </div>
-</div>
-</div>
+</section>
+
 
 {% endblock %}

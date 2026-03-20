@@ -54,7 +54,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- NAVBAR --- */
-/* --- NAVBAR --- */
 .navbar {
     background-color: white !important;
     padding: 1rem 0;
@@ -219,7 +218,6 @@ footer {
     background-color: var(--color-dark) !important;
     color: rgba(255,255,255,0.7);
     padding: 2rem 0;
-    margin-top: 4rem;
 }
 
 /* --- TABLA --- */
@@ -276,4 +274,32 @@ footer {
     color: var(--color-gray);
     font-size: 1.1rem;
     margin-bottom: 2rem;
+}
+
+/* =============================================
+    WAVE DIVIDERS — Separadores de secciones
+   ============================================= */
+
+/* Contenedor de onda */
+.wave-divider {
+    overflow: hidden;
+    line-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 60px;
+}
+
+/* Aumentar border-radius de cards */
+.card {
+    border-radius: 16px !important;
+}
+
+.card.card-img-top,
+.card img.card-img-top {
+    border-radius: 16px 16px 0 0 !important;
 }
