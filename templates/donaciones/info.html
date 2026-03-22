@@ -1,60 +1,282 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Donar — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
-<div class="container my-4">
 
-<div class="mb-4">
+<!-- =============================================
+    HEADER
+    Imagen full con overlay y título
+    ============================================= -->
+<section style="
+    position: relative;
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;">
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
+    <!-- Imagen de fondo -->
+    <div style="
+        position: absolute;
+        inset: 0;
+        background-image: url('{% static 'img/hero.jpg' %}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;">
+    </div>
 
-        <h2 class="mb-2">❤️ Apoya nuestra causa</h2>
-        <p class="lead text-muted mb-4">
-            Tu donación nos ayuda a cubrir alimentación, veterinaria y cuidados
-            de los animales rescatados.
+    <!-- Overlay -->
+    <div style="
+        position: absolute;
+        inset: 0;
+        background: rgba(44,44,44,0.75);">
+    </div>
+
+    <!-- Texto -->
+    <div class="container text-center" style="position: relative; z-index: 3;">
+        <span class="section-label" style="color: var(--color-accent);">Apoya nuestra causa</span>
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+            Tu donación salva vidas
+        </h1>
+        <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+            Cada aporte nos ayuda a rescatar, rehabilitar y encontrar hogares
+            para animales en situación de vulnerabilidad.
         </p>
+    </div>
 
-        <!-- MÉTODOS DE PAGO -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">💳 Métodos de donación</h5>
+</section>
+
+<!-- =============================================
+    IMPACTO DE LA DONACIÓN
+    Fondo crema con estadísticas
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="section-label">Tu impacto</span>
+            <h2 class="section-title">¿En qué se usa tu donación?</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3 col-6 text-center">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    padding: 2rem 1rem;
+                    box-shadow: var(--shadow-sm);
+                    height: 100%;">
+                    <i class="bi bi-heart-pulse-fill"
+                        style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Veterinaria</h6>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                        Consultas, cirugías y tratamientos médicos.
+                    </p>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <h6 class="fw-bold">🏦 Transferencia bancaria</h6>
-                        <p class="mb-1">Banco: Bancolombia</p>
-                        <p class="mb-1">Cuenta corriente: 123-456789-00</p>
-                        <p class="mb-0">A nombre de: Fundación Rescate Animal</p>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h6 class="fw-bold">📱 Nequi / Daviplata</h6>
-                        <p class="mb-1">Nequi: 300 123 4567</p>
-                        <p class="mb-0">Daviplata: 300 123 4567</p>
-                    </div>
+            <div class="col-md-3 col-6 text-center">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    padding: 2rem 1rem;
+                    box-shadow: var(--shadow-sm);
+                    height: 100%;">
+                    <i class="bi bi-basket-fill"
+                        style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Alimentación</h6>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                        Alimento diario de calidad para cada animal.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    padding: 2rem 1rem;
+                    box-shadow: var(--shadow-sm);
+                    height: 100%;">
+                    <i class="bi bi-house-fill"
+                        style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Instalaciones</h6>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                        Mantenimiento y mejora de espacios dignos.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 text-center">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    padding: 2rem 1rem;
+                    box-shadow: var(--shadow-sm);
+                    height: 100%;">
+                    <i class="bi bi-shield-fill-check"
+                        style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600;">Vacunación</h6>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+                        Vacunas y esterilización de cada animal.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- INSTRUCCIONES -->
-        <div class="alert alert-info">
-            <h6 class="fw-bold">📋 ¿Cómo registrar tu donación?</h6>
-            <ol class="mb-0">
-                <li>Realiza la transferencia por el método de tu preferencia.</li>
-                <li>Toma una foto o captura del comprobante.</li>
-                <li>Haz clic en el botón de abajo y completa el formulario.</li>
-                <li>Adjunta el comprobante y envía.</li>
-                <li>Nuestro equipo verificará tu donación en 24 horas.</li>
-            </ol>
+    </div>
+</section>
+
+<!-- Onda: crema → oscuro -->
+<div style="background-color: var(--color-light); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
+                fill="#2C2C2C"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    MÉTODOS DE PAGO
+    Fondo oscuro con métodos disponibles
+    ============================================= -->
+<section style="background-color: var(--color-dark); padding: 5rem 0;">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="section-label" style="color: var(--color-accent);">Cómo donar</span>
+            <h2 class="section-title" style="color: white;">Métodos de donación</h2>
         </div>
 
-        <a href="{% url 'donaciones:registrar' %}" class="btn btn-success btn-lg w-100">
-            📎 Registrar mi donación
-        </a>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div style="
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: var(--radius);
+                    padding: 2rem;
+                    transition: var(--transition);"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-bank"
+                        style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600; color: white; margin-bottom: 1rem;">
+                        Transferencia bancaria
+                    </h6>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Banco: Bancolombia
+                    </p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Cuenta corriente: 123-456789-00
+                    </p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 0;">
+                        A nombre de: Fundación Amigos Peluditos
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: var(--radius);
+                    padding: 2rem;
+                    transition: var(--transition);"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-phone-fill"
+                        style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600; color: white; margin-bottom: 1rem;">
+                        Nequi / Daviplata
+                    </h6>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Nequi: 300 123 4567
+                    </p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 0;">
+                        Daviplata: 300 123 4567
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: var(--radius);
+                    padding: 2rem;
+                    transition: var(--transition);"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-cash-stack"
+                        style="font-size: 2rem; color: var(--color-primary); margin-bottom: 1rem; display: block;"></i>
+                    <h6 style="font-family: var(--font-title); font-weight: 600; color: white; margin-bottom: 1rem;">
+                        Efectivo
+                    </h6>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        Visítanos en nuestra sede.
+                    </p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 0;">
+                        Lunes a Sábado: 8am — 6pm
+                    </p>
+                </div>
+            </div>
+        </div>
 
     </div>
+</section>
+
+<!-- Onda: oscuro → verde -->
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#5C8A3C"/>
+    </svg>
 </div>
+
+<!-- =============================================
+    CTA FINAL
+    Fondo verde con botón de registro
+    ============================================= -->
+<section style="background-color: var(--color-primary); padding: 5rem 0;">
+    <div class="container text-center">
+        <h3 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;">
+            ¿Ya realizaste tu donación?
+        </h3>
+        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
+            Regístrala aquí para que podamos verificarla y agradecerte.
+        </p>
+        <a href="{% url 'donaciones:registrar' %}"
+            style="
+            padding: 1rem 3rem;
+            background: white;
+            color: var(--color-primary);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 700;
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-md)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            Registrar mi donación
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block wave_footer %}
+<div style="background-color: var(--color-primary); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="white"/>
+    </svg>
 </div>
 {% endblock %}
