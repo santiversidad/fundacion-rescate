@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
 from .models import (
     MiembroEquipo,
     ContenidoNosotros,
@@ -10,7 +11,6 @@ from .models import (
     InscripcionEvento,
 )
 from mascotas.models import Mascota
-
 
 def inicio(request):
     mascotas_destacadas = Mascota.objects.filter(
@@ -97,3 +97,9 @@ def inscribirse_evento(request, pk):
     InscripcionEvento.objects.create(evento=evento, usuario=request.user)
     messages.success(request, f'✅ Te inscribiste correctamente en {evento.titulo}.')
     return redirect('institucional:detalle_evento', pk=pk)
+
+
+def contacto(request):
+    return render(request, 'institucional/contacto.html', {
+        'google_maps_key': settings.GOOGLE_MAPS_API_KEY,
+    })
