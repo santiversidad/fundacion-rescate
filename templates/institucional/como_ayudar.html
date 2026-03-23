@@ -1,34 +1,98 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}¿Cómo puedo ayudar? — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
-<div class="container my-4">
 
-<div class="row justify-content-center">
-    <div class="col-md-9">
+<!-- =============================================
+    HEADER
+    Fondo oscuro con título
+    ============================================= -->
+<section style="
+    position: relative;
+    background-color: var(--color-dark);
+    padding: 5rem 0;
+    overflow: hidden;">
 
-        <div class="text-center mb-5">
-            <h2 class="section-title">¿Cómo puedo ayudar?</h2>
-            <p class="section-subtitle">
-                Hay muchas formas de sumarte a nuestra causa. Cada acción importa.
-            </p>
-        </div>
+    <div style="
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 1px solid rgba(92,138,60,0.2);">
+    </div>
 
-        <div class="row g-4 mb-5">
+    <div class="container text-center" style="position: relative; z-index: 1;">
+        <span class="section-label" style="color: var(--color-primary);">Comunidad</span>
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;">
+            ¿Cómo puedo ayudar?
+        </h1>
+        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; margin: 0;">
+            Hay muchas formas de sumarte a nuestra causa. Cada acción importa.
+        </p>
+    </div>
+</section>
+
+<!-- Onda: oscuro → crema -->
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    FORMAS DE AYUDAR
+    Fondo crema con cards
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 4rem 0 2rem;">
+    <div class="container">
+        <div class="row g-4">
 
             <!-- ADOPTAR -->
             <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <div style="margin-bottom: 1rem;">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    overflow: hidden;
+                    box-shadow: var(--shadow-sm);
+                    transition: var(--transition);
+                    height: 100%;"
+                    onmouseover="this.style.boxShadow='var(--shadow-lg)'; this.style.transform='translateY(-4px)'"
+                    onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)'">
+                    <div style="
+                        height: 8px;
+                        background: var(--color-primary);">
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="
+                            width: 60px;
+                            height: 60px;
+                            background: rgba(92,138,60,0.1);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 1.5rem;">
                             <i class="bi bi-house-heart-fill"
-                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                style="font-size: 1.5rem; color: var(--color-primary);"></i>
                         </div>
-                        <h5 style="font-family: var(--font-title); font-weight: 700;">Adoptar</h5>
-                        <p style="color: var(--color-gray);">
-                            La forma más directa de ayudar. Dale un hogar permanente a un animal
-                            rescatado y cambia su vida para siempre.
+                        <span class="section-label">Opción 1</span>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem;">
+                            Adoptar
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8; margin-bottom: 1.5rem;">
+                            La forma más directa de ayudar. Dale un hogar permanente
+                            a un animal rescatado y cambia su vida para siempre.
                         </p>
                         <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary">
                             Ver mascotas disponibles
@@ -39,16 +103,39 @@
 
             <!-- DONAR -->
             <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <div style="margin-bottom: 1rem;">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    overflow: hidden;
+                    box-shadow: var(--shadow-sm);
+                    transition: var(--transition);
+                    height: 100%;"
+                    onmouseover="this.style.boxShadow='var(--shadow-lg)'; this.style.transform='translateY(-4px)'"
+                    onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)'">
+                    <div style="
+                        height: 8px;
+                        background: var(--color-secondary);">
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="
+                            width: 60px;
+                            height: 60px;
+                            background: rgba(139,94,60,0.1);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 1.5rem;">
                             <i class="bi bi-gift-fill"
-                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                style="font-size: 1.5rem; color: var(--color-secondary);"></i>
                         </div>
-                        <h5 style="font-family: var(--font-title); font-weight: 700;">Donar</h5>
-                        <p style="color: var(--color-gray);">
-                            Tu aporte económico nos permite cubrir alimentación, atención
-                            veterinaria, medicamentos y el cuidado diario de los animales.
+                        <span class="section-label">Opción 2</span>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem;">
+                            Donar
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8; margin-bottom: 1.5rem;">
+                            Tu aporte económico nos permite cubrir alimentación,
+                            atención veterinaria y el cuidado diario de los animales.
                         </p>
                         <a href="{% url 'donaciones:info' %}" class="btn btn-primary">
                             Quiero donar
@@ -59,14 +146,37 @@
 
             <!-- VOLUNTARIADO -->
             <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <div style="margin-bottom: 1rem;">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    overflow: hidden;
+                    box-shadow: var(--shadow-sm);
+                    transition: var(--transition);
+                    height: 100%;"
+                    onmouseover="this.style.boxShadow='var(--shadow-lg)'; this.style.transform='translateY(-4px)'"
+                    onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)'">
+                    <div style="
+                        height: 8px;
+                        background: var(--color-dark);">
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="
+                            width: 60px;
+                            height: 60px;
+                            background: rgba(44,44,44,0.08);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 1.5rem;">
                             <i class="bi bi-people-fill"
-                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                style="font-size: 1.5rem; color: var(--color-dark);"></i>
                         </div>
-                        <h5 style="font-family: var(--font-title); font-weight: 700;">Voluntariado</h5>
-                        <p style="color: var(--color-gray);">
+                        <span class="section-label">Opción 3</span>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem;">
+                            Voluntariado
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8; margin-bottom: 1.5rem;">
                             Dedica tu tiempo a cuidar, socializar y pasear a los animales.
                             También necesitamos voluntarios para eventos y actividades.
                         </p>
@@ -79,16 +189,39 @@
 
             <!-- DIFUNDIR -->
             <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <div style="margin-bottom: 1rem;">
+                <div style="
+                    background: white;
+                    border-radius: var(--radius);
+                    overflow: hidden;
+                    box-shadow: var(--shadow-sm);
+                    transition: var(--transition);
+                    height: 100%;"
+                    onmouseover="this.style.boxShadow='var(--shadow-lg)'; this.style.transform='translateY(-4px)'"
+                    onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)'">
+                    <div style="
+                        height: 8px;
+                        background: var(--color-accent);">
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="
+                            width: 60px;
+                            height: 60px;
+                            background: rgba(232,197,71,0.15);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 1.5rem;">
                             <i class="bi bi-share-fill"
-                                style="font-size: 2.5rem; color: var(--color-primary);"></i>
+                                style="font-size: 1.5rem; color: #B8941A;"></i>
                         </div>
-                        <h5 style="font-family: var(--font-title); font-weight: 700;">Difundir</h5>
-                        <p style="color: var(--color-gray);">
-                            Comparte nuestras publicaciones en redes sociales. Ayúdanos a
-                            encontrar hogares para los animales compartiendo su historia.
+                        <span class="section-label">Opción 4</span>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem;">
+                            Difundir
+                        </h4>
+                        <p style="color: var(--color-gray); line-height: 1.8; margin-bottom: 1.5rem;">
+                            Comparte nuestras publicaciones en redes sociales. Ayúdanos
+                            a encontrar hogares compartiendo la historia de cada animal.
                         </p>
                         <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
                             Nuestras redes
@@ -98,22 +231,62 @@
             </div>
 
         </div>
-
-        <!-- CTA -->
-        <div class="text-center p-5 rounded"
-            style="background: linear-gradient(135deg, var(--color-dark) 0%, #2D1B69 100%);">
-            <h4 style="font-family: var(--font-title); font-weight: 700; color: white;">
-                ¿Tienes otra idea para ayudar?
-            </h4>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">
-                Escríbenos y encontremos juntos la mejor forma de colaborar.
-            </p>
-            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary btn-lg">
-                Contáctanos
-            </a>
-        </div>
-
     </div>
+</section>
+
+<!-- Onda: crema → verde -->
+<div style="background-color: var(--color-light); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
+                fill="#5C8A3C"/>
+    </svg>
 </div>
+
+<!-- =============================================
+    CTA FINAL
+    Fondo verde
+    ============================================= -->
+<section style="background-color: var(--color-primary); padding: 5rem 0;">
+    <div class="container text-center">
+        <h3 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;">
+            ¿Tienes otra idea para ayudar?
+        </h3>
+        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
+            Escríbenos y encontremos juntos la mejor forma de colaborar.
+        </p>
+        <a href="{% url 'institucional:contacto' %}"
+            style="
+            padding: 1rem 3rem;
+            background: white;
+            color: var(--color-primary);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 700;
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);"
+            onmouseover="this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.transform='translateY(0)'">
+            Contáctanos
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block wave_footer %}
+<div style="background-color: var(--color-primary); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+            fill="white"/>
+    </svg>
 </div>
 {% endblock %}

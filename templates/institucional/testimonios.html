@@ -1,74 +1,222 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Testimonios — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
 
-<div class="row justify-content-center">
-    <div class="col-md-10">
+<!-- =============================================
+    HEADER
+    Fondo oscuro con título
+    ============================================= -->
+<section style="
+    position: relative;
+    background-color: var(--color-dark);
+    padding: 5rem 0;
+    overflow: hidden;">
 
-        <div class="text-center mb-5">
-            <h2 class="section-title">Testimonios</h2>
-            <p class="section-subtitle">
-                Familias que abrieron su corazón y cambiaron una vida para siempre.
-            </p>
-        </div>
+    <!-- Patrón decorativo -->
+    <div style="
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 1px solid rgba(92,138,60,0.2);">
+    </div>
+
+    <div class="container text-center" style="position: relative; z-index: 1;">
+        <span class="section-label" style="color: var(--color-primary);">Comunidad</span>
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;">
+            Testimonios
+        </h1>
+        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; margin: 0;">
+            Familias que abrieron su corazón y cambiaron una vida para siempre.
+        </p>
+    </div>
+</section>
+
+<!-- Onda: oscuro → crema -->
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    TESTIMONIOS
+    Fondo crema con cards elegantes
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 4rem 0 5rem;">
+    <div class="container">
 
         {% if testimonios %}
             <div class="row g-4">
                 {% for testimonio in testimonios %}
-                    <div class="col-md-6 mb-2">
-                        <div class="card h-100">
-                            <div class="card-body p-4">
+                    <div class="col-md-6">
+                        <div style="
+                            background: white;
+                            border-radius: var(--radius);
+                            padding: 2.5rem;
+                            box-shadow: var(--shadow-sm);
+                            transition: var(--transition);
+                            height: 100%;"
+                            onmouseover="this.style.boxShadow='var(--shadow-md)'"
+                            onmouseout="this.style.boxShadow='var(--shadow-sm)'">
 
-                                <!-- COMILLAS -->
-                                <i class="bi bi-quote"
-                                    style="font-size: 2.5rem; color: var(--color-primary); opacity: 0.3;"></i>
+                            <!-- Comillas decorativas -->
+                            <i class="bi bi-quote" style="
+                                font-size: 3rem;
+                                color: var(--color-primary);
+                                opacity: 0.15;
+                                line-height: 1;
+                                display: block;
+                                margin-bottom: 0.5rem;">
+                            </i>
 
-                                <p style="color: var(--color-gray); line-height: 1.8; font-style: italic;">
-                                    {{ testimonio.mensaje }}
-                                </p>
+                            <!-- Mensaje -->
+                            <p style="
+                                color: var(--color-gray);
+                                line-height: 1.9;
+                                font-size: 1rem;
+                                font-style: italic;
+                                margin-bottom: 1.5rem;">
+                                {{ testimonio.mensaje }}
+                            </p>
 
-                                <hr style="border-color: var(--color-gray-light);">
+                            <!-- Divisor -->
+                            <div style="border-top: 1px solid var(--color-gray-light); margin-bottom: 1.5rem;"></div>
 
-                                <!-- AUTOR -->
-                                <div class="d-flex align-items-center gap-3">
-                                    {% if testimonio.foto %}
-                                        <img src="{{ testimonio.foto.url }}"
-                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
-                                            alt="{{ testimonio.nombre }}">
-                                    {% else %}
-                                        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--color-gray-light); display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-person-fill"
-                                                style="color: var(--color-gray);"></i>
-                                        </div>
-                                    {% endif %}
-                                    <div>
-                                        <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.1rem;">
-                                            {{ testimonio.nombre }}
-                                        </h6>
-                                        <p style="color: var(--color-primary); font-size: 0.85rem; margin-bottom: 0;">
-                                            Adoptó a {{ testimonio.mascota }}
-                                        </p>
+                            <!-- Autor -->
+                            <div class="d-flex align-items-center gap-3">
+                                {% if testimonio.foto %}
+                                    <img src="{{ testimonio.foto.url }}"
+                                        style="
+                                            width: 55px;
+                                            height: 55px;
+                                            border-radius: 50%;
+                                            object-fit: cover;
+                                            border: 2px solid var(--color-primary);"
+                                        alt="{{ testimonio.nombre }}">
+                                {% else %}
+                                    <div style="
+                                        width: 55px;
+                                        height: 55px;
+                                        border-radius: 50%;
+                                        background: rgba(92,138,60,0.1);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        flex-shrink: 0;">
+                                        <i class="bi bi-person-fill"
+                                            style="color: var(--color-primary); font-size: 1.3rem;"></i>
                                     </div>
+                                {% endif %}
+                                <div>
+                                    <h6 style="
+                                        font-family: var(--font-title);
+                                        font-weight: 700;
+                                        margin-bottom: 0.1rem;">
+                                        {{ testimonio.nombre }}
+                                    </h6>
+                                    <p style="
+                                        color: var(--color-primary);
+                                        font-size: 0.85rem;
+                                        font-weight: 500;
+                                        margin: 0;
+                                        text-transform: uppercase;
+                                        letter-spacing: 1px;">
+                                        Adoptó a {{ testimonio.mascota }}
+                                    </p>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 {% endfor %}
             </div>
+
         {% else %}
-            <div class="alert alert-info text-center">
-                <h5>Aún no hay testimonios publicados.</h5>
-                <p>¿Adoptaste con nosotros? Cuéntanos tu historia.</p>
-                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary mt-2">
+            <!-- Estado vacío -->
+            <div class="text-center py-5">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(92,138,60,0.1);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 1.5rem;">
+                    <i class="bi bi-chat-quote" style="font-size: 2rem; color: var(--color-primary);"></i>
+                </div>
+                <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
+                    Aún no hay testimonios publicados
+                </h4>
+                <p style="color: var(--color-gray); margin-bottom: 2rem;">
+                    ¿Adoptaste con nosotros? Cuéntanos tu historia.
+                </p>
+                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
                     Compartir mi historia
                 </a>
             </div>
         {% endif %}
 
     </div>
-</div>
+</section>
 
+<!-- =============================================
+    CTA FINAL
+    Fondo verde con llamado a la acción
+    ============================================= -->
+<section style="background-color: var(--color-primary); padding: 5rem 0;">
+    <div class="container text-center">
+        <h3 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;">
+            ¿Adoptaste con nosotros?
+        </h3>
+        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
+            Tu historia puede inspirar a otras familias a adoptar.
+        </p>
+        <a href="{% url 'institucional:contacto' %}"
+            style="
+            padding: 1rem 3rem;
+            background: white;
+            color: var(--color-primary);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 700;
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-md)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            Compartir mi historia
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block wave_footer %}
+<div style="background-color: var(--color-primary); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="white"/>
+    </svg>
+</div>
 {% endblock %}
