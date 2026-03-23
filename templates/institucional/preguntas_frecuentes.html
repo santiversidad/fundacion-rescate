@@ -1,71 +1,193 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Preguntas Frecuentes — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
+<!-- =============================================
+    HEADER
+    Fondo oscuro con título
+    ============================================= -->
+<section style="
+    position: relative;
+    background-color: var(--color-dark);
+    padding: 5rem 0;
+    overflow: hidden;">
 
-        <div class="text-center mb-5">
-            <h2 class="section-title">Preguntas Frecuentes</h2>
-            <p class="section-subtitle">
-                Resolvemos las dudas más comunes sobre adopción y nuestra fundación.
-            </p>
-        </div>
-
-        {% if preguntas %}
-            <div class="accordion" id="faqAccordion">
-                {% for pregunta in preguntas %}
-                    <div class="accordion-item mb-3"
-                        style="border: none; border-radius: var(--radius) !important; overflow: hidden; box-shadow: var(--shadow-sm);">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#faq{{ pregunta.pk }}"
-                                    style="font-family: var(--font-title); font-weight: 600; background: white;">
-                                <i class="bi bi-question-circle-fill me-2"
-                                    style="color: var(--color-primary);"></i>
-                                {{ pregunta.pregunta }}
-                            </button>
-                        </h2>
-                        <div id="faq{{ pregunta.pk }}"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
-                            <div class="accordion-body"
-                                style="color: var(--color-gray); line-height: 1.8;">
-                                {{ pregunta.respuesta }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="alert alert-info text-center">
-                <h5>No hay preguntas frecuentes aún.</h5>
-                <p>Escríbenos directamente si tienes alguna duda.</p>
-                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary mt-2">
-                    Contáctanos
-                </a>
-            </div>
-        {% endif %}
-
-        <!-- CTA -->
-        <div class="text-center mt-5 p-4 rounded"
-            style="background: var(--color-gray-light);">
-            <h5 style="font-family: var(--font-title); font-weight: 600;">
-                ¿No encontraste tu respuesta?
-            </h5>
-            <p style="color: var(--color-gray);">
-                Escríbenos directamente y te responderemos a la brevedad.
-            </p>
-            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
-                Contactar
-            </a>
-        </div>
-
+    <div style="
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 1px solid rgba(92,138,60,0.2);">
     </div>
+
+    <div class="container text-center" style="position: relative; z-index: 1;">
+        <span class="section-label" style="color: var(--color-primary);">Comunidad</span>
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;">
+            Preguntas frecuentes
+        </h1>
+        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; margin: 0;">
+            Resolvemos las dudas más comunes sobre adopción y nuestra fundación.
+        </p>
+    </div>
+</section>
+
+<!-- Onda: oscuro → crema -->
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
 </div>
 
+<!-- =============================================
+    PREGUNTAS FRECUENTES
+    Fondo crema con accordion elegante
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 4rem 0 5rem;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                {% if preguntas %}
+                    <div class="accordion" id="faqAccordion">
+                        {% for pregunta in preguntas %}
+                            <div style="
+                                background: white;
+                                border-radius: var(--radius);
+                                margin-bottom: 1rem;
+                                box-shadow: var(--shadow-sm);
+                                overflow: hidden;">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#faq{{ pregunta.pk }}"
+                                            style="
+                                                font-family: var(--font-title);
+                                                font-weight: 600;
+                                                font-size: 0.95rem;
+                                                background: white;
+                                                color: var(--color-dark);
+                                                border: none;
+                                                padding: 1.5rem;
+                                                box-shadow: none;">
+                                        <i class="bi bi-question-circle-fill me-3"
+                                            style="color: var(--color-primary); font-size: 1.1rem; flex-shrink: 0;"></i>
+                                        {{ pregunta.pregunta }}
+                                    </button>
+                                </h2>
+                                <div id="faq{{ pregunta.pk }}"
+                                    class="accordion-collapse collapse"
+                                    data-bs-parent="#faqAccordion">
+                                    <div style="
+                                        padding: 0 1.5rem 1.5rem 3.5rem;
+                                        color: var(--color-gray);
+                                        line-height: 1.8;
+                                        font-size: 0.95rem;
+                                        border-top: 1px solid var(--color-gray-light);">
+                                        <br>{{ pregunta.respuesta }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <!-- Estado vacío -->
+                    <div class="text-center py-5">
+                        <div style="
+                            width: 80px;
+                            height: 80px;
+                            background: rgba(92,138,60,0.1);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto 1.5rem;">
+                            <i class="bi bi-question-circle"
+                                style="font-size: 2rem; color: var(--color-primary);"></i>
+                        </div>
+                        <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
+                            No hay preguntas frecuentes aún
+                        </h4>
+                        <p style="color: var(--color-gray); margin-bottom: 2rem;">
+                            Escríbenos directamente si tienes alguna duda.
+                        </p>
+                        <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
+                            Contáctanos
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Onda: crema → verde -->
+<div style="background-color: var(--color-light); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
+            fill="#5C8A3C"/>
+    </svg>
+</div>
+
+<!-- =============================================
+    CTA FINAL
+    Fondo verde
+    ============================================= -->
+<section style="background-color: var(--color-primary); padding: 5rem 0;">
+    <div class="container text-center">
+        <h3 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;">
+            ¿No encontraste tu respuesta?
+        </h3>
+        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
+            Escríbenos directamente y te responderemos a la brevedad.
+        </p>
+        <a href="{% url 'institucional:contacto' %}"
+            style="
+            padding: 1rem 3rem;
+            background: white;
+            color: var(--color-primary);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 700;
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: var(--transition);"
+            onmouseover="this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.transform='translateY(0)'">
+            Contactar
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block wave_footer %}
+<div style="background-color: var(--color-primary); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="white"/>
+    </svg>
+</div>
 {% endblock %}
