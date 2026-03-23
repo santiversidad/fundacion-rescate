@@ -1,65 +1,227 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block titulo %}Mis donaciones{% endblock %}
+{% block titulo %}Mis donaciones — Fundación Rescate Animal{% endblock %}
 
 {% block contenido %}
-<div class="container my-4">
 
-<h2 class="mb-4">❤️ Mis donaciones</h2>
+<!-- =============================================
+    HEADER
+    Fondo oscuro con título
+    ============================================= -->
+<section style="background-color: var(--color-dark); padding: 4rem 0;">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3">
+            <a href="{% url 'usuarios:perfil' %}"
+                style="color: rgba(255,255,255,0.6); text-decoration: none; transition: var(--transition);"
+                onmouseover="this.style.color='white'"
+                onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+                <i class="bi bi-arrow-left me-1"></i> Mi perfil
+            </a>
+            <span style="color: rgba(255,255,255,0.3);">|</span>
+            <span style="color: white; font-weight: 600;">Mis donaciones</span>
+        </div>
+        <h1 style="
+            font-family: var(--font-title);
+            font-weight: 700;
+            color: white;
+            font-size: 2.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0;">
+            Mis donaciones
+        </h1>
+    </div>
+</section>
 
-{% if donaciones %}
-    <div class="row">
-        {% for donacion in donaciones %}
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
+<!-- Onda: oscuro → crema -->
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
+        style="height: 60px; width: 100%; display: block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
+                fill="#F9F6F0"/>
+    </svg>
+</div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h5 class="card-title mb-0">${{ donacion.monto }}</h5>
-                            {% if donacion.estado == 'pendiente' %}
-                                <span class="badge bg-warning text-dark">Pendiente</span>
-                            {% elif donacion.estado == 'verificada' %}
-                                <span class="badge bg-success">Verificada</span>
-                            {% elif donacion.estado == 'rechazada' %}
-                                <span class="badge bg-danger">Rechazada</span>
-                            {% endif %}
-                        </div>
+<!-- =============================================
+    DONACIONES
+    Fondo crema con cards de donaciones
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 4rem 0 5rem;">
+    <div class="container">
 
-                        <p class="text-muted small mb-1">
-                            Fecha: {{ donacion.fecha_donacion|date:"d/m/Y" }}
-                        </p>
-                        <p class="mb-1">
-                            <strong>Método:</strong> {{ donacion.metodo|capfirst }}
-                        </p>
+        {% if donaciones %}
+            <div class="row g-4">
+                {% for donacion in donaciones %}
+                    <div class="col-md-6">
+                        <div style="
+                            background: white;
+                            border-radius: var(--radius);
+                            padding: 2rem;
+                            box-shadow: var(--shadow-sm);
+                            transition: var(--transition);"
+                            onmouseover="this.style.boxShadow='var(--shadow-md)'"
+                            onmouseout="this.style.boxShadow='var(--shadow-sm)'">
 
-                        {% if donacion.comprobante %}
-                            <div class="mt-2">
+                            <!-- Header de la card -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <span class="section-label">Donación</span>
+                                    <h4 style="
+                                        font-family: var(--font-title);
+                                        font-weight: 700;
+                                        color: var(--color-primary);
+                                        margin: 0;
+                                        font-size: 2rem;">
+                                        ${{ donacion.monto }}
+                                    </h4>
+                                </div>
+                                <!-- Badge de estado -->
+                                {% if donacion.estado == 'pendiente' %}
+                                    <span style="
+                                        background: #FEF3C7;
+                                        color: #92400E;
+                                        padding: 0.4em 1em;
+                                        border-radius: 50px;
+                                        font-size: 0.8rem;
+                                        font-weight: 600;
+                                        white-space: nowrap;">
+                                        Pendiente
+                                    </span>
+                                {% elif donacion.estado == 'verificada' %}
+                                    <span style="
+                                        background: #D1FAE5;
+                                        color: #065F46;
+                                        padding: 0.4em 1em;
+                                        border-radius: 50px;
+                                        font-size: 0.8rem;
+                                        font-weight: 600;
+                                        white-space: nowrap;">
+                                        Verificada
+                                    </span>
+                                {% elif donacion.estado == 'rechazada' %}
+                                    <span style="
+                                        background: #FEE2E2;
+                                        color: #991B1B;
+                                        padding: 0.4em 1em;
+                                        border-radius: 50px;
+                                        font-size: 0.8rem;
+                                        font-weight: 600;
+                                        white-space: nowrap;">
+                                        Rechazada
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Divider -->
+                            <div style="border-top: 1px solid var(--color-gray-light); margin: 1rem 0;"></div>
+
+                            <!-- Detalles -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">
+                                        Fecha
+                                    </p>
+                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">
+                                        {{ donacion.fecha_donacion|date:"d/m/Y" }}
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">
+                                        Método
+                                    </p>
+                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">
+                                        {{ donacion.metodo|capfirst }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Comprobante -->
+                            {% if donacion.comprobante %}
                                 <a href="{{ donacion.comprobante.url }}"
                                     target="_blank"
-                                    class="btn btn-outline-secondary btn-sm">
-                                    📎 Ver comprobante
+                                    style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                    color: var(--color-primary);
+                                    font-size: 0.85rem;
+                                    font-weight: 600;
+                                    text-decoration: none;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                    transition: var(--transition);"
+                                    onmouseover="this.style.opacity='0.7'"
+                                    onmouseout="this.style.opacity='1'">
+                                    <i class="bi bi-paperclip"></i> Ver comprobante
                                 </a>
-                            </div>
-                        {% endif %}
+                            {% endif %}
 
-                        {% if donacion.observaciones %}
-                            <div class="alert alert-secondary mt-2 mb-0">
-                                <strong>Nota:</strong> {{ donacion.observaciones }}
-                            </div>
-                        {% endif %}
+                            <!-- Observaciones -->
+                            {% if donacion.observaciones %}
+                                <div style="
+                                    background: var(--color-gray-light);
+                                    border-left: 3px solid var(--color-primary);
+                                    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+                                    padding: 1rem;
+                                    margin-top: 1rem;">
+                                    <p style="color: var(--color-gray); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">
+                                        Nota de la fundación
+                                    </p>
+                                    <p style="color: var(--color-dark); font-size: 0.9rem; margin: 0;">
+                                        {{ donacion.observaciones }}
+                                    </p>
+                                </div>
+                            {% endif %}
 
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+
+            <!-- Botón donar de nuevo -->
+            <div class="text-center mt-5">
+                <a href="{% url 'donaciones:info' %}"
+                    style="
+                    color: var(--color-gray);
+                    font-size: 0.85rem;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    font-weight: 500;
+                    transition: var(--transition);"
+                    onmouseover="this.style.color='var(--color-primary)'"
+                    onmouseout="this.style.color='var(--color-gray)'">
+                    <i class="bi bi-plus-circle me-2"></i>Realizar otra donación
+                </a>
+            </div>
+
+        {% else %}
+            <!-- Estado vacío -->
+            <div class="text-center py-5">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(92,138,60,0.1);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 1.5rem;">
+                    <i class="bi bi-gift" style="font-size: 2rem; color: var(--color-primary);"></i>
+                </div>
+                <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
+                    No has realizado donaciones aún
+                </h4>
+                <p style="color: var(--color-gray); margin-bottom: 2rem;">
+                    Tu aporte puede cambiar la vida de muchos animales.
+                </p>
+                <a href="{% url 'donaciones:info' %}" class="btn btn-primary btn-lg">
+                    Quiero donar
+                </a>
+            </div>
+        {% endif %}
+
     </div>
-{% else %}
-    <div class="alert alert-info text-center">
-        <h5>No has registrado donaciones aún.</h5>
-        <a href="{% url 'donaciones:info' %}" class="btn btn-primary mt-2">
-            Quiero donar
-        </a>
-    </div>
-{% endif %}
-</div>
+</section>
+
 {% endblock %}
