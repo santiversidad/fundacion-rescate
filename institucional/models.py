@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class MiembroEquipo(models.Model):
@@ -77,8 +78,8 @@ class Evento(models.Model):
     imagen      = models.ImageField(upload_to='eventos/', blank=True, null=True)
     fecha       = models.DateTimeField()
     lugar       = models.CharField(max_length=200)
-    capacidad   = models.PositiveIntegerField(default=0)
-    estado      = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='proximo')
+    capacidad   = models.PositiveIntegerField(default=0, validators=[MinValueValidator(1)])
+    estado      = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='proximo', db_index=True)
     creado      = models.DateTimeField(auto_now_add=True)
 
     class Meta:

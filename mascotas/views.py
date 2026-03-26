@@ -15,6 +15,8 @@ def catalogo(request):
     if sexo:
         mascotas_lista = mascotas_lista.filter(sexo=sexo)
 
+    mascotas_lista = mascotas_lista.prefetch_related('fotos').order_by('-fecha_ingreso')
+
     # Paginación
     paginador = Paginator(mascotas_lista, 9)
     pagina_num = request.GET.get('pagina', 1)

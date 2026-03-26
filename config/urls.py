@@ -3,6 +3,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+handler404 = 'config.views.error_404'
+handler500 = 'config.views.error_500'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # ← nuevo
