@@ -10,6 +10,7 @@ from .models import (
     Evento,
     InscripcionEvento,
 )
+from .emails import email_inscripcion_evento
 from mascotas.models import Mascota
 from config.middleware import rate_limit
 
@@ -52,13 +53,9 @@ def testimonios(request):
 
 
 def eventos(request):
-    todos_eventos = Evento.objects.filter(
-        estado__in=['proximo', 'en_curso', 'finalizado']
-    ).order_by('fecha')
-
-    proximos    = [e for e in todos_eventos if e.estado == 'proximo']
-    en_curso    = [e for e in todos_eventos if e.estado == 'en_curso']
-    finalizados = [e for e in todos_eventos if e.estado == 'finalizado'][:3]
+    proximos    = Evento.objects.filter(estado='proximo').order_by('fecha')
+    en_curso    = Evento.objects.filter(estado='en_curso').order_by('fecha')
+    finalizados = Evento.objects.filter(estado='finalizado').order_by('-fecha')[:3]
 
     return render(request, 'institucional/eventos.html', {
         'proximos':    proximos,
@@ -96,7 +93,8 @@ def inscribirse_evento(request, pk):
         messages.warning(request, '⚠️ Ya estás inscrito en este evento.')
         return redirect('institucional:detalle_evento', pk=pk)
 
-    InscripcionEvento.objects.create(evento=evento, usuario=request.user)
+    inscripcion = InscripcionEvento.objects.create(evento=evento, usuario=request.user)
+    email_inscripcion_evento(inscripcion)
     messages.success(request, f'✅ Te inscribiste correctamente en {evento.titulo}.')
     return redirect('institucional:detalle_evento', pk=pk)
 

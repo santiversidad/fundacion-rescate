@@ -6,7 +6,9 @@ from .decorators import admin_requerido
 from .models import RegistroActividad
 from mascotas.models import Mascota, FotoMascota
 from adopciones.models import SolicitudAdopcion
+from adopciones.emails import email_solicitud_aprobada, email_solicitud_rechazada
 from donaciones.models import Donacion
+from donaciones.emails import email_donacion_verificada, email_donacion_rechazada
 from institucional.models import (
     Evento, MiembroEquipo, Testimonio,
     PreguntaFrecuente, ContenidoNosotros,
@@ -149,6 +151,10 @@ def detalle_adopcion(request, pk):
             solicitud.observaciones_admin = form.cleaned_data.get('observaciones_admin', '')
             solicitud.save()
             _registrar_actividad(request.user, 'editar', 'SolicitudAdopcion', solicitud.pk, f'Solicitud actualizada a {solicitud.get_estado_display()}')
+            if solicitud.estado == 'aprobada':
+                email_solicitud_aprobada(solicitud)
+            elif solicitud.estado == 'rechazada':
+                email_solicitud_rechazada(solicitud)
             messages.success(request, '✅ Solicitud actualizada correctamente.')
             return redirect('dashboard:adopciones')
     else:
@@ -176,6 +182,10 @@ def detalle_donacion(request, pk):
             donacion.observaciones = form.cleaned_data.get('observaciones', '')
             donacion.save()
             _registrar_actividad(request.user, 'verificar', 'Donacion', donacion.pk, f'Donación actualizada a {donacion.get_estado_display()}')
+            if donacion.estado == 'verificada':
+                email_donacion_verificada(donacion)
+            elif donacion.estado == 'rechazada':
+                email_donacion_rechazada(donacion)
             messages.success(request, '✅ Donación actualizada correctamente.')
             return redirect('dashboard:donaciones')
     else:

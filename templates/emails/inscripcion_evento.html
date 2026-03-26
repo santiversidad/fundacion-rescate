@@ -1,0 +1,20 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Inscripción a evento confirmada{% endblock %}
+
+{% block contenido %}
+<h2>¡Estás inscrito! 🎉</h2>
+<p>Hola <strong>{{ inscripcion.usuario.first_name|default:inscripcion.usuario.email }}</strong>,</p>
+<p>Tu inscripción al siguiente evento fue confirmada exitosamente.</p>
+
+<div class="info-box">
+    <p><strong>Evento:</strong> {{ inscripcion.evento.titulo }}</p>
+    <p><strong>Fecha:</strong> {{ inscripcion.evento.fecha|date:"d/m/Y H:i" }}</p>
+    <p><strong>Lugar:</strong> {{ inscripcion.evento.lugar }}</p>
+    {% if inscripcion.evento.capacidad %}
+    <p><strong>Capacidad:</strong> {{ inscripcion.evento.capacidad }} personas</p>
+    {% endif %}
+</div>
+
+<p>Por favor llega a tiempo y con tu documento de identidad. Si no puedes asistir, avísanos con anticipación para liberar tu cupo.</p>
+<p>¡Esperamos verte allí! 🐾</p>
+{% endblock %}

@@ -1,18 +1,7 @@
 import datetime
 from django import forms
-from django.core.exceptions import ValidationError
 from .models import Donacion
-
-
-def validate_image_upload(file):
-    if file is None:
-        return
-    allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    max_size = 5 * 1024 * 1024  # 5MB
-    if hasattr(file, 'content_type') and file.content_type not in allowed_types:
-        raise ValidationError('Solo se permiten imágenes (JPEG, PNG, WebP, GIF).')
-    if file.size > max_size:
-        raise ValidationError('El archivo no puede superar los 5MB.')
+from usuarios.validators import validate_image_file
 
 
 class RegistrarDonacionForm(forms.Form):
@@ -41,7 +30,7 @@ class RegistrarDonacionForm(forms.Form):
     )
     comprobante = forms.ImageField(
         required=False,
-        validators=[validate_image_upload],
+        validators=[validate_image_file],
         error_messages={'invalid_image': 'El archivo debe ser una imagen válida.'}
     )
 

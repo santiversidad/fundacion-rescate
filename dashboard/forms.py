@@ -1,20 +1,7 @@
-import os
 from django import forms
-from django.core.exceptions import ValidationError
 from mascotas.models import Mascota
 from institucional.models import Evento, MiembroEquipo, PreguntaFrecuente, ContenidoNosotros
-
-
-def validate_image_file(file):
-    if file is None:
-        return
-    allowed_extensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif']
-    max_size = 5 * 1024 * 1024  # 5MB
-    ext = os.path.splitext(file.name)[1].lower()
-    if ext not in allowed_extensions:
-        raise ValidationError('Solo se permiten imágenes (JPG, PNG, WebP, GIF).')
-    if file.size > max_size:
-        raise ValidationError('La imagen no puede superar los 5MB.')
+from usuarios.validators import validate_image_file
 
 
 class MascotaForm(forms.Form):

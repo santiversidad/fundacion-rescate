@@ -1,0 +1,18 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Donación verificada{% endblock %}
+
+{% block contenido %}
+<h2>Tu donación fue verificada ✅</h2>
+<p>Hola <strong>{{ donacion.usuario.first_name|default:donacion.usuario.email }}</strong>,</p>
+<p>Con mucha gratitud te informamos que tu donación ha sido <strong>verificada y confirmada</strong>.</p>
+
+<div class="info-box">
+    <p><strong>Monto:</strong> ${{ donacion.monto|floatformat:2 }}</p>
+    <p><strong>Método:</strong> {{ donacion.get_metodo_display }}</p>
+    <p><strong>Fecha de donación:</strong> {{ donacion.fecha_donacion|date:"d/m/Y" }}</p>
+    <p><strong>Estado:</strong> Verificada ✅</p>
+</div>
+
+<p>Gracias a tu aporte podemos seguir brindando cuidado médico, alimentación y amor a los animales que rescatamos cada día.</p>
+<p>¡Eres parte de nuestra familia! 🐾</p>
+{% endblock %}

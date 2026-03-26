@@ -1,0 +1,18 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Solicitud de adopción recibida{% endblock %}
+
+{% block contenido %}
+<h2>¡Recibimos tu solicitud! 🐾</h2>
+<p>Hola <strong>{{ solicitud.usuario.first_name|default:solicitud.usuario.email }}</strong>,</p>
+<p>Tu solicitud de adopción fue registrada correctamente. Nuestro equipo la revisará y te contactaremos pronto.</p>
+
+<div class="info-box">
+    <p><strong>Mascota:</strong> {{ solicitud.mascota.nombre }}</p>
+    <p><strong>Especie:</strong> {{ solicitud.mascota.especie|capfirst }}</p>
+    <p><strong>Fecha de solicitud:</strong> {{ solicitud.fecha_solicitud|date:"d/m/Y" }}</p>
+    <p><strong>Estado:</strong> Pendiente de revisión</p>
+</div>
+
+<p>El proceso de revisión puede tomar entre 2 y 5 días hábiles. Te notificaremos por correo cuando tengamos una respuesta.</p>
+<p>¡Gracias por querer darle un hogar a una de nuestras mascotas!</p>
+{% endblock %}
