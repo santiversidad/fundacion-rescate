@@ -204,9 +204,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'usuarios.adapters.CustomSocialAccountAdapter'
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = 'optional'   # 'mandatory' bloquea Google OAuth
 
 # Email backend (desarrollo: consola / producción: SMTP via variables de entorno)
