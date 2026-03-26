@@ -17,28 +17,49 @@
 <div class="stat-card">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Nombre completo</label>
-                <input type="text" name="nombre" class="form-control" required>
+                <input type="text" name="nombre" class="form-control {% if form.errors.nombre %}is-invalid{% endif %}" required>
+                {% if form.errors.nombre %}
+                    <div class="invalid-feedback">{{ form.errors.nombre.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Cargo</label>
-                <input type="text" name="cargo" class="form-control" required>
+                <input type="text" name="cargo" class="form-control {% if form.errors.cargo %}is-invalid{% endif %}" required>
+                {% if form.errors.cargo %}
+                    <div class="invalid-feedback">{{ form.errors.cargo.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-2">
                 <label class="form-label">Orden</label>
-                <input type="number" name="orden" class="form-control"
+                <input type="number" name="orden" class="form-control {% if form.errors.orden %}is-invalid{% endif %}"
                         min="0" value="0">
+                {% if form.errors.orden %}
+                    <div class="invalid-feedback">{{ form.errors.orden.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="3"></textarea>
+                <textarea name="descripcion" class="form-control {% if form.errors.descripcion %}is-invalid{% endif %}" rows="3"></textarea>
+                {% if form.errors.descripcion %}
+                    <div class="invalid-feedback">{{ form.errors.descripcion.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Foto</label>
-                <input type="file" name="foto" class="form-control" accept="image/*">
+                <input type="file" name="foto" class="form-control {% if form.errors.foto %}is-invalid{% endif %}" accept="image/*">
+                {% if form.errors.foto %}
+                    <div class="invalid-feedback">{{ form.errors.foto.0 }}</div>
+                {% endif %}
             </div>
         </div>
 

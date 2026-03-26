@@ -56,6 +56,27 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if preguntas.has_other_pages %}
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center mb-0">
+            {% if preguntas.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ preguntas.previous_page_number }}">&laquo; Anterior</a>
+            </li>
+            {% endif %}
+            {% for num in preguntas.paginator.page_range %}
+            <li class="page-item {% if preguntas.number == num %}active{% endif %}">
+                <a class="page-link" href="?pagina={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            {% if preguntas.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ preguntas.next_page_number }}">Siguiente &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 
 {% endblock %}

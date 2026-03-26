@@ -162,4 +162,35 @@
 
 </div>
 
+<!-- Actividad reciente -->
+<div class="stat-card mt-4">
+    <h5 class="mb-3"><i class="bi bi-clock-history me-2"></i>Actividad reciente</h5>
+    {% if actividad_reciente %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Acción</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in actividad_reciente %}
+                <tr>
+                    <td>{{ registro.usuario.username }}</td>
+                    <td><span class="badge bg-secondary">{{ registro.get_accion_display }}</span></td>
+                    <td>{{ registro.descripcion }}</td>
+                    <td>{{ registro.fecha|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-muted">No hay actividad registrada aún.</p>
+    {% endif %}
+</div>
+
 {% endblock %}

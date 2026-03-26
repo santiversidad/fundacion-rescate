@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 from .decorators import admin_requerido
+from .models import RegistroActividad
 from mascotas.models import Mascota, FotoMascota
 from adopciones.models import SolicitudAdopcion
 from donaciones.models import Donacion
@@ -17,6 +19,16 @@ from .forms import (
 )
 
 
+def _registrar_actividad(usuario, accion, modelo, objeto_id, descripcion):
+    RegistroActividad.objects.create(
+        usuario=usuario,
+        accion=accion,
+        modelo=modelo,
+        objeto_id=objeto_id,
+        descripcion=descripcion,
+    )
+
+
 @admin_requerido
 def inicio(request):
     stats = {
@@ -29,18 +41,22 @@ def inicio(request):
     }
     solicitudes_recientes = SolicitudAdopcion.objects.select_related('usuario', 'mascota').order_by('-fecha_solicitud')[:5]
     donaciones_recientes  = Donacion.objects.select_related('usuario').order_by('-fecha_registro')[:5]
+    actividad_reciente = RegistroActividad.objects.select_related('usuario').order_by('-fecha')[:10]
 
     return render(request, 'dashboard/inicio.html', {
         'stats': stats,
         'solicitudes_recientes': solicitudes_recientes,
         'donaciones_recientes':  donaciones_recientes,
+        'actividad_reciente': actividad_reciente,
     })
 
 
 @admin_requerido
 def mascotas(request):
     lista = Mascota.objects.all().order_by('-fecha_ingreso')
-    return render(request, 'dashboard/mascotas.html', {'mascotas': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/mascotas.html', {'mascotas': pagina})
 
 
 @admin_requerido
@@ -62,6 +78,7 @@ def agregar_mascota(request):
             fotos = request.FILES.getlist('fotos')
             for foto in fotos:
                 FotoMascota.objects.create(mascota=mascota, foto=foto)
+            _registrar_actividad(request.user, 'crear', 'Mascota', mascota.pk, f'Mascota agregada: {mascota.nombre}')
             messages.success(request, f'✅ {mascota.nombre} fue agregada correctamente.')
             return redirect('dashboard:mascotas')
     else:
@@ -92,6 +109,7 @@ def editar_mascota(request, pk):
             for foto in fotos:
                 FotoMascota.objects.create(mascota=mascota, foto=foto)
 
+            _registrar_actividad(request.user, 'editar', 'Mascota', mascota.pk, f'Mascota editada: {mascota.nombre}')
             messages.success(request, f'✅ {mascota.nombre} fue actualizada correctamente.')
             return redirect('dashboard:mascotas')
     else:
@@ -106,6 +124,7 @@ def eliminar_mascota(request, pk):
     if request.method == 'POST':
         nombre = mascota.nombre
         mascota.delete()
+        _registrar_actividad(request.user, 'eliminar', 'Mascota', None, f'Mascota eliminada: {nombre}')
         messages.success(request, f'✅ {nombre} fue eliminada correctamente.')
         return redirect('dashboard:mascotas')
     return render(request, 'dashboard/confirmar_eliminar.html', {'objeto': mascota})
@@ -114,7 +133,9 @@ def eliminar_mascota(request, pk):
 @admin_requerido
 def adopciones(request):
     lista = SolicitudAdopcion.objects.select_related('usuario', 'mascota').order_by('-fecha_solicitud')
-    return render(request, 'dashboard/adopciones.html', {'solicitudes': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/adopciones.html', {'solicitudes': pagina})
 
 
 @admin_requerido
@@ -127,6 +148,7 @@ def detalle_adopcion(request, pk):
             solicitud.estado = form.cleaned_data['estado']
             solicitud.observaciones_admin = form.cleaned_data.get('observaciones_admin', '')
             solicitud.save()
+            _registrar_actividad(request.user, 'editar', 'SolicitudAdopcion', solicitud.pk, f'Solicitud actualizada a {solicitud.get_estado_display()}')
             messages.success(request, '✅ Solicitud actualizada correctamente.')
             return redirect('dashboard:adopciones')
     else:
@@ -138,7 +160,9 @@ def detalle_adopcion(request, pk):
 @admin_requerido
 def donaciones(request):
     lista = Donacion.objects.select_related('usuario').order_by('-fecha_registro')
-    return render(request, 'dashboard/donaciones.html', {'donaciones': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/donaciones.html', {'donaciones': pagina})
 
 
 @admin_requerido
@@ -151,6 +175,7 @@ def detalle_donacion(request, pk):
             donacion.estado = form.cleaned_data['estado']
             donacion.observaciones = form.cleaned_data.get('observaciones', '')
             donacion.save()
+            _registrar_actividad(request.user, 'verificar', 'Donacion', donacion.pk, f'Donación actualizada a {donacion.get_estado_display()}')
             messages.success(request, '✅ Donación actualizada correctamente.')
             return redirect('dashboard:donaciones')
     else:
@@ -162,7 +187,9 @@ def detalle_donacion(request, pk):
 @admin_requerido
 def eventos(request):
     lista = Evento.objects.all().order_by('fecha')
-    return render(request, 'dashboard/eventos.html', {'eventos': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/eventos.html', {'eventos': pagina})
 
 
 @admin_requerido
@@ -170,7 +197,7 @@ def agregar_evento(request):
     if request.method == 'POST':
         form = EventoForm(request.POST, request.FILES)
         if form.is_valid():
-            Evento.objects.create(
+            evento = Evento.objects.create(
                 titulo=form.cleaned_data['titulo'],
                 descripcion=form.cleaned_data['descripcion'],
                 fecha=form.cleaned_data['fecha'],
@@ -178,6 +205,7 @@ def agregar_evento(request):
                 capacidad=form.cleaned_data['capacidad'],
                 imagen=form.cleaned_data.get('imagen'),
             )
+            _registrar_actividad(request.user, 'crear', 'Evento', evento.pk, f'Evento creado: {evento.titulo}')
             messages.success(request, '✅ Evento creado correctamente.')
             return redirect('dashboard:eventos')
     else:
@@ -201,6 +229,7 @@ def editar_evento(request, pk):
             if form.cleaned_data.get('imagen'):
                 evento.imagen  = form.cleaned_data['imagen']
             evento.save()
+            _registrar_actividad(request.user, 'editar', 'Evento', evento.pk, f'Evento editado: {evento.titulo}')
             messages.success(request, '✅ Evento actualizado correctamente.')
             return redirect('dashboard:eventos')
     else:
@@ -215,6 +244,7 @@ def eliminar_evento(request, pk):
     if request.method == 'POST':
         titulo = evento.titulo
         evento.delete()
+        _registrar_actividad(request.user, 'eliminar', 'Evento', None, f'Evento eliminado: {titulo}')
         messages.success(request, f'✅ {titulo} fue eliminado correctamente.')
         return redirect('dashboard:eventos')
     return render(request, 'dashboard/confirmar_eliminar.html', {'objeto': evento})
@@ -223,7 +253,9 @@ def eliminar_evento(request, pk):
 @admin_requerido
 def equipo(request):
     lista = MiembroEquipo.objects.all().order_by('orden')
-    return render(request, 'dashboard/equipo.html', {'equipo': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/equipo.html', {'equipo': pagina})
 
 
 @admin_requerido
@@ -231,13 +263,14 @@ def agregar_miembro(request):
     if request.method == 'POST':
         form = MiembroEquipoForm(request.POST, request.FILES)
         if form.is_valid():
-            MiembroEquipo.objects.create(
+            miembro = MiembroEquipo.objects.create(
                 nombre=form.cleaned_data['nombre'],
                 cargo=form.cleaned_data['cargo'],
                 descripcion=form.cleaned_data.get('descripcion', ''),
                 orden=form.cleaned_data.get('orden') or 0,
                 foto=form.cleaned_data.get('foto'),
             )
+            _registrar_actividad(request.user, 'crear', 'MiembroEquipo', miembro.pk, f'Miembro agregado: {miembro.nombre}')
             messages.success(request, '✅ Miembro agregado correctamente.')
             return redirect('dashboard:equipo')
     else:
@@ -260,6 +293,7 @@ def editar_miembro(request, pk):
             if form.cleaned_data.get('foto'):
                 miembro.foto    = form.cleaned_data['foto']
             miembro.save()
+            _registrar_actividad(request.user, 'editar', 'MiembroEquipo', miembro.pk, f'Miembro editado: {miembro.nombre}')
             messages.success(request, '✅ Miembro actualizado correctamente.')
             return redirect('dashboard:equipo')
     else:
@@ -274,6 +308,7 @@ def eliminar_miembro(request, pk):
     if request.method == 'POST':
         nombre = miembro.nombre
         miembro.delete()
+        _registrar_actividad(request.user, 'eliminar', 'MiembroEquipo', None, f'Miembro eliminado: {nombre}')
         messages.success(request, f'✅ {nombre} fue eliminado correctamente.')
         return redirect('dashboard:equipo')
     return render(request, 'dashboard/confirmar_eliminar.html', {'objeto': miembro})
@@ -282,7 +317,9 @@ def eliminar_miembro(request, pk):
 @admin_requerido
 def testimonios(request):
     lista = Testimonio.objects.all().order_by('-fecha')
-    return render(request, 'dashboard/testimonios.html', {'testimonios': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/testimonios.html', {'testimonios': pagina})
 
 
 @admin_requerido
@@ -291,6 +328,7 @@ def aprobar_testimonio(request, pk):
     testimonio = get_object_or_404(Testimonio, pk=pk)
     testimonio.aprobado = True
     testimonio.save()
+    _registrar_actividad(request.user, 'aprobar', 'Testimonio', testimonio.pk, f'Testimonio aprobado: {testimonio.nombre}')
     messages.success(request, '✅ Testimonio aprobado.')
     return redirect('dashboard:testimonios')
 
@@ -301,6 +339,7 @@ def rechazar_testimonio(request, pk):
     testimonio = get_object_or_404(Testimonio, pk=pk)
     testimonio.aprobado = False
     testimonio.save()
+    _registrar_actividad(request.user, 'rechazar', 'Testimonio', testimonio.pk, f'Testimonio rechazado: {testimonio.nombre}')
     messages.success(request, '✅ Testimonio rechazado.')
     return redirect('dashboard:testimonios')
 
@@ -308,7 +347,9 @@ def rechazar_testimonio(request, pk):
 @admin_requerido
 def faq(request):
     lista = PreguntaFrecuente.objects.all().order_by('orden')
-    return render(request, 'dashboard/faq.html', {'preguntas': lista})
+    paginador = Paginator(lista, 15)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/faq.html', {'preguntas': pagina})
 
 
 @admin_requerido
@@ -316,11 +357,12 @@ def agregar_faq(request):
     if request.method == 'POST':
         form = PreguntaFrecuenteForm(request.POST)
         if form.is_valid():
-            PreguntaFrecuente.objects.create(
+            pregunta = PreguntaFrecuente.objects.create(
                 pregunta=form.cleaned_data['pregunta'],
                 respuesta=form.cleaned_data['respuesta'],
                 orden=form.cleaned_data.get('orden') or 0,
             )
+            _registrar_actividad(request.user, 'crear', 'PreguntaFrecuente', pregunta.pk, f'Pregunta agregada: {pregunta.pregunta[:50]}')
             messages.success(request, '✅ Pregunta agregada correctamente.')
             return redirect('dashboard:faq')
     else:
@@ -340,6 +382,7 @@ def editar_faq(request, pk):
             pregunta.orden     = form.cleaned_data.get('orden') or 0
             pregunta.activa    = form.cleaned_data['activa']
             pregunta.save()
+            _registrar_actividad(request.user, 'editar', 'PreguntaFrecuente', pregunta.pk, f'Pregunta editada: {pregunta.pregunta[:50]}')
             messages.success(request, '✅ Pregunta actualizada correctamente.')
             return redirect('dashboard:faq')
     else:
@@ -352,7 +395,9 @@ def editar_faq(request, pk):
 def eliminar_faq(request, pk):
     pregunta = get_object_or_404(PreguntaFrecuente, pk=pk)
     if request.method == 'POST':
+        texto = pregunta.pregunta[:50]
         pregunta.delete()
+        _registrar_actividad(request.user, 'eliminar', 'PreguntaFrecuente', None, f'Pregunta eliminada: {texto}')
         messages.success(request, '✅ Pregunta eliminada correctamente.')
         return redirect('dashboard:faq')
     return render(request, 'dashboard/confirmar_eliminar.html', {'objeto': pregunta})
@@ -373,13 +418,15 @@ def contenido_institucional(request):
                 if form.cleaned_data.get('imagen_vision'):
                     contenido.imagen_vision = form.cleaned_data['imagen_vision']
                 contenido.save()
+                _registrar_actividad(request.user, 'editar', 'ContenidoNosotros', contenido.pk, 'Contenido institucional actualizado')
             else:
-                ContenidoNosotros.objects.create(
+                contenido = ContenidoNosotros.objects.create(
                     mision=form.cleaned_data['mision'],
                     vision=form.cleaned_data['vision'],
                     imagen_mision=form.cleaned_data.get('imagen_mision'),
                     imagen_vision=form.cleaned_data.get('imagen_vision'),
                 )
+                _registrar_actividad(request.user, 'crear', 'ContenidoNosotros', contenido.pk, 'Contenido institucional creado')
             messages.success(request, '✅ Contenido institucional actualizado correctamente.')
             return redirect('dashboard:contenido_institucional')
     else:

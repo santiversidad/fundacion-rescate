@@ -17,46 +17,73 @@
 <div class="stat-card">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" required>
+                <input type="text" name="nombre" class="form-control {% if form.errors.nombre %}is-invalid{% endif %}" required>
+                {% if form.errors.nombre %}
+                    <div class="invalid-feedback">{{ form.errors.nombre.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Especie</label>
-                <select name="especie" class="form-select" required>
+                <select name="especie" class="form-select {% if form.errors.especie %}is-invalid{% endif %}" required>
                     <option value="">Selecciona</option>
                     <option value="perro">Perro</option>
                     <option value="gato">Gato</option>
                     <option value="otro">Otro</option>
                 </select>
+                {% if form.errors.especie %}
+                    <div class="invalid-feedback">{{ form.errors.especie.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Raza</label>
-                <input type="text" name="raza" class="form-control"
+                <input type="text" name="raza" class="form-control {% if form.errors.raza %}is-invalid{% endif %}"
                         placeholder="Dejar vacío si es mestizo">
+                {% if form.errors.raza %}
+                    <div class="invalid-feedback">{{ form.errors.raza.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-3">
                 <label class="form-label">Edad (años)</label>
-                <input type="number" name="edad_anios" class="form-control"
+                <input type="number" name="edad_anios" class="form-control {% if form.errors.edad_anios %}is-invalid{% endif %}"
                         min="0" max="30" required>
+                {% if form.errors.edad_anios %}
+                    <div class="invalid-feedback">{{ form.errors.edad_anios.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-3">
                 <label class="form-label">Sexo</label>
-                <select name="sexo" class="form-select" required>
+                <select name="sexo" class="form-select {% if form.errors.sexo %}is-invalid{% endif %}" required>
                     <option value="">Selecciona</option>
                     <option value="macho">Macho</option>
                     <option value="hembra">Hembra</option>
                 </select>
+                {% if form.errors.sexo %}
+                    <div class="invalid-feedback">{{ form.errors.sexo.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="4"></textarea>
+                <textarea name="descripcion" class="form-control {% if form.errors.descripcion %}is-invalid{% endif %}" rows="4"></textarea>
+                {% if form.errors.descripcion %}
+                    <div class="invalid-feedback">{{ form.errors.descripcion.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <label class="form-label">Fecha de ingreso</label>
-                <input type="date" name="fecha_ingreso" class="form-control" required>
+                <input type="date" name="fecha_ingreso" class="form-control {% if form.errors.fecha_ingreso %}is-invalid{% endif %}" required>
+                {% if form.errors.fecha_ingreso %}
+                    <div class="invalid-feedback">{{ form.errors.fecha_ingreso.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-4 d-flex align-items-end gap-4 pb-2">
                 <div class="form-check">
@@ -76,8 +103,11 @@
             </div>
             <div class="col-md-12">
                 <label class="form-label">Fotos</label>
-                <input type="file" name="fotos" class="form-control"
+                <input type="file" name="fotos" class="form-control {% if form.errors.fotos %}is-invalid{% endif %}"
                         multiple accept="image/*">
+                {% if form.errors.fotos %}
+                    <div class="invalid-feedback">{{ form.errors.fotos.0 }}</div>
+                {% endif %}
                 <div class="form-text">Puedes seleccionar varias fotos a la vez.</div>
             </div>
         </div>

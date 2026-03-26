@@ -4,9 +4,11 @@ from django.contrib import messages
 from mascotas.models import Mascota
 from .models import SolicitudAdopcion
 from .forms import SolicitudAdopcionForm
+from config.middleware import rate_limit
 
 
 @login_required
+@rate_limit(max_requests=10, window_seconds=3600, key_prefix='adopcion')
 def solicitar_adopcion(request, mascota_pk):
     mascota = get_object_or_404(Mascota, pk=mascota_pk, estado='disponible')
 

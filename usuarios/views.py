@@ -3,12 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from config.middleware import rate_limit
 
 
 def registro(request):
     return redirect('usuarios:login')
 
 
+@rate_limit(max_requests=5, window_seconds=300, key_prefix='login')
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)

@@ -54,6 +54,27 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if donaciones.has_other_pages %}
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center mb-0">
+            {% if donaciones.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ donaciones.previous_page_number }}">&laquo; Anterior</a>
+            </li>
+            {% endif %}
+            {% for num in donaciones.paginator.page_range %}
+            <li class="page-item {% if donaciones.number == num %}active{% endif %}">
+                <a class="page-link" href="?pagina={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            {% if donaciones.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ donaciones.next_page_number }}">Siguiente &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 
 {% endblock %}

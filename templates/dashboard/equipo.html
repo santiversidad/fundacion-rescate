@@ -58,4 +58,26 @@
     {% endfor %}
 </div>
 
+{% if equipo.has_other_pages %}
+<nav aria-label="Paginación" class="mt-4">
+    <ul class="pagination justify-content-center mb-0">
+        {% if equipo.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ equipo.previous_page_number }}">&laquo; Anterior</a>
+        </li>
+        {% endif %}
+        {% for num in equipo.paginator.page_range %}
+        <li class="page-item {% if equipo.number == num %}active{% endif %}">
+            <a class="page-link" href="?pagina={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        {% if equipo.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ equipo.next_page_number }}">Siguiente &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
 {% endblock %}

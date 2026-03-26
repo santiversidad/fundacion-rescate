@@ -17,41 +17,65 @@
 <div class="stat-card">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-3">
             <div class="col-md-12">
                 <label class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-control"
+                <input type="text" name="titulo" class="form-control {% if form.errors.titulo %}is-invalid{% endif %}"
                         value="{{ evento.titulo }}" required>
+                {% if form.errors.titulo %}
+                    <div class="invalid-feedback">{{ form.errors.titulo.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Fecha y hora</label>
-                <input type="datetime-local" name="fecha" class="form-control"
+                <input type="datetime-local" name="fecha" class="form-control {% if form.errors.fecha %}is-invalid{% endif %}"
                         value="{{ evento.fecha|date:'Y-m-d\TH:i' }}" required>
+                {% if form.errors.fecha %}
+                    <div class="invalid-feedback">{{ form.errors.fecha.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Capacidad</label>
-                <input type="number" name="capacidad" class="form-control"
+                <input type="number" name="capacidad" class="form-control {% if form.errors.capacidad %}is-invalid{% endif %}"
                         value="{{ evento.capacidad }}" min="1" required>
+                {% if form.errors.capacidad %}
+                    <div class="invalid-feedback">{{ form.errors.capacidad.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-8">
                 <label class="form-label">Lugar</label>
-                <input type="text" name="lugar" class="form-control"
+                <input type="text" name="lugar" class="form-control {% if form.errors.lugar %}is-invalid{% endif %}"
                         value="{{ evento.lugar }}" required>
+                {% if form.errors.lugar %}
+                    <div class="invalid-feedback">{{ form.errors.lugar.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-4">
                 <label class="form-label">Estado</label>
-                <select name="estado" class="form-select">
+                <select name="estado" class="form-select {% if form.errors.estado %}is-invalid{% endif %}">
                     <option value="proximo" {% if evento.estado == 'proximo' %}selected{% endif %}>Próximo</option>
                     <option value="en_curso" {% if evento.estado == 'en_curso' %}selected{% endif %}>En curso</option>
                     <option value="finalizado" {% if evento.estado == 'finalizado' %}selected{% endif %}>Finalizado</option>
                     <option value="cancelado" {% if evento.estado == 'cancelado' %}selected{% endif %}>Cancelado</option>
                 </select>
+                {% if form.errors.estado %}
+                    <div class="invalid-feedback">{{ form.errors.estado.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-control"
+                <textarea name="descripcion" class="form-control {% if form.errors.descripcion %}is-invalid{% endif %}"
                             rows="4">{{ evento.descripcion }}</textarea>
+                {% if form.errors.descripcion %}
+                    <div class="invalid-feedback">{{ form.errors.descripcion.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Imagen</label>
@@ -61,7 +85,10 @@
                             style="height: 100px; border-radius: var(--radius-sm);">
                     </div>
                 {% endif %}
-                <input type="file" name="imagen" class="form-control" accept="image/*">
+                <input type="file" name="imagen" class="form-control {% if form.errors.imagen %}is-invalid{% endif %}" accept="image/*">
+                {% if form.errors.imagen %}
+                    <div class="invalid-feedback">{{ form.errors.imagen.0 }}</div>
+                {% endif %}
             </div>
         </div>
 
