@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Fundación Rescate Animal{% endblock %}</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background-color: #5c8a3c; padding: 30px 40px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 22px; font-weight: bold; }
+        .header p { color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 14px; }
+        .body { padding: 35px 40px; }
+        .body h2 { color: #2d2d2d; font-size: 20px; margin-top: 0; }
+        .body p { color: #555555; line-height: 1.7; font-size: 15px; }
+        .info-box { background: #f8f9fa; border-left: 4px solid #5c8a3c; border-radius: 4px; padding: 16px 20px; margin: 20px 0; }
+        .info-box p { margin: 6px 0; color: #444444; font-size: 14px; }
+        .info-box strong { color: #2d2d2d; }
+        .btn { display: inline-block; background-color: #5c8a3c; color: #ffffff !important; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: bold; margin-top: 10px; }
+        .footer { background-color: #f4f4f4; padding: 20px 40px; text-align: center; border-top: 1px solid #e0e0e0; }
+        .footer p { color: #999999; font-size: 12px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>🐾 Fundación Rescate Animal</h1>
+        <p>Dando amor y un hogar a quienes más lo necesitan</p>
+    </div>
+
+    <div class="body">
+        {% block contenido %}{% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>Este mensaje fue enviado automáticamente. Por favor no respondas a este correo.</p>
+        <p>© 2026 Fundación Rescate Animal — Todos los derechos reservados.</p>
+    </div>
+
+</div>
+</body>
+</html>

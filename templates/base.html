@@ -405,5 +405,19 @@
 
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('form').forEach(function (form) {
+        form.addEventListener('submit', function () {
+            var btn = form.querySelector('[type="submit"]');
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Procesando...';
+            }
+        });
+    });
+});
+</script>
+
 </body>
 </html>

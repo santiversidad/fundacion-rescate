@@ -65,27 +65,45 @@
     <div class="container">
         <form method="GET" class="d-flex align-items-center gap-3 flex-wrap">
 
+            <!-- Búsqueda por texto -->
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group input-group-sm" style="width: 220px;">
+                    <input type="search"
+                           name="q"
+                           value="{{ q }}"
+                           placeholder="Buscar por nombre, raza..."
+                           class="form-control"
+                           style="border-radius: 50px 0 0 50px;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0 50px 50px 0; padding: 0.3rem 0.8rem;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Divisor -->
+            <div style="width: 1px; height: 24px; background: var(--color-gray-light);"></div>
+
             <!-- Filtro por especie -->
             <div class="d-flex align-items-center gap-2">
                 <span style="color: var(--color-gray); font-size: 0.85rem; font-weight: 600;">
                     Especie:
                 </span>
-                <a href="?especie=&sexo={{ sexo_activo }}"
+                <a href="?especie=&sexo={{ sexo_activo }}&q={{ q }}"
                     class="btn btn-sm {% if not especie_activa %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Todos
                 </a>
-                <a href="?especie=perro&sexo={{ sexo_activo }}"
+                <a href="?especie=perro&sexo={{ sexo_activo }}&q={{ q }}"
                     class="btn btn-sm {% if especie_activa == 'perro' %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Perro
                 </a>
-                <a href="?especie=gato&sexo={{ sexo_activo }}"
+                <a href="?especie=gato&sexo={{ sexo_activo }}&q={{ q }}"
                     class="btn btn-sm {% if especie_activa == 'gato' %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Gato
                 </a>
-                <a href="?especie=otro&sexo={{ sexo_activo }}"
+                <a href="?especie=otro&sexo={{ sexo_activo }}&q={{ q }}"
                     class="btn btn-sm {% if especie_activa == 'otro' %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Otro
@@ -100,17 +118,17 @@
                 <span style="color: var(--color-gray); font-size: 0.85rem; font-weight: 600;">
                     Sexo:
                 </span>
-                <a href="?especie={{ especie_activa }}&sexo="
+                <a href="?especie={{ especie_activa }}&sexo=&q={{ q }}"
                     class="btn btn-sm {% if not sexo_activo %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Todos
                 </a>
-                <a href="?especie={{ especie_activa }}&sexo=macho"
+                <a href="?especie={{ especie_activa }}&sexo=macho&q={{ q }}"
                     class="btn btn-sm {% if sexo_activo == 'macho' %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Macho
                 </a>
-                <a href="?especie={{ especie_activa }}&sexo=hembra"
+                <a href="?especie={{ especie_activa }}&sexo=hembra&q={{ q }}"
                     class="btn btn-sm {% if sexo_activo == 'hembra' %}btn-primary{% else %}btn-outline-secondary{% endif %}"
                     style="border-radius: 50px; padding: 0.3rem 1rem;">
                     Hembra
@@ -118,7 +136,7 @@
             </div>
 
             <!-- Limpiar filtros -->
-            {% if especie_activa or sexo_activo %}
+            {% if especie_activa or sexo_activo or q %}
                 <a href="{% url 'mascotas:catalogo' %}"
                     style="color: var(--color-gray); font-size: 0.85rem; text-decoration: none; margin-left: auto;">
                     <i class="bi bi-x-circle me-1"></i>Limpiar filtros
@@ -192,21 +210,21 @@
                     <ul class="pagination justify-content-center">
                         {% if mascotas.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?pagina={{ mascotas.previous_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                                <a class="page-link" href="?pagina={{ mascotas.previous_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}&q={{ q }}">
                                     ← Anterior
                                 </a>
                             </li>
                         {% endif %}
                         {% for num in mascotas.paginator.page_range %}
                             <li class="page-item {% if mascotas.number == num %}active{% endif %}">
-                                <a class="page-link" href="?pagina={{ num }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                                <a class="page-link" href="?pagina={{ num }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}&q={{ q }}">
                                     {{ num }}
                                 </a>
                             </li>
                         {% endfor %}
                         {% if mascotas.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?pagina={{ mascotas.next_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}">
+                                <a class="page-link" href="?pagina={{ mascotas.next_page_number }}&especie={{ especie_activa }}&sexo={{ sexo_activo }}&q={{ q }}">
                                     Siguiente →
                                 </a>
                             </li>
@@ -220,7 +238,11 @@
             <div class="text-center py-5">
                 <i class="bi bi-search" style="font-size: 3rem; color: var(--color-gray);"></i>
                 <h4 style="font-family: var(--font-title); margin-top: 1rem;">
-                    No hay mascotas con esos filtros
+                    {% if q %}
+                        No se encontraron mascotas para "{{ q }}"
+                    {% else %}
+                        No hay mascotas con esos filtros
+                    {% endif %}
                 </h4>
                 <p style="color: var(--color-gray);">
                     Intenta con otros filtros o ve todas las mascotas disponibles.

@@ -7,7 +7,7 @@ handler404 = 'config.views.error_404'
 handler500 = 'config.views.error_500'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{settings.ADMIN_URL}/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # ← nuevo
     path('', include('institucional.urls')),
     path('mascotas/', include('mascotas.urls')),

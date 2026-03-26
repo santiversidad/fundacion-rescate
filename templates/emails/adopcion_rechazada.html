@@ -1,0 +1,19 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Actualización sobre tu solicitud de adopción{% endblock %}
+
+{% block contenido %}
+<h2>Actualización de tu solicitud</h2>
+<p>Hola <strong>{{ solicitud.usuario.first_name|default:solicitud.usuario.email }}</strong>,</p>
+<p>Lamentamos informarte que tu solicitud de adopción no pudo ser aprobada en esta oportunidad.</p>
+
+<div class="info-box">
+    <p><strong>Mascota:</strong> {{ solicitud.mascota.nombre }}</p>
+    <p><strong>Estado:</strong> No aprobada</p>
+    {% if solicitud.observaciones_admin %}
+    <p><strong>Motivo:</strong> {{ solicitud.observaciones_admin }}</p>
+    {% endif %}
+</div>
+
+<p>Esto no significa que no puedas intentarlo con otra mascota. Te invitamos a visitar nuestro catálogo y encontrar a tu compañero ideal.</p>
+<p>Si tienes preguntas, no dudes en contactarnos.</p>
+{% endblock %}

@@ -7,6 +7,19 @@ from functools import wraps
 logger = logging.getLogger(__name__)
 
 
+class SecurityHeadersMiddleware:
+    """Agrega headers de seguridad adicionales a todas las respuestas."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        response['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+        response['X-Permitted-Cross-Domain-Policies'] = 'none'
+        return response
+
+
 def rate_limit(max_requests=10, window_seconds=60, key_prefix='rl'):
     """
     Decorator to rate-limit views.

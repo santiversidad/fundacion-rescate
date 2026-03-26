@@ -1,0 +1,20 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Información sobre tu donación{% endblock %}
+
+{% block contenido %}
+<h2>Información sobre tu donación</h2>
+<p>Hola <strong>{{ donacion.usuario.first_name|default:donacion.usuario.email }}</strong>,</p>
+<p>Lamentamos informarte que no pudimos verificar tu donación registrada. Esto puede ocurrir si el comprobante no fue legible o los datos no coincidieron.</p>
+
+<div class="info-box">
+    <p><strong>Monto:</strong> ${{ donacion.monto|floatformat:2 }}</p>
+    <p><strong>Método:</strong> {{ donacion.get_metodo_display }}</p>
+    <p><strong>Fecha de donación:</strong> {{ donacion.fecha_donacion|date:"d/m/Y" }}</p>
+    {% if donacion.observaciones %}
+    <p><strong>Observación:</strong> {{ donacion.observaciones }}</p>
+    {% endif %}
+</div>
+
+<p>Si crees que hubo un error, por favor contáctanos con tu comprobante de pago para revisarlo nuevamente.</p>
+<p>¡Gracias por tu disposición de apoyar nuestra causa!</p>
+{% endblock %}

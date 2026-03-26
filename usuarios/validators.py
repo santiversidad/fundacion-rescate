@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 from django.core.exceptions import ValidationError
 
@@ -36,3 +37,27 @@ def validate_image_file(file):
                 f'Tipo de archivo no permitido: {file.content_type}. '
                 'Solo se permiten imágenes JPEG, PNG, WebP o GIF.'
             )
+
+
+class CustomPasswordValidator:
+    """
+    Requiere que la contraseña contenga al menos una letra mayúscula,
+    un número y un carácter especial.
+    """
+
+    def validate(self, password, user=None):
+        errors = []
+        if not re.search(r'[A-Z]', password):
+            errors.append('Debe contener al menos una letra mayúscula.')
+        if not re.search(r'\d', password):
+            errors.append('Debe contener al menos un número.')
+        if not re.search(r'[!@#$%^&*()\-_=+\[\]{};:\'",.<>?/\\|`~]', password):
+            errors.append('Debe contener al menos un carácter especial (!@#$%...).')
+        if errors:
+            raise ValidationError(errors)
+
+    def get_help_text(self):
+        return (
+            'Tu contraseña debe tener al menos 12 caracteres, '
+            'una letra mayúscula, un número y un carácter especial.'
+        )

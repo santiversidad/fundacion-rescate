@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Donacion
 from .forms import RegistrarDonacionForm
+from .emails import email_donacion_registrada
 from config.middleware import rate_limit
 
 
@@ -17,13 +18,14 @@ def registrar_donacion(request):
     if request.method == 'POST':
         form = RegistrarDonacionForm(request.POST, request.FILES)
         if form.is_valid():
-            Donacion.objects.create(
+            donacion = Donacion.objects.create(
                 usuario=request.user,
                 monto=form.cleaned_data['monto'],
                 metodo=form.cleaned_data['metodo'],
                 fecha_donacion=form.cleaned_data['fecha_donacion'],
                 comprobante=form.cleaned_data.get('comprobante'),
             )
+            email_donacion_registrada(donacion)
             messages.success(request, '✅ Tu donación fue registrada correctamente. La verificaremos en 24 horas.')
             return redirect('donaciones:mis_donaciones')
     else:

@@ -1,10 +1,14 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from mascotas.models import Mascota
 from .models import SolicitudAdopcion
 from .forms import SolicitudAdopcionForm
+from .emails import email_solicitud_enviada
 from config.middleware import rate_limit
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -28,13 +32,14 @@ def solicitar_adopcion(request, mascota_pk):
     if request.method == 'POST':
         form = SolicitudAdopcionForm(request.POST)
         if form.is_valid():
-            SolicitudAdopcion.objects.create(
+            solicitud = SolicitudAdopcion.objects.create(
                 usuario=request.user,
                 mascota=mascota,
                 motivo=form.cleaned_data['motivo'],
                 tipo_vivienda=form.cleaned_data['tipo_vivienda'],
                 tiene_otros_animales=form.cleaned_data['tiene_otros_animales'],
             )
+            email_solicitud_enviada(solicitud)
             messages.success(
                 request,
                 '✅ Tu solicitud fue enviada correctamente. Te notificaremos cuando sea revisada.'
