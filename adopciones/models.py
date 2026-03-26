@@ -24,7 +24,7 @@ class SolicitudAdopcion(models.Model):
     motivo              = models.TextField()
     tipo_vivienda       = models.CharField(max_length=20, choices=VIVIENDA_CHOICES)
     tiene_otros_animales = models.BooleanField(default=False)
-    estado              = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente')
+    estado              = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente', db_index=True)
     fecha_solicitud     = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
     observaciones_admin = models.TextField(blank=True)

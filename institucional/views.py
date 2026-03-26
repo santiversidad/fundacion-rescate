@@ -32,10 +32,6 @@ def nosotros(request):
     })
 
 
-def contacto(request):
-    return render(request, 'institucional/contacto.html')
-
-
 def como_ayudar(request):
     return render(request, 'institucional/como_ayudar.html')
 
@@ -55,9 +51,13 @@ def testimonios(request):
 
 
 def eventos(request):
-    proximos   = Evento.objects.filter(estado='proximo')
-    en_curso   = Evento.objects.filter(estado='en_curso')
-    finalizados = Evento.objects.filter(estado='finalizado')[:3]
+    todos_eventos = Evento.objects.filter(
+        estado__in=['proximo', 'en_curso', 'finalizado']
+    ).order_by('fecha')
+
+    proximos    = [e for e in todos_eventos if e.estado == 'proximo']
+    en_curso    = [e for e in todos_eventos if e.estado == 'en_curso']
+    finalizados = [e for e in todos_eventos if e.estado == 'finalizado'][:3]
 
     return render(request, 'institucional/eventos.html', {
         'proximos':    proximos,

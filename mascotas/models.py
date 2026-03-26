@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from datetime import timedelta
 
@@ -42,12 +43,12 @@ class Mascota(models.Model):
     ]
 
     nombre        = models.CharField(max_length=100)
-    especie       = models.CharField(max_length=10, choices=ESPECIE_CHOICES)
+    especie       = models.CharField(max_length=10, choices=ESPECIE_CHOICES, db_index=True)
     raza          = models.CharField(max_length=100, blank=True)
-    edad_anios    = models.PositiveIntegerField(default=0)
+    edad_anios    = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(30)])
     sexo          = models.CharField(max_length=10, choices=SEXO_CHOICES)
     descripcion   = models.TextField(blank=True)
-    estado        = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='disponible')
+    estado        = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='disponible', db_index=True)
     esterilizado  = models.BooleanField(default=False)
     vacunado      = models.BooleanField(default=False)
     fecha_ingreso = models.DateField(validators=[validar_fecha_ingreso])

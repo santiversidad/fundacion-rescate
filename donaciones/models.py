@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 
 class Donacion(models.Model):
@@ -18,10 +19,10 @@ class Donacion(models.Model):
     ]
 
     usuario         = models.ForeignKey(User, on_delete=models.CASCADE)
-    monto           = models.DecimalField(max_digits=10, decimal_places=2)
+    monto           = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
     metodo          = models.CharField(max_length=20, choices=METODO_CHOICES)
     comprobante     = models.ImageField(upload_to='comprobantes/', blank=True)
-    estado          = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente')
+    estado          = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente', db_index=True)
     fecha_donacion  = models.DateField()
     fecha_registro  = models.DateTimeField(auto_now_add=True)
     observaciones   = models.TextField(blank=True)
