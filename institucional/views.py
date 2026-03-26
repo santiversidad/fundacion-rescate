@@ -11,6 +11,7 @@ from .models import (
     InscripcionEvento,
 )
 from mascotas.models import Mascota
+from config.middleware import rate_limit
 
 def inicio(request):
     mascotas_destacadas = Mascota.objects.filter(
@@ -83,6 +84,7 @@ def detalle_evento(request, pk):
 
 
 @login_required
+@rate_limit(max_requests=20, window_seconds=3600, key_prefix='evento')
 def inscribirse_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
 

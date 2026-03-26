@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Donacion
 from .forms import RegistrarDonacionForm
+from config.middleware import rate_limit
 
 
 @login_required
@@ -11,6 +12,7 @@ def info_donaciones(request):
 
 
 @login_required
+@rate_limit(max_requests=10, window_seconds=3600, key_prefix='donacion')
 def registrar_donacion(request):
     if request.method == 'POST':
         form = RegistrarDonacionForm(request.POST, request.FILES)

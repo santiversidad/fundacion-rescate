@@ -75,18 +75,30 @@
             </h6>
             <form method="POST">
                 {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    <strong>Por favor corrige los errores señalados.</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
                 <div class="mb-3">
                     <label class="form-label">Estado</label>
-                    <select name="estado" class="form-select" required>
+                    <select name="estado" class="form-select {% if form.errors.estado %}is-invalid{% endif %}" required>
                         <option value="pendiente" {% if donacion.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
                         <option value="verificada" {% if donacion.estado == 'verificada' %}selected{% endif %}>Verificada</option>
                         <option value="rechazada" {% if donacion.estado == 'rechazada' %}selected{% endif %}>Rechazada</option>
                     </select>
+                    {% if form.errors.estado %}
+                        <div class="invalid-feedback">{{ form.errors.estado.0 }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Observaciones</label>
-                    <textarea name="observaciones" class="form-control"
+                    <textarea name="observaciones" class="form-control {% if form.errors.observaciones %}is-invalid{% endif %}"
                                 rows="4">{{ donacion.observaciones }}</textarea>
+                    {% if form.errors.observaciones %}
+                        <div class="invalid-feedback">{{ form.errors.observaciones.0 }}</div>
+                    {% endif %}
                 </div>
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-check-lg me-2"></i>Guardar cambios

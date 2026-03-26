@@ -54,6 +54,27 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if solicitudes.has_other_pages %}
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center mb-0">
+            {% if solicitudes.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ solicitudes.previous_page_number }}">&laquo; Anterior</a>
+            </li>
+            {% endif %}
+            {% for num in solicitudes.paginator.page_range %}
+            <li class="page-item {% if solicitudes.number == num %}active{% endif %}">
+                <a class="page-link" href="?pagina={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            {% if solicitudes.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ solicitudes.next_page_number }}">Siguiente &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 
 {% endblock %}

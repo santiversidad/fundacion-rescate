@@ -17,22 +17,37 @@
 <div class="stat-card">
     <form method="POST">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-3">
             <div class="col-md-10">
                 <label class="form-label">Pregunta</label>
-                <input type="text" name="pregunta" class="form-control"
+                <input type="text" name="pregunta" class="form-control {% if form.errors.pregunta %}is-invalid{% endif %}"
                         value="{{ pregunta.pregunta }}" required>
+                {% if form.errors.pregunta %}
+                    <div class="invalid-feedback">{{ form.errors.pregunta.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-2">
                 <label class="form-label">Orden</label>
-                <input type="number" name="orden" class="form-control"
+                <input type="number" name="orden" class="form-control {% if form.errors.orden %}is-invalid{% endif %}"
                         value="{{ pregunta.orden }}" min="0">
+                {% if form.errors.orden %}
+                    <div class="invalid-feedback">{{ form.errors.orden.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Respuesta</label>
-                <textarea name="respuesta" class="form-control"
+                <textarea name="respuesta" class="form-control {% if form.errors.respuesta %}is-invalid{% endif %}"
                             rows="5">{{ pregunta.respuesta }}</textarea>
+                {% if form.errors.respuesta %}
+                    <div class="invalid-feedback">{{ form.errors.respuesta.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <div class="form-check">

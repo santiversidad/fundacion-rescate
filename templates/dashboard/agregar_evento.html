@@ -17,32 +17,56 @@
 <div class="stat-card">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-3">
             <div class="col-md-12">
                 <label class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-control" required>
+                <input type="text" name="titulo" class="form-control {% if form.errors.titulo %}is-invalid{% endif %}" required>
+                {% if form.errors.titulo %}
+                    <div class="invalid-feedback">{{ form.errors.titulo.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Fecha y hora</label>
-                <input type="datetime-local" name="fecha" class="form-control" required>
+                <input type="datetime-local" name="fecha" class="form-control {% if form.errors.fecha %}is-invalid{% endif %}" required>
+                {% if form.errors.fecha %}
+                    <div class="invalid-feedback">{{ form.errors.fecha.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <label class="form-label">Capacidad</label>
-                <input type="number" name="capacidad" class="form-control"
+                <input type="number" name="capacidad" class="form-control {% if form.errors.capacidad %}is-invalid{% endif %}"
                         min="1" required>
+                {% if form.errors.capacidad %}
+                    <div class="invalid-feedback">{{ form.errors.capacidad.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Lugar</label>
-                <input type="text" name="lugar" class="form-control" required>
+                <input type="text" name="lugar" class="form-control {% if form.errors.lugar %}is-invalid{% endif %}" required>
+                {% if form.errors.lugar %}
+                    <div class="invalid-feedback">{{ form.errors.lugar.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="4" required></textarea>
+                <textarea name="descripcion" class="form-control {% if form.errors.descripcion %}is-invalid{% endif %}" rows="4" required></textarea>
+                {% if form.errors.descripcion %}
+                    <div class="invalid-feedback">{{ form.errors.descripcion.0 }}</div>
+                {% endif %}
             </div>
             <div class="col-md-12">
                 <label class="form-label">Imagen</label>
-                <input type="file" name="imagen" class="form-control" accept="image/*">
+                <input type="file" name="imagen" class="form-control {% if form.errors.imagen %}is-invalid{% endif %}" accept="image/*">
+                {% if form.errors.imagen %}
+                    <div class="invalid-feedback">{{ form.errors.imagen.0 }}</div>
+                {% endif %}
             </div>
         </div>
 

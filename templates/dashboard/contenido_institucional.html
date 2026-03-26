@@ -13,6 +13,12 @@
 <div class="stat-card">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <strong>Por favor corrige los errores señalados.</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
 
         <div class="row g-4">
 
@@ -24,7 +30,10 @@
                 </h6>
                 <div class="mb-3">
                     <label class="form-label">Texto de la misión</label>
-                    <textarea name="mision" class="form-control" rows="5" required>{% if contenido %}{{ contenido.mision }}{% endif %}</textarea>
+                    <textarea name="mision" class="form-control {% if form.errors.mision %}is-invalid{% endif %}" rows="5" required>{% if contenido %}{{ contenido.mision }}{% endif %}</textarea>
+                    {% if form.errors.mision %}
+                        <div class="invalid-feedback">{{ form.errors.mision.0 }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Imagen de la misión</label>
@@ -35,7 +44,10 @@
                         </div>
                     {% endif %}
                     <input type="file" name="imagen_mision"
-                            class="form-control" accept="image/*">
+                            class="form-control {% if form.errors.imagen_mision %}is-invalid{% endif %}" accept="image/*">
+                    {% if form.errors.imagen_mision %}
+                        <div class="invalid-feedback">{{ form.errors.imagen_mision.0 }}</div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -47,7 +59,10 @@
                 </h6>
                 <div class="mb-3">
                     <label class="form-label">Texto de la visión</label>
-                    <textarea name="vision" class="form-control" rows="5" required>{% if contenido %}{{ contenido.vision }}{% endif %}</textarea>
+                    <textarea name="vision" class="form-control {% if form.errors.vision %}is-invalid{% endif %}" rows="5" required>{% if contenido %}{{ contenido.vision }}{% endif %}</textarea>
+                    {% if form.errors.vision %}
+                        <div class="invalid-feedback">{{ form.errors.vision.0 }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Imagen de la visión</label>
@@ -58,7 +73,10 @@
                         </div>
                     {% endif %}
                     <input type="file" name="imagen_vision"
-                            class="form-control" accept="image/*">
+                            class="form-control {% if form.errors.imagen_vision %}is-invalid{% endif %}" accept="image/*">
+                    {% if form.errors.imagen_vision %}
+                        <div class="invalid-feedback">{{ form.errors.imagen_vision.0 }}</div>
+                    {% endif %}
                 </div>
             </div>
 

@@ -70,4 +70,26 @@
     {% endfor %}
 </div>
 
+{% if testimonios.has_other_pages %}
+<nav aria-label="Paginación" class="mt-4">
+    <ul class="pagination justify-content-center mb-0">
+        {% if testimonios.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ testimonios.previous_page_number }}">&laquo; Anterior</a>
+        </li>
+        {% endif %}
+        {% for num in testimonios.paginator.page_range %}
+        <li class="page-item {% if testimonios.number == num %}active{% endif %}">
+            <a class="page-link" href="?pagina={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        {% if testimonios.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{ testimonios.next_page_number }}">Siguiente &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
 {% endblock %}

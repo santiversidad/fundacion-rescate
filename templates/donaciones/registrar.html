@@ -18,31 +18,46 @@
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <strong>Por favor corrige los errores señalados.</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Monto donado</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
-                            <input type="number" name="monto" class="form-control"
+                            <input type="number" name="monto" class="form-control {% if form.errors.monto %}is-invalid{% endif %}"
                                     min="1" step="0.01" required>
                         </div>
+                        {% if form.errors.monto %}
+                            <div class="invalid-feedback" style="display: block;">{{ form.errors.monto.0 }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Método de pago</label>
-                        <select name="metodo" class="form-select" required>
+                        <select name="metodo" class="form-select {% if form.errors.metodo %}is-invalid{% endif %}" required>
                             <option value="">Selecciona un método</option>
                             <option value="transferencia">Transferencia bancaria</option>
                             <option value="deposito">Depósito bancario</option>
                             <option value="efectivo">Efectivo</option>
                             <option value="otro">Otro</option>
                         </select>
+                        {% if form.errors.metodo %}
+                            <div class="invalid-feedback">{{ form.errors.metodo.0 }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Fecha de la donación</label>
                         <input type="date" name="fecha_donacion"
-                                class="form-control" required>
+                                class="form-control {% if form.errors.fecha_donacion %}is-invalid{% endif %}" required>
+                        {% if form.errors.fecha_donacion %}
+                            <div class="invalid-feedback">{{ form.errors.fecha_donacion.0 }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="mb-3">
@@ -50,7 +65,10 @@
                             Comprobante <span class="text-muted fw-normal">(opcional)</span>
                         </label>
                         <input type="file" name="comprobante"
-                                class="form-control" accept="image/*">
+                                class="form-control {% if form.errors.comprobante %}is-invalid{% endif %}" accept="image/*">
+                        {% if form.errors.comprobante %}
+                            <div class="invalid-feedback">{{ form.errors.comprobante.0 }}</div>
+                        {% endif %}
                         <div class="form-text">
                             Sube una foto o captura de pantalla del comprobante.
                         </div>
