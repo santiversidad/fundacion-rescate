@@ -8,6 +8,40 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        /* Dropdown hover en escritorio */
+        @media (min-width: 992px) {
+            .navbar .dropdown:hover > .dropdown-menu {
+                display: block;
+                margin-top: 0;
+                animation: fadeInDown 0.15s ease;
+            }
+            .navbar .dropdown-menu {
+                font-family: var(--font-body);
+                border: none;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+                border-radius: var(--radius);
+                padding: 0.5rem 0;
+                min-width: 200px;
+            }
+            .navbar .dropdown-item {
+                font-family: var(--font-body);
+                font-size: 0.92rem;
+                padding: 0.55rem 1.2rem;
+                color: var(--color-dark);
+                transition: var(--transition);
+            }
+            .navbar .dropdown-item:hover {
+                background: var(--color-light);
+                color: var(--color-primary);
+                padding-left: 1.5rem;
+            }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
@@ -42,30 +76,22 @@
             href="{% url 'institucional:nosotros' %}">Nosotros</a>
     </li>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'eventos,testimonios,como_ayudar,preguntas_frecuentes' %}nav-active{% endif %}"
-            href="#" data-bs-toggle="dropdown">
+        <a class="nav-link {% if request.resolver_match.url_name in 'eventos,testimonios,como_ayudar,preguntas_frecuentes' %}nav-active{% endif %}"
+            href="#">
             Comunidad
         </a>
         <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item" href="{% url 'institucional:eventos' %}">
-                    <i class="bi bi-calendar-event me-2"></i>Eventos
-                </a>
+                <a class="dropdown-item" href="{% url 'institucional:eventos' %}">Eventos</a>
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'institucional:testimonios' %}">
-                    <i class="bi bi-chat-quote me-2"></i>Testimonios
-                </a>
+                <a class="dropdown-item" href="{% url 'institucional:testimonios' %}">Testimonios</a>
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'institucional:como_ayudar' %}">
-                    <i class="bi bi-heart me-2"></i>¿Cómo ayudar?
-                </a>
+                <a class="dropdown-item" href="{% url 'institucional:como_ayudar' %}">¿Cómo ayudar?</a>
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'institucional:preguntas_frecuentes' %}">
-                    <i class="bi bi-question-circle me-2"></i>Preguntas frecuentes
-                </a>
+                <a class="dropdown-item" href="{% url 'institucional:preguntas_frecuentes' %}">Preguntas frecuentes</a>
             </li>
         </ul>
     </li>
@@ -76,6 +102,14 @@
 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard:inicio' %}"
+                                style="color: var(--color-primary); font-weight: 600;">
+                                <i class="bi bi-speedometer2 me-1"></i>Panel Admin
+                            </a>
+                        </li>
+                        {% endif %}
                         <li class="nav-item">
     <a class="nav-link d-flex align-items-center gap-2" href="{% url 'usuarios:perfil' %}">
         {% if user.perfil.foto %}

@@ -1,161 +1,210 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block titulo %}Dashboard{% endblock %}
+{% block topbar_titulo %}Dashboard{% endblock %}
 
 {% block contenido %}
 
-<div class="row g-4 mb-4">
+<!-- Bienvenida -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0; color: var(--color-dark);">
+            Bienvenido, {{ request.user.first_name|default:request.user.username }} 👋
+        </h4>
+        <p style="color: var(--color-gray); margin: 0; font-size: 0.9rem;" id="fecha-hoy"></p>
+    </div>
+</div>
 
-    <!-- ESTADÍSTICAS -->
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-heart-fill" style="font-size: 2rem; color: var(--color-primary);"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.total_mascotas }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Mascotas disponibles
-            </p>
-        </div>
+<!-- ESTADÍSTICAS -->
+<div class="row g-3 mb-4">
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:mascotas' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid var(--color-primary);">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(92,138,60,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-heart-fill" style="font-size: 1.4rem; color: var(--color-primary);"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.total_mascotas }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Mascotas disponibles</p>
+            </div>
+        </a>
     </div>
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-house-heart-fill" style="font-size: 2rem; color: var(--color-secondary);"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.total_adopciones }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Adopciones exitosas
-            </p>
-        </div>
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:adopciones' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #10B981;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(16,185,129,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-house-heart-fill" style="font-size: 1.4rem; color: #10B981;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.total_adopciones }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Adopciones exitosas</p>
+            </div>
+        </a>
     </div>
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-clock-fill" style="font-size: 2rem; color: #F59E0B;"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.solicitudes_pendientes }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Solicitudes pendientes
-            </p>
-        </div>
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:adopciones' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #F59E0B;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245,158,11,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-clock-fill" style="font-size: 1.4rem; color: #F59E0B;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.solicitudes_pendientes }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Solicitudes pendientes</p>
+                {% if stats.solicitudes_pendientes > 0 %}
+                    <span style="background: #FEF3C7; color: #92400E; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 20px;">
+                        Requiere atención
+                    </span>
+                {% endif %}
+            </div>
+        </a>
     </div>
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-gift-fill" style="font-size: 2rem; color: #8B5CF6;"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.total_donaciones }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Donaciones verificadas
-            </p>
-        </div>
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:donaciones' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #8B5CF6;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(139,92,246,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-gift-fill" style="font-size: 1.4rem; color: #8B5CF6;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.total_donaciones }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Donaciones verificadas</p>
+            </div>
+        </a>
     </div>
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-exclamation-circle-fill" style="font-size: 2rem; color: #EF4444;"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.donaciones_pendientes }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Donaciones pendientes
-            </p>
-        </div>
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:donaciones' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #EF4444;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(239,68,68,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-exclamation-circle-fill" style="font-size: 1.4rem; color: #EF4444;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.donaciones_pendientes }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Donaciones pendientes</p>
+                {% if stats.donaciones_pendientes > 0 %}
+                    <span style="background: #FEE2E2; color: #991B1B; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 20px;">
+                        Por verificar
+                    </span>
+                {% endif %}
+            </div>
+        </a>
     </div>
-    <div class="col-md-2 col-6">
-        <div class="stat-card text-center">
-            <i class="bi bi-calendar-event-fill" style="font-size: 2rem; color: var(--color-primary);"></i>
-            <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0.5rem 0 0.2rem;">
-                {{ stats.total_eventos }}
-            </h3>
-            <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                Eventos próximos
-            </p>
-        </div>
+
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:eventos' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #3B82F6;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(59,130,246,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-calendar-event-fill" style="font-size: 1.4rem; color: #3B82F6;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ stats.total_eventos }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Eventos próximos</p>
+            </div>
+        </a>
     </div>
 
 </div>
 
-<div class="row g-4">
+<!-- Solicitudes y Donaciones recientes -->
+<div class="row g-3 mb-3">
 
-    <!-- SOLICITUDES RECIENTES -->
     <div class="col-md-6">
-        <div class="stat-card">
+        <div class="stat-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0;">
-                    Solicitudes recientes
+                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0; font-size: 0.95rem;">
+                    <i class="bi bi-house-heart me-2" style="color: var(--color-primary);"></i>Solicitudes recientes
                 </h6>
                 <a href="{% url 'dashboard:adopciones' %}"
-                    style="color: var(--color-primary); font-size: 0.85rem; text-decoration: none;">
-                    Ver todas
+                    style="color: var(--color-primary); font-size: 0.82rem; text-decoration: none; font-weight: 500;">
+                    Ver todas →
                 </a>
             </div>
             {% if solicitudes_recientes %}
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Mascota</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for s in solicitudes_recientes %}
-                            <tr>
-                                <td style="font-size: 0.85rem;">{{ s.usuario.username }}</td>
-                                <td style="font-size: 0.85rem;">{{ s.mascota.nombre }}</td>
-                                <td>
-                                    <span class="badge badge-{{ s.estado }}" style="font-size: 0.75rem;">
-                                        {{ s.get_estado_display }}
-                                    </span>
-                                </td>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead>
+                            <tr style="font-size: 0.78rem; color: var(--color-gray); text-transform: uppercase; letter-spacing: 0.5px;">
+                                <th class="border-0 pb-2">Usuario</th>
+                                <th class="border-0 pb-2">Mascota</th>
+                                <th class="border-0 pb-2">Estado</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for s in solicitudes_recientes %}
+                                <tr style="font-size: 0.85rem;">
+                                    <td class="align-middle">{{ s.usuario.username }}</td>
+                                    <td class="align-middle">{{ s.mascota.nombre }}</td>
+                                    <td class="align-middle">
+                                        <span class="badge badge-{{ s.estado }}">{{ s.get_estado_display }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <p style="color: var(--color-gray); font-size: 0.9rem;">No hay solicitudes aún.</p>
+                <div class="text-center py-4">
+                    <i class="bi bi-inbox" style="font-size: 2rem; color: var(--color-gray-light);"></i>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.5rem;">No hay solicitudes aún.</p>
+                </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- DONACIONES RECIENTES -->
     <div class="col-md-6">
-        <div class="stat-card">
+        <div class="stat-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0;">
-                    Donaciones recientes
+                <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0; font-size: 0.95rem;">
+                    <i class="bi bi-gift me-2" style="color: #8B5CF6;"></i>Donaciones recientes
                 </h6>
                 <a href="{% url 'dashboard:donaciones' %}"
-                    style="color: var(--color-primary); font-size: 0.85rem; text-decoration: none;">
-                    Ver todas
+                    style="color: var(--color-primary); font-size: 0.82rem; text-decoration: none; font-weight: 500;">
+                    Ver todas →
                 </a>
             </div>
             {% if donaciones_recientes %}
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Monto</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for d in donaciones_recientes %}
-                            <tr>
-                                <td style="font-size: 0.85rem;">{{ d.usuario.username }}</td>
-                                <td style="font-size: 0.85rem;">${{ d.monto }}</td>
-                                <td>
-                                    <span class="badge badge-{{ d.estado }}" style="font-size: 0.75rem;">
-                                        {{ d.get_estado_display }}
-                                    </span>
-                                </td>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead>
+                            <tr style="font-size: 0.78rem; color: var(--color-gray); text-transform: uppercase; letter-spacing: 0.5px;">
+                                <th class="border-0 pb-2">Usuario</th>
+                                <th class="border-0 pb-2">Monto</th>
+                                <th class="border-0 pb-2">Estado</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for d in donaciones_recientes %}
+                                <tr style="font-size: 0.85rem;">
+                                    <td class="align-middle">{{ d.usuario.username }}</td>
+                                    <td class="align-middle" style="font-weight: 600;">${{ d.monto }}</td>
+                                    <td class="align-middle">
+                                        <span class="badge badge-{{ d.estado }}">{{ d.get_estado_display }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <p style="color: var(--color-gray); font-size: 0.9rem;">No hay donaciones aún.</p>
+                <div class="text-center py-4">
+                    <i class="bi bi-inbox" style="font-size: 2rem; color: var(--color-gray-light);"></i>
+                    <p style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.5rem;">No hay donaciones aún.</p>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -163,34 +212,57 @@
 </div>
 
 <!-- Actividad reciente -->
-<div class="stat-card mt-4">
-    <h5 class="mb-3"><i class="bi bi-clock-history me-2"></i>Actividad reciente</h5>
-    {% if actividad_reciente %}
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Acción</th>
-                    <th>Descripción</th>
-                    <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for registro in actividad_reciente %}
-                <tr>
-                    <td>{{ registro.usuario.username }}</td>
-                    <td><span class="badge bg-secondary">{{ registro.get_accion_display }}</span></td>
-                    <td>{{ registro.descripcion }}</td>
-                    <td>{{ registro.fecha|date:"d/m/Y H:i" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="stat-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 style="font-family: var(--font-title); font-weight: 600; margin: 0; font-size: 0.95rem;">
+            <i class="bi bi-clock-history me-2" style="color: #F59E0B;"></i>Actividad reciente
+        </h6>
     </div>
+    {% if actividad_reciente %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+                <thead>
+                    <tr style="font-size: 0.78rem; color: var(--color-gray); text-transform: uppercase; letter-spacing: 0.5px;">
+                        <th class="border-0 pb-2">Usuario</th>
+                        <th class="border-0 pb-2">Acción</th>
+                        <th class="border-0 pb-2">Descripción</th>
+                        <th class="border-0 pb-2">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in actividad_reciente %}
+                        <tr style="font-size: 0.85rem;">
+                            <td class="align-middle">{{ registro.usuario.username }}</td>
+                            <td class="align-middle">
+                                <span class="badge bg-secondary" style="font-size: 0.75rem;">{{ registro.get_accion_display }}</span>
+                            </td>
+                            <td class="align-middle" style="max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ registro.descripcion }}
+                            </td>
+                            <td class="align-middle" style="white-space: nowrap; color: var(--color-gray);">
+                                {{ registro.fecha|date:"d/m/Y H:i" }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
-    <p class="text-muted">No hay actividad registrada aún.</p>
+        <div class="text-center py-4">
+            <i class="bi bi-clock-history" style="font-size: 2rem; color: var(--color-gray-light);"></i>
+            <p style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.5rem;">No hay actividad registrada aún.</p>
+        </div>
     {% endif %}
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const hoy = new Date();
+    document.getElementById('fecha-hoy').textContent =
+        dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+</script>
 {% endblock %}
