@@ -87,7 +87,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-active {
     color: var(--color-primary) !important;
-    font-weight: 600;
+    font-weight: 700 !important;
+    background-color: rgba(92,138,60,0.08) !important;
+    border-bottom: 2px solid var(--color-primary) !important;
 }
 
 .navbar-toggler {
