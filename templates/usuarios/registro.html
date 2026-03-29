@@ -4,80 +4,143 @@
 {% block titulo %}Crear cuenta{% endblock %}
 
 {% block contenido %}
-<div class="container my-4">
+<div style="min-height: calc(100vh - 160px); display: flex; align-items: stretch;">
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-body p-5">
+    <!-- Panel izquierdo — imagen de marca -->
+    <div class="d-none d-lg-flex flex-column justify-content-between"
+        style="width: 45%; background: linear-gradient(160deg, var(--color-primary) 0%, var(--color-dark) 100%);
+               padding: 3rem; position: relative; overflow: hidden;">
 
-                <div class="text-center mb-4">
-                    <div style="font-size: 3rem;">🐾</div>
-                    <h3 style="font-family: var(--font-title); font-weight: 700;">
-                        Regístrate gratis
-                    </h3>
+        <!-- Círculos decorativos -->
+        <div style="position: absolute; top: -80px; right: -80px; width: 300px; height: 300px;
+                    border-radius: 50%; background: rgba(255,255,255,0.05);"></div>
+        <div style="position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px;
+                    border-radius: 50%; background: rgba(255,255,255,0.05);"></div>
+
+        <!-- Logo y nombre -->
+        <div style="position: relative; z-index: 1;">
+            <div style="font-size: 2.8rem;">🐾</div>
+            <h2 style="color: white; font-family: var(--font-title); font-weight: 700; margin-top: 0.5rem;">
+                Únete a nuestra comunidad
+            </h2>
+            <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7;">
+                Registrarte es gratis y solo toma un minuto. Con tu cuenta puedes solicitar adopciones, registrar donaciones e inscribirte en eventos.
+            </p>
+        </div>
+
+        <!-- Beneficios -->
+        <div style="position: relative; z-index: 1;">
+            <div class="d-flex flex-column gap-3">
+                {% for item in '123' %}{% endfor %}
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15);
+                                display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="bi bi-heart-fill" style="color: var(--color-accent);"></i>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.9rem;">Solicita la adopción de tu mascota ideal</p>
                 </div>
-
-                <!-- BOTÓN GOOGLE PRIMERO -->
-                <a href="{% provider_login_url 'google' %}"
-                    class="btn w-100 mb-3 d-flex align-items-center justify-content-center gap-2"
-                    style="border: 2px solid var(--color-gray-light); background: white; color: var(--color-dark); font-weight: 500; padding: 0.8rem;">
-                    <svg width="20" height="20" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                        <path fill="none" d="M0 0h48v48H0z"/>
-                    </svg>
-                    Registrarte con Google
-                </a>
-
-                <!-- DIVISOR -->
-                <div class="d-flex align-items-center gap-3 my-3">
-                    <hr style="flex: 1; border-color: var(--color-gray-light);">
-                    <span style="color: var(--color-gray); font-size: 0.85rem;">o regístrate con tu correo</span>
-                    <hr style="flex: 1; border-color: var(--color-gray-light);">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15);
+                                display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="bi bi-gift-fill" style="color: var(--color-accent);"></i>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.9rem;">Registra tus donaciones y haz seguimiento</p>
                 </div>
-
-                <!-- FORMULARIO -->
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ field.label }}</label>
-                            <input type="{{ field.field.widget.input_type }}"
-                                    name="{{ field.html_name }}"
-                                    class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                    {% if field.value %}value="{{ field.value }}"{% endif %}>
-                            {% if field.help_text %}
-                                <div class="form-text" style="color: var(--color-gray); font-size: 0.8rem;">
-                                    {{ field.help_text }}
-                                </div>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="invalid-feedback">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-
-                    <button type="submit" class="btn btn-primary w-100 mt-2">
-                        Crear cuenta
-                    </button>
-                </form>
-
-                <hr style="margin: 1.5rem 0; border-color: var(--color-gray-light);">
-
-                <p class="text-center mb-0" style="color: var(--color-gray);">
-                    ¿Ya tienes cuenta?
-                    <a href="{% url 'usuarios:login' %}"
-                        style="color: var(--color-primary); font-weight: 600;">
-                        Inicia sesión
-                    </a>
-                </p>
-
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15);
+                                display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="bi bi-calendar-check-fill" style="color: var(--color-accent);"></i>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.9rem;">Inscríbete en nuestros eventos y actividades</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Panel derecho — formulario -->
+    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1"
+        style="padding: 3rem 2rem; background: white;">
+
+        <div style="width: 100%; max-width: 400px;">
+
+            <div class="mb-4">
+                <h3 style="font-family: var(--font-title); font-weight: 700; color: var(--color-dark); margin-bottom: 0.3rem;">
+                    Crea tu cuenta
+                </h3>
+                <p style="color: var(--color-gray); margin: 0;">Es gratis y solo toma un minuto</p>
+            </div>
+
+            <!-- Google -->
+            <a href="{% provider_login_url 'google' %}"
+                class="btn w-100 mb-4 d-flex align-items-center justify-content-center gap-2"
+                style="border: 1.5px solid #E5E7EB; background: white; color: var(--color-dark);
+                       font-family: var(--font-body); font-weight: 500; padding: 0.75rem;
+                       border-radius: var(--radius); transition: var(--transition);"
+                onmouseover="this.style.borderColor='var(--color-primary)'; this.style.boxShadow='0 0 0 3px rgba(92,138,60,0.12)'"
+                onmouseout="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'">
+                <svg width="20" height="20" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Registrarte con Google
+            </a>
+
+            <!-- Divisor -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <hr style="flex: 1; border-color: #E5E7EB; margin: 0;">
+                <span style="color: var(--color-gray); font-size: 0.8rem; white-space: nowrap;">o regístrate con tu correo</span>
+                <hr style="flex: 1; border-color: #E5E7EB; margin: 0;">
+            </div>
+
+            <!-- Formulario -->
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2 mb-3" style="font-size: 0.88rem; border-radius: var(--radius-sm);">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label" style="font-weight: 600; font-size: 0.9rem; color: var(--color-dark);">
+                            {{ field.label }}
+                        </label>
+                        <input type="{{ field.field.widget.input_type }}"
+                            name="{{ field.html_name }}"
+                            class="form-control {% if field.errors %}is-invalid{% endif %}"
+                            {% if field.value %}value="{{ field.value }}"{% endif %}
+                            style="border-radius: var(--radius-sm); padding: 0.7rem 1rem; border-color: #E5E7EB;">
+                        {% if field.help_text %}
+                            <div class="form-text" style="color: var(--color-gray); font-size: 0.78rem;">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary w-100 mt-2"
+                    style="padding: 0.75rem; font-weight: 600; border-radius: var(--radius-sm); font-family: var(--font-body);">
+                    Crear cuenta
+                </button>
+            </form>
+
+            <p class="text-center mt-4 mb-0" style="color: var(--color-gray); font-size: 0.9rem;">
+                ¿Ya tienes cuenta?
+                <a href="{% url 'usuarios:login' %}"
+                    style="color: var(--color-primary); font-weight: 600; text-decoration: none;">
+                    Inicia sesión
+                </a>
+            </p>
+
+        </div>
+    </div>
+
 </div>
 {% endblock %}
