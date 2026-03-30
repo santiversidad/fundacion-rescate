@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -9,10 +10,14 @@ from .models import (
     Testimonio,
     Evento,
     InscripcionEvento,
+    MensajeContacto,
 )
+from .forms import ContactoForm, TestimonioPublicoForm
 from .emails import email_inscripcion_evento
 from mascotas.models import Mascota
-from config.middleware import rate_limit
+from config.middleware import rate_limit, _get_client_ip
+
+logger = logging.getLogger(__name__)
 
 def inicio(request):
     mascotas_destacadas = Mascota.objects.filter(
@@ -50,10 +55,21 @@ def preguntas_frecuentes(request):
     })
 
 
+@rate_limit(max_requests=2, window_seconds=3600, key_prefix='testimonio')
 def testimonios(request):
     lista = Testimonio.objects.filter(aprobado=True)
+    form = TestimonioPublicoForm()
+
+    if request.method == 'POST':
+        form = TestimonioPublicoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Gracias por compartir tu historia! La revisaremos y la publicaremos pronto.')
+            return redirect('institucional:testimonios')
+
     return render(request, 'institucional/testimonios.html', {
         'testimonios': lista,
+        'form': form,
     })
 
 
@@ -104,7 +120,21 @@ def inscribirse_evento(request, pk):
     return redirect('institucional:detalle_evento', pk=pk)
 
 
+@rate_limit(max_requests=5, window_seconds=3600, key_prefix='contacto')
 def contacto(request):
+    form = ContactoForm()
+
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            mensaje = form.save(commit=False)
+            mensaje.ip = _get_client_ip(request)
+            mensaje.save()
+            logger.info('Nuevo mensaje de contacto de %s (%s)', mensaje.nombre, mensaje.email)
+            messages.success(request, '¡Mensaje enviado! Te responderemos a la brevedad.')
+            return redirect('institucional:contacto')
+
     return render(request, 'institucional/contacto.html', {
         'google_maps_key': settings.GOOGLE_MAPS_API_KEY,
+        'form': form,
     })

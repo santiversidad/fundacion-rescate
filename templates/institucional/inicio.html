@@ -254,7 +254,8 @@
                                     {% if foto %}
                                         <img src="{{ foto.foto.url }}"
                                             style="width: 100%; height: 260px; object-fit: cover;"
-                                            alt="{{ mascota.nombre }}">
+                                            alt="{{ foto.alt_text|default:mascota.nombre }}"
+                                            loading="lazy">
                                     {% else %}
                                         <div style="height: 260px; background: var(--color-gray-light);
                                                     display: flex; align-items: center; justify-content: center;">

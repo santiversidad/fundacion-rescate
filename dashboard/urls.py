@@ -45,4 +45,8 @@ urlpatterns = [
 
     # Contenido institucional
     path('institucional/', views.contenido_institucional, name='contenido_institucional'),
+
+    # Mensajes de contacto
+    path('mensajes/', views.mensajes, name='mensajes'),
+    path('mensajes/<int:pk>/', views.marcar_mensaje_leido, name='detalle_mensaje'),
 ]

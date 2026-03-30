@@ -3,10 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+
     <title>{% block titulo %}Fundación Rescate Animal{% endblock %}</title>
+
+    <!-- Meta description -->
+    <meta name="description" content="{% block meta_description %}Fundación Rescate Animal — Rescate, rehabilitación y adopción responsable de animales en Villavicencio, Colombia. Más de 850 animales rescatados y 620 adopciones exitosas.{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fundacionrescateanimal.com{{ request.path }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name"   content="Fundación Rescate Animal">
+    <meta property="og:title"       content="{% block og_title %}{% block titulo2 %}Fundación Rescate Animal{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Rescate, rehabilitación y adopción responsable de animales en Villavicencio, Colombia.{% endblock %}">
+    <meta property="og:url"         content="https://fundacionrescateanimal.com{{ request.path }}">
+    <meta property="og:image"       content="{% block og_image %}https://fundacionrescateanimal.com{% static 'img/Logo.png' %}{% endblock %}">
+    <meta property="og:locale"      content="es_CO">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{% block twitter_title %}Fundación Rescate Animal{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Rescate, rehabilitación y adopción responsable de animales en Colombia.{% endblock %}">
+    <meta name="twitter:image"       content="{% block twitter_image %}https://fundacionrescateanimal.com{% static 'img/Logo.png' %}{% endblock %}">
+
+    <!-- Schema.org Organization / NGO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Organization", "NGO"],
+      "name": "Fundación Rescate Animal",
+      "alternateName": "Fundación Amigos Peluditos",
+      "description": "Fundación dedicada al rescate, rehabilitación y adopción responsable de animales en situación de vulnerabilidad en Colombia.",
+      "url": "https://fundacionrescateanimal.com",
+      "logo": "https://fundacionrescateanimal.com{% static 'img/Logo.png' %}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Calle 123 #45-67",
+        "addressLocality": "Villavicencio",
+        "addressRegion": "Meta",
+        "addressCountry": "CO"
+      },
+      "telephone": "+573001234567",
+      "email": "contacto@fundacionrescate.org",
+      "sameAs": [
+        "https://www.facebook.com/fundacionamigospeluditos",
+        "https://www.instagram.com/fundacionamigospeluditos",
+        "https://www.twitter.com/amigospeluditos"
+      ]
+    }
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
     <style>
         /* Dropdown hover en escritorio */

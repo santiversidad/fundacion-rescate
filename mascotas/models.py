@@ -67,6 +67,8 @@ class FotoMascota(models.Model):
 
     mascota      = models.ForeignKey(Mascota, on_delete=models.CASCADE, related_name='fotos')
     foto         = models.ImageField(upload_to='mascotas/')
+    alt_text     = models.CharField(max_length=200, blank=True,
+                       help_text='Descripción breve de la imagen para accesibilidad y SEO.')
     es_principal = models.BooleanField(default=False)
     fecha_subida = models.DateTimeField(auto_now_add=True)
 
