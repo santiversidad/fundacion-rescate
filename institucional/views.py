@@ -19,8 +19,13 @@ def inicio(request):
         estado='disponible'
     ).order_by('-fecha_ingreso')[:3]
 
+    testimonios_recientes = Testimonio.objects.filter(aprobado=True)[:3]
+    proximos_eventos = Evento.objects.filter(estado='proximo').order_by('fecha')[:3]
+
     return render(request, 'institucional/inicio.html', {
-        'mascotas_destacadas': mascotas_destacadas,
+        'mascotas_destacadas':  mascotas_destacadas,
+        'testimonios_recientes': testimonios_recientes,
+        'proximos_eventos':      proximos_eventos,
     })
 
 

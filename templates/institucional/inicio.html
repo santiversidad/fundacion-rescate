@@ -18,7 +18,6 @@
     align-items: center;
     position: relative;">
 
-    <!-- Overlay con gradiente direccional -->
     <div style="
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -29,7 +28,6 @@
         <div class="row align-items-center">
             <div class="col-lg-7">
 
-                <!-- Badge superior -->
                 <div class="d-inline-flex align-items-center gap-2 mb-4"
                     style="background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
                            border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
@@ -122,10 +120,17 @@
     </div>
 </section>
 
+<!-- Wave: verde → claro -->
+<div style="overflow: hidden; line-height: 0; background: var(--color-primary);">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
+        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-light)"/>
+    </svg>
+</div>
+
 <!-- =============================================
     SECCIÓN 3 — CÓMO ADOPTAR
     ============================================= -->
-<section style="background-color: var(--color-light); padding: 5rem 0;">
+<section style="background-color: var(--color-light); padding: 5rem 0 4rem;">
     <div class="container">
 
         <div class="text-center mb-5">
@@ -134,7 +139,6 @@
         </div>
 
         <div class="row g-4 align-items-stretch">
-            {% for paso in '1234' %}{% endfor %}
 
             <!-- Paso 1 -->
             <div class="col-md-3 text-center">
@@ -219,6 +223,13 @@
     </div>
 </section>
 
+<!-- Wave: claro → blanco -->
+<div style="overflow: hidden; line-height: 0; background: var(--color-light);">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
+        <path d="M0,60 C300,0 900,0 1200,60 L1200,60 L0,60 Z" fill="white"/>
+    </svg>
+</div>
+
 <!-- =============================================
     SECCIÓN 4 — MASCOTAS DESTACADAS
     ============================================= -->
@@ -238,7 +249,6 @@
                             onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='var(--shadow-md)'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
 
-                            <!-- Foto -->
                             <div style="position: relative;">
                                 {% with mascota.fotos.first as foto %}
                                     {% if foto %}
@@ -252,7 +262,6 @@
                                         </div>
                                     {% endif %}
                                 {% endwith %}
-                                <!-- Badge disponible -->
                                 <span style="position: absolute; top: 12px; left: 12px;
                                              background: var(--color-primary); color: white;
                                              font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem;
@@ -302,8 +311,181 @@
 </section>
 
 <!-- =============================================
-    SECCIÓN 5 — IMPACTO Y DATOS
+    SECCIÓN 5 — TESTIMONIOS
     ============================================= -->
+{% if testimonios_recientes %}
+<!-- Wave: blanco → crema -->
+<div style="overflow: hidden; line-height: 0; background: white;">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
+        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-light)"/>
+    </svg>
+</div>
+
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Lo que dicen nuestros adoptantes</h2>
+            <p class="section-subtitle">Historias reales de familias que encontraron a su compañero ideal.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for testimonio in testimonios_recientes %}
+            <div class="col-md-4">
+                <div class="card h-100"
+                     style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm);
+                            padding: 2rem; transition: var(--transition); position: relative;"
+                     onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
+
+                    <!-- Comillas decorativas -->
+                    <div style="font-size: 4rem; line-height: 1; color: var(--color-primary);
+                                opacity: 0.15; font-family: Georgia, serif; position: absolute;
+                                top: 1rem; left: 1.5rem; font-weight: 700;">"</div>
+
+                    <!-- Mensaje -->
+                    <p style="color: var(--color-dark); font-size: 0.93rem; line-height: 1.75;
+                               margin-bottom: 1.5rem; position: relative; z-index: 1; padding-top: 1rem;">
+                        {{ testimonio.mensaje|truncatewords:35 }}
+                    </p>
+
+                    <!-- Autor -->
+                    <div class="d-flex align-items-center gap-3" style="margin-top: auto;">
+                        {% if testimonio.foto %}
+                            <img src="{{ testimonio.foto.url }}"
+                                 style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+                                        border: 2px solid var(--color-primary);"
+                                 alt="{{ testimonio.nombre }}">
+                        {% else %}
+                            <div style="width: 46px; height: 46px; border-radius: 50%;
+                                        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+                                        display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="bi bi-person-fill" style="color: white; font-size: 1.2rem;"></i>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.9rem; color: var(--color-dark);">
+                                {{ testimonio.nombre }}
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--color-gray);">
+                                Adoptó a <span style="color: var(--color-primary); font-weight: 600;">{{ testimonio.mascota }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'institucional:testimonios' %}"
+               class="btn btn-outline-secondary"
+               style="padding: 0.75rem 2rem; border-radius: var(--radius-sm);">
+                Ver todos los testimonios <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- Wave: crema → blanco -->
+<div style="overflow: hidden; line-height: 0; background: var(--color-light);">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
+        <path d="M0,60 C300,0 900,0 1200,60 L1200,60 L0,60 Z" fill="white"/>
+    </svg>
+</div>
+{% endif %}
+
+<!-- =============================================
+    SECCIÓN 6 — PRÓXIMOS EVENTOS
+    ============================================= -->
+{% if proximos_eventos %}
+<section style="background-color: white; padding: 5rem 0;">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title">Próximos eventos</h2>
+            <p class="section-subtitle">Únete a nuestras actividades y sé parte del cambio.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for evento in proximos_eventos %}
+            <div class="col-md-4">
+                <div class="card h-100"
+                     style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm);
+                            overflow: hidden; transition: var(--transition);"
+                     onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
+
+                    <!-- Imagen o banner de color -->
+                    {% if evento.imagen %}
+                        <img src="{{ evento.imagen.url }}"
+                             style="width: 100%; height: 180px; object-fit: cover;"
+                             alt="{{ evento.titulo }}">
+                    {% else %}
+                        <div style="height: 180px; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+                                    display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-calendar-event" style="font-size: 3rem; color: rgba(255,255,255,0.5);"></i>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body p-4">
+                        <!-- Fecha y lugar -->
+                        <div class="d-flex gap-3 mb-3">
+                            <div class="d-flex align-items-center gap-1"
+                                 style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">
+                                <i class="bi bi-calendar3"></i>
+                                {{ evento.fecha|date:"d M, Y" }}
+                            </div>
+                            <div class="d-flex align-items-center gap-1"
+                                 style="font-size: 0.8rem; color: var(--color-gray);">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ evento.lugar|truncatechars:22 }}
+                            </div>
+                        </div>
+
+                        <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
+                            {{ evento.titulo }}
+                        </h6>
+                        <p style="color: var(--color-gray); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.2rem;">
+                            {{ evento.descripcion|truncatewords:18 }}
+                        </p>
+
+                        <a href="{% url 'institucional:eventos' %}"
+                           class="btn btn-outline-primary w-100"
+                           style="border-radius: var(--radius-sm); font-size: 0.88rem;">
+                            Ver detalles
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'institucional:eventos' %}"
+               class="btn btn-outline-secondary"
+               style="padding: 0.75rem 2rem; border-radius: var(--radius-sm);">
+                Ver todos los eventos <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+<!-- =============================================
+    SECCIÓN 7 — IMPACTO Y DATOS
+    ============================================= -->
+<!-- Wave: blanco/crema → verde oscuro -->
+<div style="overflow: hidden; line-height: 0; background: white;">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
+        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-primary)"/>
+    </svg>
+</div>
+
 <section style="background-color: var(--color-primary); padding: 5rem 0;">
     <div class="container">
 
@@ -344,7 +526,7 @@
 </section>
 
 <!-- =============================================
-    SECCIÓN 6 — CTA FINAL
+    SECCIÓN 8 — CTA FINAL
     ============================================= -->
 <section style="background-color: rgb(34,85,58); padding: 5rem 0;">
     <div class="container">
