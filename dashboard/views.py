@@ -12,7 +12,7 @@ from donaciones.emails import email_donacion_verificada, email_donacion_rechazad
 from institucional.models import (
     Evento, MiembroEquipo, Testimonio,
     PreguntaFrecuente, ContenidoNosotros,
-    InscripcionEvento
+    InscripcionEvento, MensajeContacto,
 )
 from .forms import (
     MascotaForm, EventoForm, MiembroEquipoForm,
@@ -446,3 +446,19 @@ def contenido_institucional(request):
         'contenido': contenido,
         'form': form,
     })
+
+
+@admin_requerido
+def mensajes(request):
+    lista = MensajeContacto.objects.all()
+    paginador = Paginator(lista, 20)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/mensajes.html', {'mensajes': pagina})
+
+
+@admin_requerido
+def marcar_mensaje_leido(request, pk):
+    mensaje = MensajeContacto.objects.get(pk=pk)
+    mensaje.leido = True
+    mensaje.save()
+    return render(request, 'dashboard/detalle_mensaje.html', {'mensaje': mensaje})

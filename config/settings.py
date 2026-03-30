@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',         
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     # Allauth
     'allauth',                      
@@ -99,6 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'dashboard.context_processors.mensajes_no_leidos',
             ],
         },
     },
@@ -201,6 +203,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_ADAPTER = 'usuarios.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'usuarios.adapters.CustomSocialAccountAdapter'
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']

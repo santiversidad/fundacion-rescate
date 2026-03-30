@@ -166,7 +166,8 @@
                                     <img src="{{ foto_principal.foto.url }}"
                                         class="card-img-top"
                                         style="height: 250px; object-fit: cover;"
-                                        alt="{{ mascota.nombre }}">
+                                        alt="{{ foto_principal.alt_text|default:mascota.nombre }}"
+                                        loading="lazy">
                                 {% else %}
                                     <div style="
                                         height: 250px;

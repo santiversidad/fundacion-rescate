@@ -752,5 +752,78 @@
     </div>
 </section>
 
+<!-- =============================================
+    FORMULARIO DE CONTACTO
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Envíanos un mensaje</h2>
+                    <p class="section-subtitle">Te responderemos en menos de 24 horas.</p>
+                </div>
+
+                <div class="card" style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 2.5rem;">
+                    <form method="POST" action="{% url 'institucional:contacto' %}">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger py-2 mb-3" style="border-radius: var(--radius-sm); font-size: 0.88rem;">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-600" style="font-weight: 600; font-size: 0.9rem;">Nombre</label>
+                                <input type="text" name="nombre"
+                                    class="form-control {% if form.nombre.errors %}is-invalid{% endif %}"
+                                    placeholder="Tu nombre completo"
+                                    value="{{ form.nombre.value|default:'' }}"
+                                    style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">
+                                {% for e in form.nombre.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Correo electrónico</label>
+                                <input type="email" name="email"
+                                    class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                    placeholder="tucorreo@gmail.com"
+                                    value="{{ form.email.value|default:'' }}"
+                                    style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">
+                                {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Asunto</label>
+                                <input type="text" name="asunto"
+                                    class="form-control {% if form.asunto.errors %}is-invalid{% endif %}"
+                                    placeholder="¿En qué podemos ayudarte?"
+                                    value="{{ form.asunto.value|default:'' }}"
+                                    style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">
+                                {% for e in form.asunto.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Mensaje</label>
+                                <textarea name="mensaje" rows="5"
+                                    class="form-control {% if form.mensaje.errors %}is-invalid{% endif %}"
+                                    placeholder="Escribe tu mensaje aquí..."
+                                    style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">{{ form.mensaje.value|default:'' }}</textarea>
+                                {% for e in form.mensaje.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100"
+                                    style="padding: 0.75rem; font-weight: 600; border-radius: var(--radius-sm);">
+                                    <i class="bi bi-send me-2"></i>Enviar mensaje
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 import logging
 import urllib.parse
 import requests as http_requests
+from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.core.files.base import ContentFile
 
@@ -9,6 +10,15 @@ logger = logging.getLogger(__name__)
 MAX_AVATAR_SIZE_BYTES = 2 * 1024 * 1024  # 2MB
 ALLOWED_AVATAR_CONTENT_TYPES = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
 REQUEST_TIMEOUT_SECONDS = 10
+
+
+class CustomAccountAdapter(DefaultAccountAdapter):
+    """Suprime el mensaje de éxito que allauth muestra al iniciar sesión."""
+
+    def add_message(self, request, level, message_template, message_context=None, extra_tags=''):
+        if message_template == 'account/messages/logged_in.txt':
+            return
+        super().add_message(request, level, message_template, message_context, extra_tags)
 
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):

@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /usuarios/perfil/
+Disallow: /adopciones/nueva/
+Disallow: /donaciones/registrar/
+
+Sitemap: https://fundacionrescateanimal.com/sitemap.xml

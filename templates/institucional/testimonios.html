@@ -209,6 +209,83 @@
     </div>
 </section>
 
+<!-- =============================================
+    FORMULARIO — Comparte tu historia
+    ============================================= -->
+<section style="background-color: var(--color-light); padding: 5rem 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="text-center mb-4">
+                    <h2 class="section-title">¿Adoptaste con nosotros?</h2>
+                    <p class="section-subtitle">Comparte tu historia y ayuda a otros a dar el paso.</p>
+                </div>
+
+                <div class="card" style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 2rem;">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger py-2 mb-3" style="border-radius: var(--radius-sm); font-size: 0.88rem;">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Tu nombre</label>
+                            <input type="text" name="nombre"
+                                class="form-control {% if form.nombre.errors %}is-invalid{% endif %}"
+                                placeholder="Tu nombre"
+                                value="{{ form.nombre.value|default:'' }}"
+                                style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">
+                            {% for e in form.nombre.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Mascota adoptada</label>
+                            <input type="text" name="mascota"
+                                class="form-control {% if form.mascota.errors %}is-invalid{% endif %}"
+                                placeholder="Nombre de la mascota que adoptaste"
+                                value="{{ form.mascota.value|default:'' }}"
+                                style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">
+                            {% for e in form.mascota.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">Tu historia</label>
+                            <textarea name="mensaje" rows="4"
+                                class="form-control {% if form.mensaje.errors %}is-invalid{% endif %}"
+                                placeholder="Cuéntanos tu experiencia de adopción..."
+                                style="border-radius: var(--radius-sm); border-color: #E5E7EB; padding: 0.7rem 1rem;">{{ form.mensaje.value|default:'' }}</textarea>
+                            {% for e in form.mensaje.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" style="font-weight: 600; font-size: 0.9rem;">
+                                Foto tuya o de tu mascota <span style="color: var(--color-gray); font-weight: 400;">(opcional)</span>
+                            </label>
+                            <input type="file" name="foto" accept="image/*"
+                                class="form-control {% if form.foto.errors %}is-invalid{% endif %}"
+                                style="border-radius: var(--radius-sm); border-color: #E5E7EB;">
+                            {% for e in form.foto.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100"
+                            style="padding: 0.75rem; font-weight: 600; border-radius: var(--radius-sm);">
+                            <i class="bi bi-heart me-2"></i>Enviar mi historia
+                        </button>
+                        <p style="color: var(--color-gray); font-size: 0.78rem; text-align: center; margin-top: 0.75rem; margin-bottom: 0;">
+                            Tu historia será revisada antes de publicarse.
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
 
 {% block wave_footer %}
