@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Demasiadas solicitudes — Fundación Rescate Animal{% endblock %}
+
+{% block footer %}{% endblock %}
+{% block social_sidebar %}{% endblock %}
+
+{% block contenido %}
+<div style="min-height: 75vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1rem;
+            background: linear-gradient(160deg, var(--color-light) 0%, white 100%);">
+    <div class="text-center" style="max-width: 520px;">
+
+        <!-- Icono animado -->
+        <div style="width: 110px; height: 110px;
+                    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                    margin: 0 auto 2rem;
+                    box-shadow: 0 0 0 12px rgba(245,158,11,0.08), 0 8px 32px rgba(245,158,11,0.2);">
+            <i class="bi bi-clock-history" style="font-size: 3rem; color: #F59E0B;"></i>
+        </div>
+
+        <!-- Etiqueta de error -->
+        <div class="mb-3">
+            <span style="background: rgba(245,158,11,0.12); color: #D97706;
+                        font-size: 0.78rem; font-weight: 700; padding: 0.35rem 1rem;
+                        border-radius: 50px; letter-spacing: 1.5px; text-transform: uppercase;">
+                Error 429
+            </span>
+        </div>
+
+        <!-- Título y mensaje -->
+        <h2 style="font-family: var(--font-title); font-weight: 700; color: var(--color-dark);
+                    margin-bottom: 0.75rem; font-size: 1.9rem;">
+            Demasiadas solicitudes
+        </h2>
+        <p style="color: var(--color-gray); line-height: 1.85; margin-bottom: 2.5rem; font-size: 1rem;">
+            Has realizado demasiados intentos en poco tiempo.<br>
+            Por favor espera unos minutos antes de volver a intentarlo.
+        </p>
+
+        <!-- Acciones -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'institucional:inicio' %}"
+                class="btn btn-primary"
+                style="border-radius: var(--radius-sm); padding: 0.75rem 2rem;
+                    font-weight: 600; font-family: var(--font-body);">
+                <i class="bi bi-house me-2"></i>Volver al inicio
+            </a>
+            <a href="{% url 'mascotas:catalogo' %}"
+                class="btn"
+                style="border-radius: var(--radius-sm); padding: 0.75rem 2rem;
+                    font-weight: 600; border: 1.5px solid var(--color-gray-light);
+                    color: var(--color-gray); font-family: var(--font-body);">
+                <i class="bi bi-search me-2"></i>Ver mascotas
+            </a>
+        </div>
+
+        <!-- Mensaje de ayuda -->
+        <p style="color: var(--color-gray); font-size: 0.82rem; margin-top: 2.5rem; opacity: 0.7;">
+            Si crees que esto es un error, puedes
+            <a href="{% url 'institucional:contacto' %}"
+                style="color: var(--color-primary); text-decoration: none; font-weight: 600;">
+                contactarnos
+            </a>.
+        </p>
+
+    </div>
+</div>
+{% endblock %}

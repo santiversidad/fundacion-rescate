@@ -2,6 +2,7 @@ import time
 import logging
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from functools import wraps
 
 logger = logging.getLogger(__name__)
@@ -48,13 +49,8 @@ def rate_limit(max_requests=10, window_seconds=60, key_prefix='rl'):
                             'Rate limit exceeded for IP %s on view %s',
                             ip, view_func.__name__
                         )
-                        return HttpResponse(
-                            '<h1>Demasiadas solicitudes</h1>'
-                            '<p>Has realizado demasiadas solicitudes. '
-                            'Por favor espera unos minutos antes de intentar de nuevo.</p>',
-                            status=429,
-                            content_type='text/html; charset=utf-8',
-                        )
+                        html = render_to_string('429.html', request=request)
+                        return HttpResponse(html, status=429, content_type='text/html; charset=utf-8')
                     request_data['count'] += 1
                     cache.set(cache_key, request_data, window_seconds)
                 else:
