@@ -3,6 +3,9 @@
 
 {% block titulo %}Eventos — Fundación Rescate Animal{% endblock %}
 
+{% block meta_description %}Únete a nuestros eventos de adopción, charlas y actividades comunitarias. Próximos eventos de Fundación Rescate Animal.{% endblock %}
+{% block og_description %}Únete a nuestros eventos de adopción, charlas y actividades comunitarias. Próximos eventos de Fundación Rescate Animal.{% endblock %}
+
 {% block contenido %}
 
 <!-- =============================================
@@ -88,64 +91,76 @@
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto1.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto2.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto3.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto4.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto5.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto6.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
 
             <!-- Segunda copia para el efecto infinito -->
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto1.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto2.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto3.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto4.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto5.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
             <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
                 <img src="{% static 'img/eventos/foto6.jpg' %}"
                     style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento">
+                    alt="Evento"
+                    loading="lazy">
             </div>
 
         </div>
@@ -191,7 +206,8 @@
                         {% if evento.imagen %}
                             <img src="{{ evento.imagen.url }}"
                                 style="width: 100%; height: 200px; object-fit: cover;"
-                                alt="{{ evento.titulo }}">
+                                alt="{{ evento.titulo }}"
+                                loading="lazy">
                         {% else %}
                             <div style="
                                 height: 200px;
