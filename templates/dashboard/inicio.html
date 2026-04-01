@@ -118,6 +118,26 @@
         </a>
     </div>
 
+    <div class="col-xl-2 col-md-4 col-6">
+        <a href="{% url 'dashboard:mensajes' %}" style="text-decoration: none;">
+            <div class="stat-card text-center" style="border-top: 3px solid #EC4899;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(236,72,153,0.1);
+                            display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;">
+                    <i class="bi bi-envelope-fill" style="font-size: 1.4rem; color: #EC4899;"></i>
+                </div>
+                <h3 style="font-family: var(--font-title); font-weight: 700; margin: 0 0 0.2rem; font-size: 1.8rem;">
+                    {{ mensajes_no_leidos }}
+                </h3>
+                <p style="color: var(--color-gray); font-size: 0.8rem; margin: 0;">Mensajes sin leer</p>
+                {% if mensajes_no_leidos > 0 %}
+                    <span style="background: #FCE7F3; color: #9D174D; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 20px;">
+                        Sin responder
+                    </span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+
 </div>
 
 <!-- Solicitudes y Donaciones recientes -->

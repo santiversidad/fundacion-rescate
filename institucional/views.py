@@ -55,18 +55,26 @@ def preguntas_frecuentes(request):
     })
 
 
-@rate_limit(max_requests=2, window_seconds=3600, key_prefix='testimonio')
 def testimonios(request):
     lista = Testimonio.objects.filter(aprobado=True)
     form = TestimonioPublicoForm()
 
     if request.method == 'POST':
-        form = TestimonioPublicoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, '¡Gracias por compartir tu historia! La revisaremos y la publicaremos pronto.')
-            return redirect('institucional:testimonios')
+        return _procesar_testimonio(request)
 
+    return render(request, 'institucional/testimonios.html', {
+        'testimonios': lista,
+        'form': form,
+    })
+
+@rate_limit(max_requests=2, window_seconds=3600, key_prefix='testimonio')
+def _procesar_testimonio(request):
+    form = TestimonioPublicoForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        messages.success(request, '¡Gracias por compartir tu historia! La revisaremos y la publicaremos pronto.')
+        return redirect('institucional:testimonios')
+    lista = Testimonio.objects.filter(aprobado=True)
     return render(request, 'institucional/testimonios.html', {
         'testimonios': lista,
         'form': form,
@@ -120,20 +128,27 @@ def inscribirse_evento(request, pk):
     return redirect('institucional:detalle_evento', pk=pk)
 
 
-@rate_limit(max_requests=5, window_seconds=3600, key_prefix='contacto')
 def contacto(request):
     form = ContactoForm()
 
     if request.method == 'POST':
-        form = ContactoForm(request.POST)
-        if form.is_valid():
-            mensaje = form.save(commit=False)
-            mensaje.ip = _get_client_ip(request)
-            mensaje.save()
-            logger.info('Nuevo mensaje de contacto de %s (%s)', mensaje.nombre, mensaje.email)
-            messages.success(request, '¡Mensaje enviado! Te responderemos a la brevedad.')
-            return redirect('institucional:contacto')
+        return _procesar_contacto(request)
 
+    return render(request, 'institucional/contacto.html', {
+        'google_maps_key': settings.GOOGLE_MAPS_API_KEY,
+        'form': form,
+    })
+
+@rate_limit(max_requests=5, window_seconds=3600, key_prefix='contacto')
+def _procesar_contacto(request):
+    form = ContactoForm(request.POST)
+    if form.is_valid():
+        mensaje = form.save(commit=False)
+        mensaje.ip = _get_client_ip(request)
+        mensaje.save()
+        logger.info('Nuevo mensaje de contacto de %s (%s)', mensaje.nombre, mensaje.email)
+        messages.success(request, '¡Mensaje enviado! Te responderemos a la brevedad.')
+        return redirect('institucional:contacto')
     return render(request, 'institucional/contacto.html', {
         'google_maps_key': settings.GOOGLE_MAPS_API_KEY,
         'form': form,

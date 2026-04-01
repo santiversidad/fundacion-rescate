@@ -19,7 +19,8 @@
             <img src="{{ evento.imagen.url }}"
                 class="img-fluid rounded"
                 style="width: 100%; height: 350px; object-fit: cover; border-radius: var(--radius) !important;"
-                alt="{{ evento.titulo }}">
+                alt="{{ evento.titulo }}"
+                loading="lazy">
         {% else %}
             <div style="height: 350px; background: linear-gradient(135deg, var(--color-primary) 0%, #E85520 100%); border-radius: var(--radius); display: flex; align-items: center; justify-content: center;">
                 <i class="bi bi-calendar-event"
