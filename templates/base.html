@@ -228,30 +228,26 @@
                 <div class="d-flex gap-2 mt-3">
                     <a href="https://www.facebook.com/fundacionamigospeluditos"
                         target="_blank"
-                        style="width: 38px; height: 38px; background: var(--color-gray-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--color-primary); text-decoration: none; transition: var(--transition);"
-                        onmouseover="this.style.background='var(--color-primary)'; this.style.color='white'"
-                        onmouseout="this.style.background='var(--color-gray-light)'; this.style.color='var(--color-primary)'">
+                        aria-label="Visítanos en Facebook"
+                        class="social-icon-btn">
                         <i class="bi bi-facebook"></i>
                     </a>
                     <a href="https://www.instagram.com/fundacionamigospeluditos"
                         target="_blank"
-                        style="width: 38px; height: 38px; background: var(--color-gray-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--color-primary); text-decoration: none; transition: var(--transition);"
-                        onmouseover="this.style.background='var(--color-primary)'; this.style.color='white'"
-                        onmouseout="this.style.background='var(--color-gray-light)'; this.style.color='var(--color-primary)'">
+                        aria-label="Síguenos en Instagram"
+                        class="social-icon-btn">
                         <i class="bi bi-instagram"></i>
                     </a>
                     <a href="https://www.twitter.com/amigospeluditos"
                         target="_blank"
-                        style="width: 38px; height: 38px; background: var(--color-gray-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--color-primary); text-decoration: none; transition: var(--transition);"
-                        onmouseover="this.style.background='var(--color-primary)'; this.style.color='white'"
-                        onmouseout="this.style.background='var(--color-gray-light)'; this.style.color='var(--color-primary)'">
+                        aria-label="Síguenos en X (Twitter)"
+                        class="social-icon-btn">
                         <i class="bi bi-twitter-x"></i>
                     </a>
                     <a href="https://wa.me/573001234567"
                         target="_blank"
-                        style="width: 38px; height: 38px; background: var(--color-gray-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--color-primary); text-decoration: none; transition: var(--transition);"
-                        onmouseover="this.style.background='var(--color-primary)'; this.style.color='white'"
-                        onmouseout="this.style.background='var(--color-gray-light)'; this.style.color='var(--color-primary)'">
+                        aria-label="Escríbenos por WhatsApp"
+                        class="social-icon-btn">
                         <i class="bi bi-whatsapp"></i>
                     </a>
                 </div>
@@ -263,46 +259,11 @@
                     Navegación
                 </h6>
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="{% url 'institucional:inicio' %}"
-                            style="color: var(--color-gray); text-decoration: none; font-size: 0.9rem; transition: var(--transition); font-family: var(--font-body);"
-                            onmouseover="this.style.color='var(--color-primary)'"
-                            onmouseout="this.style.color='var(--color-gray)'">
-                            Inicio
-                        </a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="{% url 'mascotas:catalogo' %}"
-                            style="color: var(--color-gray); text-decoration: none; font-size: 0.9rem; transition: var(--transition); font-family: var(--font-body);"
-                            onmouseover="this.style.color='var(--color-primary)'"
-                            onmouseout="this.style.color='var(--color-gray)'">
-                            Adoptar
-                        </a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="{% url 'donaciones:info' %}"
-                            style="color: var(--color-gray); text-decoration: none; font-size: 0.9rem; transition: var(--transition); font-family: var(--font-body);"
-                            onmouseover="this.style.color='var(--color-primary)'"
-                            onmouseout="this.style.color='var(--color-gray)'">
-                            Donar
-                        </a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="{% url 'institucional:nosotros' %}"
-                            style="color: var(--color-gray); text-decoration: none; font-size: 0.9rem; transition: var(--transition); font-family: var(--font-body);"
-                            onmouseover="this.style.color='var(--color-primary)'"
-                            onmouseout="this.style.color='var(--color-gray)'">
-                            Nosotros
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'institucional:contacto' %}"
-                            style="color: var(--color-gray); text-decoration: none; font-size: 0.9rem; transition: var(--transition); font-family: var(--font-body);"
-                            onmouseover="this.style.color='var(--color-primary)'"
-                            onmouseout="this.style.color='var(--color-gray)'">
-                            Contacto
-                        </a>
-                    </li>
+                    <li><a href="{% url 'institucional:inicio' %}" class="footer-link">Inicio</a></li>
+                    <li><a href="{% url 'mascotas:catalogo' %}" class="footer-link">Adoptar</a></li>
+                    <li><a href="{% url 'donaciones:info' %}" class="footer-link">Donar</a></li>
+                    <li><a href="{% url 'institucional:nosotros' %}" class="footer-link">Nosotros</a></li>
+                    <li><a href="{% url 'institucional:contacto' %}" class="footer-link">Contacto</a></li>
                 </ul>
             </div>
 
@@ -410,88 +371,31 @@
     Iconos flotantes de redes sociales
     fijo en el lado izquierdo de todas las páginas
     ============================================= -->
-<div style="
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 0;">
-
+<div class="social-sidebar">
     <a href="https://www.facebook.com/fundacionamigospeluditos"
         target="_blank"
-        style="
-        width: 42px;
-        height: 42px;
-        background: #1877F2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-decoration: none;
-        font-size: 1.1rem;
-        transition: var(--transition);"
-        onmouseover="this.style.width='120px'"
-        onmouseout="this.style.width='42px'">
+        aria-label="Visítanos en Facebook"
+        style="background: #1877F2;">
         <i class="bi bi-facebook" style="flex-shrink: 0;"></i>
     </a>
-
     <a href="https://www.instagram.com/fundacionamigospeluditos"
         target="_blank"
-        style="
-        width: 42px;
-        height: 42px;
-        background: #E1306C;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-decoration: none;
-        font-size: 1.1rem;
-        transition: var(--transition);"
-        onmouseover="this.style.width='120px'"
-        onmouseout="this.style.width='42px'">
+        aria-label="Síguenos en Instagram"
+        style="background: #E1306C;">
         <i class="bi bi-instagram" style="flex-shrink: 0;"></i>
     </a>
-
     <a href="https://www.twitter.com/amigospeluditos"
         target="_blank"
-        style="
-        width: 42px;
-        height: 42px;
-        background: #000000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-decoration: none;
-        font-size: 1.1rem;
-        transition: var(--transition);"
-        onmouseover="this.style.width='120px'"
-        onmouseout="this.style.width='42px'">
+        aria-label="Síguenos en X (Twitter)"
+        style="background: #000000;">
         <i class="bi bi-twitter-x" style="flex-shrink: 0;"></i>
     </a>
-
     <a href="https://wa.me/573001234567"
         target="_blank"
-        style="
-        width: 42px;
-        height: 42px;
-        background: #25D366;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        text-decoration: none;
-        font-size: 1.1rem;
-        transition: var(--transition);"
-        onmouseover="this.style.width='120px'"
-        onmouseout="this.style.width='42px'">
+        aria-label="Escríbenos por WhatsApp"
+        style="background: #25D366;">
         <i class="bi bi-whatsapp" style="flex-shrink: 0;"></i>
     </a>
-
 </div>
 {% endblock social_sidebar %}
 
@@ -507,6 +411,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+</script>
+
+<!-- BOTÓN SCROLL-TO-TOP -->
+<button id="scrollTopBtn" aria-label="Volver al inicio">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<script>
+(function () {
+    var scrollBtn = document.getElementById('scrollTopBtn');
+    var navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) {
+            scrollBtn.style.display = 'flex';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+        if (navbar) {
+            navbar.style.boxShadow = window.scrollY > 10
+                ? '0 4px 24px rgba(0,0,0,0.12)'
+                : '0 2px 20px rgba(0,0,0,0.08)';
+        }
+    });
+    scrollBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
 </script>
 
 </body>

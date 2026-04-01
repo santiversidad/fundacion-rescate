@@ -69,22 +69,6 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.5px;
 }
 
-.nav-link {
-    font-weight: 500;
-    color: var(--color-dark) !important;
-    transition: var(--transition);
-    padding: 0.5rem 0.7rem !important;
-    border-radius: var(--radius-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.78rem !important;
-}
-
-.nav-link:hover {
-    color: var(--color-primary) !important;
-    background-color: rgba(92,138,60,0.08);
-}
-
 .nav-active {
     color: var(--color-primary) !important;
     font-weight: 700 !important;
@@ -98,14 +82,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- BOTONES --- */
-.btn {
-    font-family: var(--font-title);
-    font-weight: 500;
-    border-radius: var(--radius-sm);
-    padding: 0.6rem 1.4rem;
-    transition: var(--transition);
-    border: none;
-}
 
 .btn-primary {
     background-color: var(--color-primary);
@@ -124,7 +100,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-success:hover {
-    background-color: #1F4D38;
+    background-color: var(--color-secondary);
+    filter: brightness(0.85);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -202,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus, .form-select:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
+    box-shadow: 0 0 0 3px rgba(92,138,60,0.15);
 }
 
 .form-label {
@@ -268,19 +245,6 @@ footer {
 
 .bg-primary {
     background-color: var(--color-primary) !important;
-}
-
-.section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-dark);
-    margin-bottom: 0.5rem;
-}
-
-.section-subtitle {
-    color: var(--color-gray);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
 }
 
 /* =============================================
@@ -356,6 +320,11 @@ footer {
     font-size: 0.82rem !important;
 }
 
+.nav-link:hover {
+    color: var(--color-primary) !important;
+    background-color: rgba(92,138,60,0.08);
+}
+
 /* Botones con estilo editorial */
 .btn {
     font-family: var(--font-title);
@@ -367,4 +336,142 @@ footer {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-size: 0.85rem;
+}
+
+/* Clase faltante: btn-outline-primary */
+.btn-outline-primary {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* =============================================
+    UTILIDADES DE COMPONENTES
+   ============================================= */
+
+/* Card hover via CSS (reemplaza onmouseover/onmouseout inline) */
+.card-hover {
+    transition: var(--transition);
+}
+
+.card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* Footer links */
+.footer-link {
+    color: var(--color-gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    font-family: var(--font-body);
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+    color: var(--color-primary);
+}
+
+/* Social icon buttons (footer) */
+.social-icon-btn {
+    width: 38px;
+    height: 38px;
+    background: var(--color-gray-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.social-icon-btn:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Social sidebar (fixed left) */
+.social-sidebar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.social-sidebar a {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    overflow: hidden;
+    transition: width 0.25s ease;
+}
+
+.social-sidebar a:hover {
+    width: 120px;
+}
+
+/* Ocultar sidebar en móvil para no tapar contenido */
+@media (max-width: 768px) {
+    .social-sidebar {
+        display: none;
+    }
+}
+
+/* Barra de filtros del catálogo: scroll horizontal en móvil */
+.filter-bar-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+}
+
+.filter-bar-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Botón scroll-to-top */
+#scrollTopBtn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 998;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary);
+    color: white;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#scrollTopBtn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
