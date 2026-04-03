@@ -26,7 +26,7 @@
 
     <div class="container" style="position: relative; z-index: 1;">
         <div class="row align-items-center">
-            <div class="col-lg-7">
+            <div class="col-lg-7" style="position: relative; z-index: 2;">
 
                 <div class="d-inline-flex align-items-center gap-2 mb-4"
                     style="background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
@@ -76,6 +76,47 @@
                 </div>
 
             </div>
+
+            <!-- ═══════════════════════════════════════════
+                 FLOATING PHOTO CLUSTER — solo desktop (≥lg)
+                 Imágenes decorativas con animación CSS pura
+                 ═══════════════════════════════════════════ -->
+            <div class="col-lg-5 d-none d-lg-flex align-items-center">
+                <div class="hero-float-cluster" aria-hidden="true">
+
+                    <!-- F1: Retrato principal — centro-izquierda del cluster -->
+                    <img src="{% static 'img/galeria/foto1.jpg' %}"
+                         class="hero-float-img img-f1"
+                         alt=""
+                         loading="lazy">
+
+                    <!-- F2: Cuadrada — esquina superior derecha -->
+                    <img src="{% static 'img/galeria/foto2.jpg' %}"
+                         class="hero-float-img img-f2"
+                         alt=""
+                         loading="lazy">
+
+                    <!-- F3: Retrato pequeño — esquina inferior derecha -->
+                    <img src="{% static 'img/galeria/foto3.jpg' %}"
+                         class="hero-float-img img-f3"
+                         alt=""
+                         loading="lazy">
+
+                    <!-- F4: Cuadrada — esquina inferior izquierda -->
+                    <img src="{% static 'img/galeria/foto4.jpg' %}"
+                         class="hero-float-img img-f4"
+                         alt=""
+                         loading="lazy">
+
+                    <!-- F5: Pequeña — flotando en el centro -->
+                    <img src="{% static 'img/galeria/foto5.jpg' %}"
+                         class="hero-float-img img-f5"
+                         alt=""
+                         loading="lazy">
+
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -556,6 +597,125 @@
 {% endblock %}
 
 {% block scripts %}
+<style>
+/* ═══════════════════════════════════════════════════════
+   HERO — FLOATING PHOTO CLUSTER
+   Animación CSS pura · GPU-accelerated via translateY
+   ═══════════════════════════════════════════════════════ */
+
+.hero-float-cluster {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    pointer-events: none;
+}
+
+/* ── Estilos base compartidos ── */
+.hero-float-img {
+    position: absolute;
+    object-fit: cover;
+    border-radius: 18px;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ── F1: Retrato principal — primer plano, peso visual mayor ── */
+.img-f1 {
+    width: 200px; height: 258px;
+    top: 8%; left: 14%;
+    box-shadow:
+        0 28px 70px rgba(0,0,0,0.50),
+        0 10px 24px rgba(0,0,0,0.32);
+    animation: float-f1 9s ease-in-out infinite;
+    z-index: 4;
+}
+
+/* ── F2: Cuadrada — plano medio, esquina superior ── */
+.img-f2 {
+    width: 168px; height: 168px;
+    top: 2%; right: 4%;
+    box-shadow:
+        0 18px 52px rgba(0,0,0,0.40),
+        0 7px 18px rgba(0,0,0,0.24);
+    animation: float-f2 11s ease-in-out infinite;
+    z-index: 3;
+    opacity: 0.92;
+}
+
+/* ── F3: Retrato pequeño — plano medio, inferior derecha ── */
+.img-f3 {
+    width: 136px; height: 178px;
+    bottom: 4%; right: 5%;
+    box-shadow:
+        0 14px 42px rgba(0,0,0,0.36),
+        0 5px 14px rgba(0,0,0,0.20);
+    animation: float-f3 8s ease-in-out infinite 1.4s;
+    z-index: 3;
+    opacity: 0.90;
+}
+
+/* ── F4: Cuadrada — fondo, inferior izquierda ── */
+.img-f4 {
+    width: 146px; height: 146px;
+    bottom: 7%; left: 1%;
+    box-shadow:
+        0 12px 34px rgba(0,0,0,0.30),
+        0 4px 12px rgba(0,0,0,0.18);
+    animation: float-f4 10s ease-in-out infinite 2.8s;
+    z-index: 2;
+    opacity: 0.82;
+}
+
+/* ── F5: Miniatura — flota en el vacío central ── */
+.img-f5 {
+    width: 110px; height: 110px;
+    top: 56%; left: 41%;
+    box-shadow:
+        0 10px 28px rgba(0,0,0,0.28),
+        0 4px 10px rgba(0,0,0,0.16);
+    animation: float-f5 12s ease-in-out infinite 1.8s;
+    z-index: 5;
+    opacity: 0.88;
+}
+
+/* ═══════════════════════════════════════════════════════
+   KEYFRAMES — Rotación fija por imagen + translateY flotante
+   Cada imagen mantiene su ángulo durante toda la animación
+   ═══════════════════════════════════════════════════════ */
+
+@keyframes float-f1 {
+    0%, 100% { transform: rotate(-4deg) translateY(0px); }
+    50%       { transform: rotate(-4deg) translateY(-18px); }
+}
+
+@keyframes float-f2 {
+    0%, 100% { transform: rotate(5deg) translateY(-6px); }
+    50%       { transform: rotate(5deg) translateY(11px); }
+}
+
+@keyframes float-f3 {
+    0%, 100% { transform: rotate(-6deg) translateY(0px); }
+    38%       { transform: rotate(-6deg) translateY(-15px); }
+    72%       { transform: rotate(-6deg) translateY(5px); }
+}
+
+@keyframes float-f4 {
+    0%, 100% { transform: rotate(3deg) translateY(-10px); }
+    50%       { transform: rotate(3deg) translateY(9px); }
+}
+
+@keyframes float-f5 {
+    0%, 100% { transform: rotate(-2deg) translateY(0px); }
+    50%       { transform: rotate(-2deg) translateY(-20px); }
+}
+
+/* ── Respeto por preferencias de movimiento reducido ── */
+@media (prefers-reduced-motion: reduce) {
+    .hero-float-img { animation: none !important; }
+}
+</style>
+
 <script>
 (function () {
     var counters = document.querySelectorAll('[data-counter]');
