@@ -1,0 +1,172 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Usuarios registrados{% endblock %}
+{% block topbar_titulo %}Usuarios registrados{% endblock %}
+
+{% block contenido %}
+
+<!-- Encabezado + buscador -->
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+        <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0;">Usuarios del sistema</h5>
+        <p style="color: var(--color-gray); font-size: 0.88rem; margin: 0;">{{ total }} usuario{{ total|pluralize }} registrado{{ total|pluralize }}</p>
+    </div>
+    <form method="GET" class="d-flex gap-2" style="min-width: 260px;">
+        <div class="input-group input-group-sm">
+            <span class="input-group-text" style="background: white; border-color: #E5E7EB;">
+                <i class="bi bi-search" style="color: var(--color-gray);"></i>
+            </span>
+            <input type="text" name="q" value="{{ q }}"
+                   class="form-control" placeholder="Buscar por nombre, correo..."
+                   style="border-color: #E5E7EB; border-left: none;">
+            {% if q %}
+            <a href="{% url 'dashboard:usuarios' %}" class="btn btn-outline-secondary btn-sm" title="Limpiar búsqueda">
+                <i class="bi bi-x"></i>
+            </a>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+    </form>
+</div>
+
+
+<!-- Tabla de usuarios -->
+<div class="card border-0" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" style="font-size: 0.88rem;">
+                <thead>
+                    <tr style="background: #F9FAFB; border-bottom: 2px solid #E5E7EB;">
+                        <th style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;">Usuario</th>
+                        <th style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Correo</th>
+                        <th class="text-center" style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Solicitudes</th>
+                        <th class="text-center" style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Donaciones</th>
+                        <th style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;">Registro</th>
+                        <th class="text-center" style="padding: 0.9rem 1.25rem; font-weight: 600; color: var(--color-gray); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">Rol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usr in usuarios %}
+                    <tr style="border-bottom: 1px solid #F3F4F6; transition: background 0.15s;">
+                        <!-- Avatar + nombre -->
+                        <td style="padding: 0.9rem 1.25rem; vertical-align: middle;">
+                            <div class="d-flex align-items-center gap-3">
+                                <div style="width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--color-primary);">
+                                    {% if usr.perfil.foto %}
+                                        <img src="{{ usr.perfil.foto.url }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ usr.username }}">
+                                    {% else %}
+                                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                            <span style="color: white; font-weight: 700; font-size: 0.9rem;">{{ usr.username|first|upper }}</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--color-dark);">
+                                        {% if usr.first_name %}{{ usr.first_name }} {{ usr.last_name }}{% else %}{{ usr.username }}{% endif %}
+                                    </div>
+                                    {% if usr.first_name %}
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">@{{ usr.username }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Correo -->
+                        <td style="padding: 0.9rem 1.25rem; vertical-align: middle; color: var(--color-gray);">
+                            {{ usr.email|default:"—" }}
+                        </td>
+
+                        <!-- Solicitudes -->
+                        <td class="text-center" style="padding: 0.9rem 1.25rem; vertical-align: middle;">
+                            {% with cnt=usr.solicitudadopcion_set.count %}
+                            {% if cnt > 0 %}
+                                <span style="background: rgba(92,138,60,0.1); color: var(--color-primary); font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; font-size: 0.82rem;">{{ cnt }}</span>
+                            {% else %}
+                                <span style="color: var(--color-gray-light);">—</span>
+                            {% endif %}
+                            {% endwith %}
+                        </td>
+
+                        <!-- Donaciones -->
+                        <td class="text-center" style="padding: 0.9rem 1.25rem; vertical-align: middle;">
+                            {% with cnt=usr.donacion_set.count %}
+                            {% if cnt > 0 %}
+                                <span style="background: rgba(255,107,53,0.1); color: var(--color-accent); font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; font-size: 0.82rem;">{{ cnt }}</span>
+                            {% else %}
+                                <span style="color: var(--color-gray-light);">—</span>
+                            {% endif %}
+                            {% endwith %}
+                        </td>
+
+                        <!-- Fecha registro -->
+                        <td style="padding: 0.9rem 1.25rem; vertical-align: middle; color: var(--color-gray); white-space: nowrap;">
+                            {{ usr.date_joined|date:"d/m/Y" }}
+                        </td>
+
+                        <!-- Rol -->
+                        <td class="text-center" style="padding: 0.9rem 1.25rem; vertical-align: middle;">
+                            {% if usr.is_staff %}
+                                <span style="background: rgba(255,107,53,0.12); color: var(--color-accent); font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase;">Admin</span>
+                            {% else %}
+                                <span style="background: #F3F4F6; color: var(--color-gray); font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase;">Usuario</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5" style="color: var(--color-gray);">
+                            <i class="bi bi-people" style="font-size: 2.5rem; display: block; margin-bottom: 0.75rem; color: var(--color-gray-light);"></i>
+                            {% if q %}
+                                No se encontraron usuarios con "<strong>{{ q }}</strong>".
+                                <br><a href="{% url 'dashboard:usuarios' %}" style="color: var(--color-primary);">Ver todos los usuarios</a>
+                            {% else %}
+                                Aún no hay usuarios registrados.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Paginación -->
+{% if usuarios.has_other_pages %}
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Paginación de usuarios">
+        <ul class="pagination pagination-sm mb-0">
+            {% if usuarios.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ usuarios.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in usuarios.paginator.page_range %}
+                {% if usuarios.number == num %}
+                <li class="page-item active">
+                    <span class="page-link" style="background: var(--color-primary); border-color: var(--color-primary);">{{ num }}</span>
+                </li>
+                {% elif num > usuarios.number|add:'-3' and num < usuarios.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?pagina={{ num }}{% if q %}&q={{ q }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if usuarios.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{ usuarios.next_page_number }}{% if q %}&q={{ q }}{% endif %}">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -162,6 +162,12 @@
                 {% endif %}
             </a>
 
+            <div class="sidebar-section mt-2">Usuarios</div>
+            <a href="{% url 'dashboard:usuarios' %}"
+                class="sidebar-link {% if 'usuario' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-people"></i> Usuarios registrados
+            </a>
+
             <div class="sidebar-section mt-2">Sistema</div>
             <a href="{% url 'institucional:inicio' %}" class="sidebar-link">
                 <i class="bi bi-eye"></i> Ver sitio web

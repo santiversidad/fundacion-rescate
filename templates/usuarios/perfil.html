@@ -5,190 +5,493 @@
 
 {% block contenido %}
 
-<!-- =============================================
-    HEADER DEL PERFIL
-    Fondo oscuro con foto y datos del usuario
-    ============================================= -->
-<section style="
-    background-color: var(--color-dark);
-    padding: 4rem 0 6rem;">
-    <div class="container">
-        <div class="d-flex align-items-center gap-4 flex-wrap">
+<!-- ============================================================
+     HEADER DEL PERFIL
+     Fondo degradado oscuro-verde con avatar, nombre y rol
+     ============================================================ -->
+<section style="background: linear-gradient(135deg, var(--color-dark) 0%, #1d3a0d 100%); padding: 3.5rem 0 5.5rem; position: relative; overflow: hidden;">
 
-            <!-- Foto de perfil -->
-            <div style="
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                overflow: hidden;
-                border: 3px solid var(--color-primary);
-                flex-shrink: 0;">
-                {% if user.perfil.foto %}
-                    <img src="{{ user.perfil.foto.url }}"
-                        style="width: 100%; height: 100%; object-fit: cover;"
-                        alt="{{ user.username }}">
-                {% else %}
-                    <div style="
-                        width: 100%;
-                        height: 100%;
-                        background: var(--color-primary);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;">
-                        <i class="bi bi-person-fill" style="font-size: 3rem; color: white;"></i>
-                    </div>
-                {% endif %}
+    <!-- Círculos decorativos de fondo -->
+    <div aria-hidden="true" style="position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(255,255,255,0.03);"></div>
+    <div aria-hidden="true" style="position: absolute; bottom: -40px; left: 10%; width: 180px; height: 180px; border-radius: 50%; background: rgba(92,138,60,0.07);"></div>
+
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="row align-items-center g-4">
+
+            <!-- Avatar -->
+            <div class="col-auto">
+                <div style="width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid var(--color-primary); box-shadow: 0 0 0 5px rgba(92,138,60,0.2); flex-shrink: 0;">
+                    {% if user.perfil.foto %}
+                        <img src="{{ user.perfil.foto.url }}"
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             alt="{{ user.username }}">
+                    {% else %}
+                        <div style="width: 100%; height: 100%; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person-fill" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
-            <!-- Datos -->
-            <div>
+            <!-- Info principal -->
+            <div class="col">
                 <span class="section-label" style="color: var(--color-primary);">Mi cuenta</span>
-                <h1 style="
-                    font-family: var(--font-title);
-                    font-weight: 700;
-                    color: white;
-                    font-size: 2.5rem;
-                    margin-bottom: 0.3rem;">
-                    {{ user.username }}
+                <h1 style="font-family: var(--font-title); font-weight: 700; color: white; font-size: 2rem; margin-bottom: 0.4rem; line-height: 1.2;">
+                    {% if user.first_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
                 </h1>
-                <p style="color: rgba(255,255,255,0.6); margin: 0;">
-                    {{ user.email }}
+                <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+                    {% if user.is_staff %}
+                        <span style="background: var(--color-accent); color: var(--color-dark); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.75rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="bi bi-shield-fill me-1"></i>Administrador
+                        </span>
+                    {% else %}
+                        <span style="background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.75rem; border-radius: 50px;">
+                            <i class="bi bi-person-check me-1"></i>Usuario registrado
+                        </span>
+                    {% endif %}
+                    <span style="color: rgba(255,255,255,0.45); font-size: 0.82rem;">
+                        <i class="bi bi-calendar3 me-1"></i>Miembro desde {{ user.date_joined|date:"F Y" }}
+                    </span>
+                </div>
+                <p style="color: rgba(255,255,255,0.5); margin: 0; font-size: 0.9rem;">
+                    <i class="bi bi-envelope me-1"></i>{{ user.email }}
                 </p>
-                <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin: 0.3rem 0 0;">
-                    Miembro desde {{ user.date_joined|date:"d/m/Y" }}
-                </p>
+            </div>
+
+            <!-- Botón editar -->
+            <div class="col-auto">
+                <a href="{% url 'usuarios:editar_perfil' %}"
+                   class="btn btn-sm"
+                   style="border: 1.5px solid rgba(255,255,255,0.25); color: white; background: rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.5rem 1.2rem; font-weight: 500; transition: var(--transition);">
+                    <i class="bi bi-pencil-square me-1"></i>Editar perfil
+                </a>
             </div>
 
         </div>
     </div>
 </section>
 
-<!-- Onda: oscuro → crema -->
-<div style="background-color: var(--color-dark); margin-bottom: -1px;">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
-        style="height: 60px; width: 100%; display: block;">
-        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
-                fill="#F9F6F0"/>
+<!-- Onda transición oscuro → crema -->
+<div style="background: linear-gradient(135deg, var(--color-dark) 0%, #1d3a0d 100%); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 55px; width: 100%; display: block;" aria-hidden="true">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z" fill="#F9F6F0"/>
     </svg>
 </div>
 
-<!-- =============================================
-    ACCIONES DEL PERFIL
-    Fondo crema con cards de acciones
-    ============================================= -->
-<section style="background-color: var(--color-light); padding: 4rem 0 5rem;">
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL
+     Fondo crema con tarjetas de resumen y secciones de detalle
+     ============================================================ -->
+<section style="background-color: var(--color-light); padding: 3rem 0 5rem;">
     <div class="container">
 
-        <div class="row g-4 justify-content-center">
+        <!-- ── TARJETAS DE RESUMEN ── -->
+        <div class="row g-3 mb-5">
 
-            <!-- Mis solicitudes -->
-            <div class="col-md-5">
-                <div style="
-                    background: white;
-                    border-radius: var(--radius);
-                    padding: 2.5rem;
-                    box-shadow: var(--shadow-sm);
-                    transition: var(--transition);
-                    height: 100%;"
-                    onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
-                    <div style="
-                        width: 60px;
-                        height: 60px;
-                        background: rgba(92,138,60,0.1);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 1.5rem;">
-                        <i class="bi bi-house-heart-fill"
-                            style="font-size: 1.5rem; color: var(--color-primary);"></i>
+            <!-- Solicitudes -->
+            <div class="col-6 col-lg-3">
+                <div class="card h-100 border-0 text-center card-hover" style="border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem 1rem;">
+                    <div style="width: 52px; height: 52px; background: rgba(92,138,60,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem;">
+                        <i class="bi bi-house-heart-fill" style="font-size: 1.4rem; color: var(--color-primary);"></i>
                     </div>
-                    <span class="section-label">Adopciones</span>
-                    <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
-                        Mis solicitudes
-                    </h5>
-                    <p style="color: var(--color-gray); margin-bottom: 1.5rem; font-size: 0.95rem;">
-                        Revisa el estado de tus solicitudes de adopción y las observaciones del equipo.
-                    </p>
-                    <a href="{% url 'adopciones:mis_solicitudes' %}"
-                        class="btn btn-primary w-100">
-                        Ver solicitudes
-                    </a>
+                    <div style="font-size: 2rem; font-family: var(--font-title); font-weight: 700; color: var(--color-dark); line-height: 1;">
+                        {{ user.solicitudadopcion_set.count }}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--color-gray); margin-top: 0.3rem; font-weight: 500;">Solicitudes</div>
                 </div>
             </div>
 
-            <!-- Mis donaciones -->
-            <div class="col-md-5">
-                <div style="
-                    background: white;
-                    border-radius: var(--radius);
-                    padding: 2.5rem;
-                    box-shadow: var(--shadow-sm);
-                    transition: var(--transition);
-                    height: 100%;"
-                    onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
-                    <div style="
-                        width: 60px;
-                        height: 60px;
-                        background: rgba(92,138,60,0.1);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 1.5rem;">
-                        <i class="bi bi-gift-fill"
-                            style="font-size: 1.5rem; color: var(--color-primary);"></i>
+            <!-- Donaciones -->
+            <div class="col-6 col-lg-3">
+                <div class="card h-100 border-0 text-center card-hover" style="border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem 1rem;">
+                    <div style="width: 52px; height: 52px; background: rgba(255,107,53,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem;">
+                        <i class="bi bi-gift-fill" style="font-size: 1.4rem; color: var(--color-accent);"></i>
                     </div>
-                    <span class="section-label">Donaciones</span>
-                    <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
-                        Mis donaciones
-                    </h5>
-                    <p style="color: var(--color-gray); margin-bottom: 1.5rem; font-size: 0.95rem;">
-                        Revisa el historial y estado de verificación de tus donaciones,
-                        y descarga tus recibos oficiales.                        
-                    </p>
-                    <a href="{% url 'donaciones:mis_donaciones' %}"
-                        class="btn btn-primary w-100">
-                        Ver donaciones
-                    </a>
+                    <div style="font-size: 2rem; font-family: var(--font-title); font-weight: 700; color: var(--color-dark); line-height: 1;">
+                        {{ user.donacion_set.count }}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--color-gray); margin-top: 0.3rem; font-weight: 500;">Donaciones</div>
+                </div>
+            </div>
+
+            <!-- Eventos -->
+            <div class="col-6 col-lg-3">
+                <div class="card h-100 border-0 text-center card-hover" style="border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem 1rem;">
+                    <div style="width: 52px; height: 52px; background: rgba(59,130,246,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem;">
+                        <i class="bi bi-calendar-check-fill" style="font-size: 1.4rem; color: #3B82F6;"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-family: var(--font-title); font-weight: 700; color: var(--color-dark); line-height: 1;">
+                        {{ user.inscripcionevento_set.count }}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--color-gray); margin-top: 0.3rem; font-weight: 500;">Eventos</div>
+                </div>
+            </div>
+
+            <!-- Estado del perfil -->
+            <div class="col-6 col-lg-3">
+                <div class="card h-100 border-0 text-center card-hover" style="border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem 1rem;">
+                    <div style="width: 52px; height: 52px; background: rgba(16,185,129,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem;">
+                        <i class="bi bi-patch-check-fill" style="font-size: 1.4rem; color: #10B981;"></i>
+                    </div>
+                    <div style="font-size: 1.1rem; font-family: var(--font-title); font-weight: 700; color: var(--color-dark); line-height: 1; margin-top: 0.3rem;">
+                        {% if user.perfil.foto and user.perfil.bio %}
+                            Completo
+                        {% elif user.perfil.bio or user.perfil.foto %}
+                            Incompleto
+                        {% else %}
+                            Básico
+                        {% endif %}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--color-gray); margin-top: 0.3rem; font-weight: 500;">Perfil</div>
                 </div>
             </div>
 
         </div>
+        <!-- /tarjetas resumen -->
 
-        <!-- Cerrar sesión -->
-        <div class="text-center mt-5">
-            <a href="{% url 'usuarios:logout' %}"
-                style="
-                color: var(--color-gray);
-                font-size: 0.85rem;
-                text-decoration: none;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                font-weight: 500;
-                transition: var(--transition);"
-                onmouseover="this.style.color='var(--color-dark)'"
-                onmouseout="this.style.color='var(--color-gray)'">
-                <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
-            </a>
-            <span style="color: var(--color-gray-light); margin: 0 1rem;">|</span>
-            <a href="https://accounts.google.com/AccountChooser"
-                target="_blank"
-                style="
-                color: var(--color-gray);
-                font-size: 0.85rem;
-                text-decoration: none;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                font-weight: 500;
-                transition: var(--transition);"
-                onmouseover="this.style.color='var(--color-dark)'"
-                onmouseout="this.style.color='var(--color-gray)'">
-                <i class="bi bi-google me-2"></i>Cambiar cuenta
-            </a>
+
+        <!-- ── GRID PRINCIPAL: izquierda ancha + derecha lateral ── -->
+        <div class="row g-4">
+
+            <!-- ─── COLUMNA IZQUIERDA (col-lg-8) ─── -->
+            <div class="col-lg-8">
+
+                <!-- Información personal -->
+                <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 2rem;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <span class="section-label">Cuenta</span>
+                                <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0;">Información personal</h5>
+                            </div>
+                            <a href="{% url 'usuarios:editar_perfil' %}" class="btn btn-sm btn-outline-secondary" style="font-size: 0.8rem;">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.9rem 1rem;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-gray); font-weight: 600; margin-bottom: 0.2rem;">Usuario</div>
+                                    <div style="font-weight: 600; color: var(--color-dark);">{{ user.username }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.9rem 1rem;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-gray); font-weight: 600; margin-bottom: 0.2rem;">Correo</div>
+                                    <div style="font-weight: 600; color: var(--color-dark); word-break: break-all;">{{ user.email }}</div>
+                                </div>
+                            </div>
+                            {% if user.first_name %}
+                            <div class="col-sm-6">
+                                <div style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.9rem 1rem;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-gray); font-weight: 600; margin-bottom: 0.2rem;">Nombre</div>
+                                    <div style="font-weight: 600; color: var(--color-dark);">{{ user.first_name }} {{ user.last_name }}</div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-sm-6">
+                                <div style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.9rem 1rem;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-gray); font-weight: 600; margin-bottom: 0.2rem;">Miembro desde</div>
+                                    <div style="font-weight: 600; color: var(--color-dark);">{{ user.date_joined|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if user.perfil.bio %}
+                        <div class="mt-3">
+                            <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-gray); font-weight: 600; margin-bottom: 0.5rem;">Sobre mí</div>
+                            <p style="color: var(--color-gray); margin: 0; line-height: 1.7; font-size: 0.95rem;">{{ user.perfil.bio }}</p>
+                        </div>
+                        {% else %}
+                        <div class="mt-3 d-flex align-items-center gap-2" style="background: rgba(92,138,60,0.06); border-radius: var(--radius-sm); padding: 0.8rem 1rem; border-left: 3px solid var(--color-primary);">
+                            <i class="bi bi-info-circle" style="color: var(--color-primary);"></i>
+                            <span style="font-size: 0.88rem; color: var(--color-gray);">Agrega una biografía para completar tu perfil.
+                                <a href="{% url 'usuarios:editar_perfil' %}" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Editar ahora</a>
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- /información personal -->
+
+                <!-- Participación: Solicitudes -->
+                <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 2rem;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <span class="section-label">Adopciones</span>
+                                <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0;">Mis solicitudes</h5>
+                            </div>
+                            <a href="{% url 'adopciones:mis_solicitudes' %}" class="btn btn-sm btn-primary" style="font-size: 0.8rem;">
+                                Ver todas
+                            </a>
+                        </div>
+
+                        {% with solicitudes=user.solicitudadopcion_set.all %}
+                        {% if solicitudes %}
+                            <div class="d-flex flex-column gap-2">
+                            {% for sol in solicitudes|slice:":4" %}
+                                <div class="d-flex align-items-center justify-content-between" style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(92,138,60,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <i class="bi bi-house-heart" style="color: var(--color-primary); font-size: 1rem;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-dark);">
+                                                {{ sol.mascota.nombre }}
+                                            </div>
+                                            <div style="font-size: 0.78rem; color: var(--color-gray);">
+                                                {{ sol.fecha_solicitud|date:"d/m/Y" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.3px;
+                                        {% if sol.estado == 'aprobada' %}background:#D1FAE5;color:#065F46;
+                                        {% elif sol.estado == 'rechazada' %}background:#FEE2E2;color:#991B1B;
+                                        {% elif sol.estado == 'en_revision' %}background:#DBEAFE;color:#1E40AF;
+                                        {% else %}background:#FEF3C7;color:#92400E;{% endif %}">
+                                        {{ sol.get_estado_display }}
+                                    </span>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-house-heart" style="font-size: 2.5rem; color: var(--color-gray-light);"></i>
+                                <p style="color: var(--color-gray); margin: 0.75rem 0 1rem; font-size: 0.9rem;">Aún no has realizado solicitudes de adopción.</p>
+                                <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary btn-sm">Ver mascotas disponibles</a>
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <!-- /solicitudes -->
+
+                <!-- Participación: Donaciones -->
+                <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 2rem;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <span class="section-label">Apoyo económico</span>
+                                <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0;">Mis donaciones</h5>
+                            </div>
+                            <a href="{% url 'donaciones:mis_donaciones' %}" class="btn btn-sm btn-primary" style="font-size: 0.8rem;">
+                                Ver todas
+                            </a>
+                        </div>
+
+                        {% with donaciones=user.donacion_set.all %}
+                        {% if donaciones %}
+                            <div class="d-flex flex-column gap-2">
+                            {% for don in donaciones|slice:":4" %}
+                                <div class="d-flex align-items-center justify-content-between" style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(255,107,53,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <i class="bi bi-gift" style="color: var(--color-accent); font-size: 1rem;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-dark);">
+                                                ${{ don.monto }}
+                                            </div>
+                                            <div style="font-size: 0.78rem; color: var(--color-gray);">
+                                                {{ don.fecha_donacion|date:"d/m/Y" }} · {{ don.get_metodo_display }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.3px;
+                                        {% if don.estado == 'verificada' %}background:#D1FAE5;color:#065F46;
+                                        {% elif don.estado == 'rechazada' %}background:#FEE2E2;color:#991B1B;
+                                        {% else %}background:#FEF3C7;color:#92400E;{% endif %}">
+                                        {{ don.get_estado_display }}
+                                    </span>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-gift" style="font-size: 2.5rem; color: var(--color-gray-light);"></i>
+                                <p style="color: var(--color-gray); margin: 0.75rem 0 1rem; font-size: 0.9rem;">Aún no has registrado donaciones.</p>
+                                <a href="{% url 'donaciones:nueva' %}" class="btn btn-primary btn-sm">Hacer una donación</a>
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <!-- /donaciones -->
+
+                <!-- Participación: Eventos -->
+                {% with eventos_inscritos=user.inscripcionevento_set.all %}
+                {% if eventos_inscritos %}
+                <div class="card border-0" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 2rem;">
+                        <span class="section-label">Comunidad</span>
+                        <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem;">Eventos inscritos</h5>
+                        <div class="d-flex flex-column gap-2">
+                        {% for insc in eventos_inscritos|slice:":4" %}
+                            <div class="d-flex align-items-center gap-3" style="background: var(--color-light); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                                <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-calendar-check" style="color: #3B82F6; font-size: 1rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-dark);">{{ insc.evento.nombre }}</div>
+                                    <div style="font-size: 0.78rem; color: var(--color-gray);">Inscrito el {{ insc.fecha|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endwith %}
+
+            </div>
+            <!-- /columna izquierda -->
+
+
+            <!-- ─── COLUMNA DERECHA (col-lg-4) ─── -->
+            <div class="col-lg-4">
+
+                <!-- Timeline de actividad reciente -->
+                <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 1.75rem;">
+                        <span class="section-label">Historial</span>
+                        <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1.25rem;">Actividad reciente</h6>
+
+                        {% with sol_rec=user.solicitudadopcion_set.all don_rec=user.donacion_set.all ev_rec=user.inscripcionevento_set.all %}
+                        {% if sol_rec or don_rec or ev_rec %}
+                        <div style="position: relative; padding-left: 1.5rem;">
+
+                            <!-- Línea vertical -->
+                            <div style="position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: var(--color-gray-light);"></div>
+
+                            {% for sol in sol_rec|slice:":2" %}
+                            <div class="d-flex gap-2 mb-3" style="position: relative;">
+                                <div style="position: absolute; left: -1.5rem; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-primary); border: 2px solid white; box-shadow: 0 0 0 2px var(--color-primary); flex-shrink: 0; z-index: 1;"></div>
+                                <div>
+                                    <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-dark);">Solicitud de adopción</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">{{ sol.mascota.nombre }} · {{ sol.fecha_solicitud|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            {% for don in don_rec|slice:":2" %}
+                            <div class="d-flex gap-2 mb-3" style="position: relative;">
+                                <div style="position: absolute; left: -1.5rem; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-accent); border: 2px solid white; box-shadow: 0 0 0 2px var(--color-accent); flex-shrink: 0; z-index: 1;"></div>
+                                <div>
+                                    <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-dark);">Donación registrada</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">${{ don.monto }} · {{ don.fecha_donacion|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            {% for insc in ev_rec|slice:":2" %}
+                            <div class="d-flex gap-2 mb-3" style="position: relative;">
+                                <div style="position: absolute; left: -1.5rem; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #3B82F6; border: 2px solid white; box-shadow: 0 0 0 2px #3B82F6; flex-shrink: 0; z-index: 1;"></div>
+                                <div>
+                                    <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-dark);">Inscripción a evento</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">{{ insc.evento.nombre }} · {{ insc.fecha|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="d-flex gap-2 mb-1" style="position: relative;">
+                                <div style="position: absolute; left: -1.5rem; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-gray-light); border: 2px solid white; flex-shrink: 0; z-index: 1;"></div>
+                                <div>
+                                    <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-dark);">Cuenta creada</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">{{ user.date_joined|date:"d/m/Y" }}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% else %}
+                        <div class="text-center py-3">
+                            <i class="bi bi-clock-history" style="font-size: 2rem; color: var(--color-gray-light);"></i>
+                            <p style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 0;">Aún no hay actividad registrada.</p>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+
+                    </div>
+                </div>
+                <!-- /timeline -->
+
+                <!-- Configuración / Acciones de cuenta -->
+                <div class="card border-0" id="settings" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                    <div class="card-body" style="padding: 1.75rem;">
+                        <span class="section-label">Configuración</span>
+                        <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1.25rem;">Gestión de cuenta</h6>
+
+                        <div class="d-flex flex-column gap-2">
+
+                            <a href="{% url 'usuarios:editar_perfil' %}"
+                               class="d-flex align-items-center gap-3 text-decoration-none"
+                               style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--color-light); transition: var(--transition); color: var(--color-dark);">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(92,138,60,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-person-gear" style="color: var(--color-primary);"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.88rem;">Editar perfil</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">Foto, nombre y biografía</div>
+                                </div>
+                                <i class="bi bi-chevron-right ms-auto" style="color: var(--color-gray-light);"></i>
+                            </a>
+
+                            <a href="{% url 'account_change_password' %}"
+                               class="d-flex align-items-center gap-3 text-decoration-none"
+                               style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--color-light); transition: var(--transition); color: var(--color-dark);">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-lock" style="color: #3B82F6;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.88rem;">Cambiar contraseña</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">Seguridad de la cuenta</div>
+                                </div>
+                                <i class="bi bi-chevron-right ms-auto" style="color: var(--color-gray-light);"></i>
+                            </a>
+
+                            <a href="https://accounts.google.com/AccountChooser"
+                               target="_blank" rel="noopener"
+                               class="d-flex align-items-center gap-3 text-decoration-none"
+                               style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--color-light); transition: var(--transition); color: var(--color-dark);">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(234,67,53,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-google" style="color: #EA4335;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.88rem;">Cambiar cuenta Google</div>
+                                    <div style="font-size: 0.76rem; color: var(--color-gray);">Gestionar conexión OAuth</div>
+                                </div>
+                                <i class="bi bi-box-arrow-up-right ms-auto" style="color: var(--color-gray-light); font-size: 0.8rem;"></i>
+                            </a>
+
+                            <div style="border-top: 1px solid var(--color-gray-light); margin: 0.5rem 0;"></div>
+
+                            <a href="{% url 'usuarios:logout' %}"
+                               class="d-flex align-items-center gap-3 text-decoration-none"
+                               style="padding: 0.75rem; border-radius: var(--radius-sm); background: #FFF5F5; transition: var(--transition); color: #991B1B;">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="bi bi-box-arrow-right" style="color: #EF4444;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.88rem;">Cerrar sesión</div>
+                                    <div style="font-size: 0.76rem; color: #EF4444; opacity: 0.7;">Salir de tu cuenta</div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /configuración -->
+
+            </div>
+            <!-- /columna derecha -->
+
         </div>
+        <!-- /grid principal -->
 
     </div>
 </section>
