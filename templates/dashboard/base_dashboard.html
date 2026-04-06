@@ -155,11 +155,17 @@
                 <i class="bi bi-envelope"></i> Mensajes
                 {% if mensajes_no_leidos %}
                     <span style="margin-left: auto; background: #EF4444; color: white;
-                                 font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem;
-                                 border-radius: 50px; line-height: 1.6;">
+                                font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem;
+                                border-radius: 50px; line-height: 1.6;">
                         {{ mensajes_no_leidos }}
                     </span>
                 {% endif %}
+            </a>
+
+            <div class="sidebar-section mt-2">Usuarios</div>
+            <a href="{% url 'dashboard:usuarios' %}"
+                class="sidebar-link {% if 'usuario' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="bi bi-people"></i> Usuarios registrados
             </a>
 
             <div class="sidebar-section mt-2">Sistema</div>

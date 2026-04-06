@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from .decorators import admin_requerido
@@ -462,3 +463,24 @@ def marcar_mensaje_leido(request, pk):
     mensaje.leido = True
     mensaje.save()
     return render(request, 'dashboard/detalle_mensaje.html', {'mensaje': mensaje})
+
+
+@admin_requerido
+def usuarios(request):
+    q = request.GET.get('q', '').strip()
+    lista = User.objects.select_related('perfil').prefetch_related(
+        'solicitudadopcion_set', 'donacion_set'
+    ).order_by('-date_joined')
+    if q:
+        from django.db.models import Q
+        lista = lista.filter(
+            Q(username__icontains=q) | Q(email__icontains=q) |
+            Q(first_name__icontains=q) | Q(last_name__icontains=q)
+        )
+    paginador = Paginator(lista, 20)
+    pagina = paginador.get_page(request.GET.get('pagina', 1))
+    return render(request, 'dashboard/usuarios.html', {
+        'usuarios': pagina,
+        'q': q,
+        'total': User.objects.count(),
+    })

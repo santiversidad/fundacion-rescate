@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Editar perfil — Fundación Rescate Animal{% endblock %}
+
+{% block contenido %}
+
+<!-- Header -->
+<section style="background: linear-gradient(135deg, var(--color-dark) 0%, #1d3a0d 100%); padding: 3rem 0 5rem;">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-3" style="background: none; padding: 0;">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'usuarios:perfil' %}" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem;">
+                        <i class="bi bi-person me-1"></i>Mi perfil
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" style="color: rgba(255,255,255,0.8); font-size: 0.85rem;">Editar</li>
+            </ol>
+        </nav>
+        <span class="section-label" style="color: var(--color-primary);">Configuración</span>
+        <h1 style="font-family: var(--font-title); font-weight: 700; color: white; font-size: 1.8rem; margin: 0;">Editar perfil</h1>
+    </div>
+</section>
+
+<div style="background-color: var(--color-dark); margin-bottom: -1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 50px; width: 100%; display: block;" aria-hidden="true">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z" fill="#F9F6F0"/>
+    </svg>
+</div>
+
+<section style="background-color: var(--color-light); padding: 3rem 0 5rem;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success d-flex align-items-center gap-2 mb-4" style="border-radius: var(--radius-sm);">
+                        <i class="bi bi-check-circle-fill"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Datos de cuenta -->
+                    <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                        <div class="card-body" style="padding: 2rem;">
+                            <span class="section-label">Cuenta</span>
+                            <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1.5rem;">Información personal</h5>
+
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="form-label" style="font-weight: 600; font-size: 0.88rem; color: var(--color-dark);">
+                                        {{ user_form.first_name.label }}
+                                    </label>
+                                    {{ user_form.first_name }}
+                                    {% for error in user_form.first_name.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label" style="font-weight: 600; font-size: 0.88rem; color: var(--color-dark);">
+                                        {{ user_form.last_name.label }}
+                                    </label>
+                                    {{ user_form.last_name }}
+                                    {% for error in user_form.last_name.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" style="font-weight: 600; font-size: 0.88rem; color: var(--color-dark);">
+                                        {{ user_form.email.label }}
+                                    </label>
+                                    {{ user_form.email }}
+                                    {% for error in user_form.email.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perfil -->
+                    <div class="card border-0 mb-4" style="border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                        <div class="card-body" style="padding: 2rem;">
+                            <span class="section-label">Perfil público</span>
+                            <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1.5rem;">Foto y biografía</h5>
+
+                            <!-- Foto actual -->
+                            <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
+                                <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--color-primary); flex-shrink: 0;">
+                                    {% if user.perfil.foto %}
+                                        <img src="{{ user.perfil.foto.url }}" style="width: 100%; height: 100%; object-fit: cover;" alt="Foto actual">
+                                    {% else %}
+                                        <div style="width: 100%; height: 100%; background: var(--color-primary); display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-person-fill" style="font-size: 2rem; color: white;"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <label class="form-label mb-1" style="font-weight: 600; font-size: 0.88rem; color: var(--color-dark);">
+                                        {{ perfil_form.foto.label }}
+                                    </label>
+                                    {{ perfil_form.foto }}
+                                    <div class="form-text" style="color: var(--color-gray); font-size: 0.78rem;">JPG o PNG. Máximo 5 MB.</div>
+                                    {% for error in perfil_form.foto.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label" style="font-weight: 600; font-size: 0.88rem; color: var(--color-dark);">
+                                    {{ perfil_form.bio.label }}
+                                </label>
+                                {{ perfil_form.bio }}
+                                {% for error in perfil_form.bio.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="d-flex gap-3 justify-content-end flex-wrap">
+                        <a href="{% url 'usuarios:perfil' %}" class="btn btn-outline-secondary" style="border-radius: var(--radius-sm);">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary" style="border-radius: var(--radius-sm); padding: 0.65rem 2rem;">
+                            <i class="bi bi-check-lg me-1"></i>Guardar cambios
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Estilo Bootstrap para los campos del form
+document.querySelectorAll('.card-body input[type="text"], .card-body input[type="email"], .card-body textarea').forEach(function(el) {
+    el.classList.add('form-control');
+    el.style.borderRadius = 'var(--radius-sm)';
+    el.style.borderColor = '#E5E7EB';
+    el.style.padding = '0.7rem 1rem';
+});
+document.querySelectorAll('.card-body input[type="file"]').forEach(function(el) {
+    el.classList.add('form-control');
+});
+</script>
+{% endblock %}
