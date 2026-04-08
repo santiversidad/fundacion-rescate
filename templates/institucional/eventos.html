@@ -2,401 +2,278 @@
 {% load static %}
 
 {% block titulo %}Eventos — Fundación Rescate Animal{% endblock %}
-
 {% block meta_description %}Únete a nuestros eventos de adopción, charlas y actividades comunitarias. Próximos eventos de Fundación Rescate Animal.{% endblock %}
 {% block og_description %}Únete a nuestros eventos de adopción, charlas y actividades comunitarias. Próximos eventos de Fundación Rescate Animal.{% endblock %}
 
 {% block contenido %}
+<style>
+/* ── Tarjetas de evento ─────────────────────────────── */
+.ev-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    height: 100%;
+}
+.ev-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+.ev-card-past {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    opacity: 0.72;
+    height: 100%;
+}
+.ev-card-body { padding: 1.5rem; }
 
-<!-- =============================================
-    HEADER
-    Fondo oscuro con título
-    ============================================= -->
+.ev-badge-proximo {
+    background: rgba(92,138,60,0.1);
+    color: var(--color-primary);
+    padding: 0.3em 0.8em;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.ev-badge-encurso {
+    background: #D1FAE5;
+    color: #065F46;
+    padding: 0.3em 0.8em;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.ev-meta {
+    color: var(--color-gray);
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* ── Galería infinite scroll ─────────────────────────── */
+@keyframes scrollGallery {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.gallery-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: scrollGallery 22s linear infinite;
+    will-change: transform;
+}
+.gallery-track:hover { animation-play-state: paused; }
+.gallery-item {
+    width: 320px;
+    height: 220px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── Placeholder cuando no hay imagen ───────────────── */
+.ev-placeholder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ev-placeholder-past {
+    height: 160px;
+    background: var(--color-gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+<!-- ── HEADER ──────────────────────────────────────── -->
 <section style="
     position: relative;
     background-color: var(--color-dark);
     padding: 5rem 0;
     overflow: hidden;">
-
-    <!-- Patrón decorativo -->
-    <div style="
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        border: 1px solid rgba(92,138,60,0.2);">
-    </div>
-    <div style="
-        position: absolute;
-        bottom: -80px;
-        left: -80px;
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        border: 1px solid rgba(92,138,60,0.15);">
-    </div>
-
-    <div class="container text-center" style="position: relative; z-index: 1;">
-        <span class="section-label" style="color: var(--color-primary);">Comunidad</span>
-        <h1 style="
-            font-family: var(--font-title);
-            font-weight: 700;
-            color: white;
-            font-size: 3rem;
-            margin-bottom: 0.5rem;">
+    <div style="position:absolute;top:-50px;right:-50px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(92,138,60,0.2);"></div>
+    <div style="position:absolute;bottom:-80px;left:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(92,138,60,0.15);"></div>
+    <div class="container text-center" style="position:relative;z-index:1;">
+        <span class="section-label" style="color:var(--color-primary);">Comunidad</span>
+        <h1 style="font-family:var(--font-title);font-weight:700;color:white;font-size:3rem;margin-bottom:0.5rem;">
             Eventos
         </h1>
-        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; margin: 0;">
-            Únete a nuestras actividades y conoce a otros amantes de los animales, así como a nuestros rescatados. Son momentos de alegría, aprendizaje y comunidad que no te querrás perder. 
-            ¡Te esperamos con los brazos abiertos!
-
+        <p style="color:rgba(255,255,255,0.6);font-size:1.1rem;margin:0;max-width:680px;margin-inline:auto;">
+            Únete a nuestras actividades y conoce a otros amantes de los animales,
+            así como a nuestros rescatados. ¡Te esperamos con los brazos abiertos!
         </p>
     </div>
 </section>
 
-<!-- Onda: oscuro → crema -->
-<div style="background-color: var(--color-dark); margin-bottom: -1px;">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
-        style="height: 60px; width: 100%; display: block;">
-        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
-                fill="#F9F6F0"/>
+<!-- Onda -->
+<div style="background-color:var(--color-dark);margin-bottom:-1px;">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height:60px;width:100%;display:block;">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z" fill="#F9F6F0"/>
     </svg>
 </div>
 
-<!-- =============================================
-     GALERÍA INFINITE SCROLL
-     Imágenes deslizándose infinitamente
-     ============================================= -->
-<section style="background-color: var(--color-light); padding: 4rem 0 2rem; overflow: hidden;">
+<!-- ── GALERÍA ──────────────────────────────────────── -->
+<section style="background-color:var(--color-light);padding:4rem 0 2rem;overflow:hidden;">
     <div class="container">
         <div class="text-center mb-4">
             <span class="section-label">Momentos</span>
-            <h3 style="font-family: var(--font-title); font-weight: 700;">
-                Eventos que hemos vivido
-            </h3>
+            <h3 style="font-family:var(--font-title);font-weight:700;">Eventos que hemos vivido</h3>
         </div>
     </div>
-
-    <!-- Track de imágenes -->
-    <div style="position: relative; overflow: hidden;">
-        <div style="
-            display: flex;
-            gap: 1rem;
-            animation: scrollGallery 20s linear infinite;
-            width: max-content;">
-
-            <!-- Primera copia -->
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto1.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto2.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto3.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto4.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto5.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto6.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-
-            <!-- Segunda copia para el efecto infinito -->
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto1.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto2.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto3.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto4.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto5.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-            <div style="width: 350px; height: 250px; border-radius: var(--radius); overflow: hidden; flex-shrink: 0;">
-                <img src="{% static 'img/eventos/foto6.jpg' %}"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    alt="Evento"
-                    loading="lazy">
-            </div>
-
+    <div style="position:relative;overflow:hidden;">
+        <div class="gallery-track">
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto1.jpg' %}" alt="Evento" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto2.jpg' %}" alt="Evento" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto3.jpg' %}" alt="Evento" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto4.jpg' %}" alt="Evento" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto5.jpg' %}" alt="Evento" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto6.jpg' %}" alt="Evento" loading="lazy"></div>
+            <!-- Copia para el loop infinito -->
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto1.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto2.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto3.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto4.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto5.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
+            <div class="gallery-item"><img src="{% static 'img/eventos/foto6.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
         </div>
     </div>
-
 </section>
 
-{% block scripts %}
-<style>
-    @keyframes scrollGallery {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-
-    /* Pausa al hacer hover */
-    div[style*="scrollGallery"]:hover {
-        animation-play-state: paused;
-    }
-</style>
-{% endblock %}
-
-<!-- =============================================
-    EVENTOS EN CURSO
-    ============================================= -->
+<!-- ── EN CURSO ─────────────────────────────────────── -->
 {% if en_curso %}
-<section style="background-color: var(--color-light); padding: 4rem 0 2rem;">
+<section style="background-color:var(--color-light);padding:4rem 0 2rem;">
     <div class="container">
         <div class="mb-4">
             <span class="section-label">Ahora</span>
-            <h3 style="font-family: var(--font-title); font-weight: 700;">En curso</h3>
+            <h3 style="font-family:var(--font-title);font-weight:700;">En curso</h3>
         </div>
         <div class="row g-4">
             {% for evento in en_curso %}
-                <div class="col-md-4">
-                    <div style="
-                        background: white;
-                        border-radius: var(--radius);
-                        overflow: hidden;
-                        box-shadow: var(--shadow-sm);
-                        transition: var(--transition);"
-                        onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'"
-                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
-                        {% if evento.imagen %}
-                            <img src="{{ evento.imagen.url }}"
-                                style="width: 100%; height: 200px; object-fit: cover;"
-                                alt="{{ evento.titulo }}"
-                                loading="lazy">
-                        {% else %}
-                            <div style="
-                                height: 200px;
-                                background: linear-gradient(135deg, var(--color-secondary) 0%, #4A7230 100%);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;">
-                                <i class="bi bi-calendar-event" style="font-size: 3rem; color: white; opacity: 0.5;"></i>
-                            </div>
-                        {% endif %}
-                        <div style="padding: 1.5rem;">
-                            <span style="
-                                background: #D1FAE5;
-                                color: #065F46;
-                                padding: 0.3em 0.8em;
-                                border-radius: 50px;
-                                font-size: 0.75rem;
-                                font-weight: 600;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;">
-                                En curso
-                            </span>
-                            <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0.8rem 0 0.5rem;">
-                                {{ evento.titulo }}
-                            </h5>
-                            <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 0.3rem;">
-                                <i class="bi bi-calendar3 me-1"></i>
-                                {{ evento.fecha|date:"d/m/Y H:i" }}
-                            </p>
-                            <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 1rem;">
-                                <i class="bi bi-geo-alt me-1"></i>
-                                {{ evento.lugar }}
-                            </p>
-                            <a href="{% url 'institucional:detalle_evento' evento.pk %}"
-                                class="btn btn-primary w-100 btn-sm">
-                                Ver detalles
-                            </a>
+            <div class="col-md-4">
+                <div class="ev-card">
+                    {% if evento.imagen %}
+                        <img src="{{ evento.imagen.url }}"
+                             style="width:100%;height:200px;object-fit:cover;display:block;"
+                             alt="{{ evento.titulo }}" loading="lazy">
+                    {% else %}
+                        <div class="ev-placeholder" style="background:linear-gradient(135deg,var(--color-secondary) 0%,#4A7230 100%);">
+                            <i class="bi bi-calendar-event" style="font-size:3rem;color:white;opacity:0.5;"></i>
                         </div>
+                    {% endif %}
+                    <div class="ev-card-body">
+                        <span class="ev-badge-encurso">En curso</span>
+                        <h5 style="font-family:var(--font-title);font-weight:700;margin:0.8rem 0 0.5rem;">
+                            {{ evento.titulo }}
+                        </h5>
+                        <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y H:i" }}</p>
+                        <p class="ev-meta"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
+                        <a href="{% url 'institucional:detalle_evento' evento.pk %}"
+                           class="btn btn-primary w-100 btn-sm mt-2">Ver detalles</a>
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
 {% endif %}
 
-<!-- =============================================
-    PRÓXIMOS EVENTOS
-    ============================================= -->
-<section style="background-color: var(--color-light); padding: {% if en_curso %}2rem{% else %}4rem{% endif %} 0 5rem;">
+<!-- ── PRÓXIMOS ─────────────────────────────────────── -->
+<section style="background-color:var(--color-light);padding:{% if en_curso %}2rem{% else %}4rem{% endif %} 0 5rem;">
     <div class="container">
 
         {% if proximos %}
-            <div class="mb-4">
-                <span class="section-label">Próximamente</span>
-                <h3 style="font-family: var(--font-title); font-weight: 700;">Próximos eventos</h3>
-            </div>
-            <div class="row g-4">
-                {% for evento in proximos %}
-                    <div class="col-md-4">
-                        <div style="
-                            background: white;
-                            border-radius: var(--radius);
-                            overflow: hidden;
-                            box-shadow: var(--shadow-sm);
-                            transition: var(--transition);"
-                            onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'">
-                            {% if evento.imagen %}
-                                <img src="{{ evento.imagen.url }}"
-                                    style="width: 100%; height: 200px; object-fit: cover;"
-                                    alt="{{ evento.titulo }}">
-                            {% else %}
-                                <div style="
-                                    height: 200px;
-                                    background: linear-gradient(135deg, var(--color-primary) 0%, #4A7230 100%);
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;">
-                                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: white; opacity: 0.5;"></i>
-                                </div>
-                            {% endif %}
-                            <div style="padding: 1.5rem;">
-                                <span style="
-                                    background: rgba(92,138,60,0.1);
-                                    color: var(--color-primary);
-                                    padding: 0.3em 0.8em;
-                                    border-radius: 50px;
-                                    font-size: 0.75rem;
-                                    font-weight: 600;
-                                    text-transform: uppercase;
-                                    letter-spacing: 1px;">
-                                    Próximo
-                                </span>
-                                <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0.8rem 0 0.5rem;">
-                                    {{ evento.titulo }}
-                                </h5>
-                                <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 0.3rem;">
-                                    <i class="bi bi-calendar3 me-1"></i>
-                                    {{ evento.fecha|date:"d/m/Y H:i" }}
-                                </p>
-                                <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 0.3rem;">
-                                    <i class="bi bi-geo-alt me-1"></i>
-                                    {{ evento.lugar }}
-                                </p>
-                                <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 1rem;">
-                                    <i class="bi bi-people me-1"></i>
-                                    {{ evento.cupos_disponibles }} cupos disponibles
-                                </p>
-                                <a href="{% url 'institucional:detalle_evento' evento.pk %}"
-                                    class="btn btn-primary w-100 btn-sm">
-                                    Ver detalles
-                                </a>
-                            </div>
+        <div class="mb-4">
+            <span class="section-label">Próximamente</span>
+            <h3 style="font-family:var(--font-title);font-weight:700;">Próximos eventos</h3>
+        </div>
+        <div class="row g-4">
+            {% for evento in proximos %}
+            <div class="col-md-4">
+                <div class="ev-card">
+                    {% if evento.imagen %}
+                        <img src="{{ evento.imagen.url }}"
+                             style="width:100%;height:200px;object-fit:cover;display:block;"
+                             alt="{{ evento.titulo }}" loading="lazy">
+                    {% else %}
+                        <div class="ev-placeholder" style="background:linear-gradient(135deg,var(--color-primary) 0%,#4A7230 100%);">
+                            <i class="bi bi-calendar-event" style="font-size:3rem;color:white;opacity:0.5;"></i>
                         </div>
+                    {% endif %}
+                    <div class="ev-card-body">
+                        <span class="ev-badge-proximo">Próximo</span>
+                        <h5 style="font-family:var(--font-title);font-weight:700;margin:0.8rem 0 0.5rem;">
+                            {{ evento.titulo }}
+                        </h5>
+                        <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y H:i" }}</p>
+                        <p class="ev-meta"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
+                        <p class="ev-meta"><i class="bi bi-people"></i>{{ evento.cupos_disponibles }} cupos disponibles</p>
+                        <a href="{% url 'institucional:detalle_evento' evento.pk %}"
+                           class="btn btn-primary w-100 btn-sm mt-2">Ver detalles</a>
                     </div>
-                {% endfor %}
+                </div>
             </div>
+            {% endfor %}
+        </div>
 
         {% elif not en_curso %}
-            <!-- Estado vacío -->
-            <div class="text-center py-5">
-                <div style="
-                    width: 80px;
-                    height: 80px;
-                    background: rgba(92,138,60,0.1);
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 0 auto 1.5rem;">
-                    <i class="bi bi-calendar-x" style="font-size: 2rem; color: var(--color-primary);"></i>
-                </div>
-                <h4 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
-                    No hay eventos programados
-                </h4>
-                <p style="color: var(--color-gray); margin-bottom: 2rem;">
-                    Síguenos en redes sociales para enterarte de los próximos eventos.
-                </p>
-                <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">
-                    Síguenos en redes
-                </a>
+        <div class="text-center py-5">
+            <div style="width:80px;height:80px;background:rgba(92,138,60,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+                <i class="bi bi-calendar-x" style="font-size:2rem;color:var(--color-primary);"></i>
             </div>
+            <h4 style="font-family:var(--font-title);font-weight:700;margin-bottom:0.5rem;">No hay eventos programados</h4>
+            <p style="color:var(--color-gray);margin-bottom:2rem;">Síguenos en redes sociales para enterarte de los próximos eventos.</p>
+            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">Síguenos en redes</a>
+        </div>
         {% endif %}
 
-        <!-- Eventos finalizados -->
+        <!-- ── FINALIZADOS ── -->
         {% if finalizados %}
-            <div class="mt-5 pt-4" style="border-top: 1px solid var(--color-gray-light);">
-                <div class="mb-4">
-                    <span class="section-label">Historial</span>
-                    <h3 style="font-family: var(--font-title); font-weight: 700; color: var(--color-gray);">
-                        Eventos anteriores
-                    </h3>
-                </div>
-                <div class="row g-4">
-                    {% for evento in finalizados %}
-                        <div class="col-md-4">
-                            <div style="
-                                background: white;
-                                border-radius: var(--radius);
-                                overflow: hidden;
-                                box-shadow: var(--shadow-sm);
-                                opacity: 0.7;">
-                                <div style="
-                                    height: 160px;
-                                    background: var(--color-gray-light);
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;">
-                                    <i class="bi bi-calendar-check" style="font-size: 3rem; color: var(--color-gray);"></i>
-                                </div>
-                                <div style="padding: 1.5rem;">
-                                    <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.3rem;">
-                                        {{ evento.titulo }}
-                                    </h6>
-                                    <p style="color: var(--color-gray); font-size: 0.85rem; margin-bottom: 0.3rem;">
-                                        <i class="bi bi-calendar3 me-1"></i>
-                                        {{ evento.fecha|date:"d/m/Y" }}
-                                    </p>
-                                    <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                                        <i class="bi bi-geo-alt me-1"></i>
-                                        {{ evento.lugar }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+        <div class="mt-5 pt-4" style="border-top:1px solid var(--color-gray-light);">
+            <div class="mb-4">
+                <span class="section-label">Historial</span>
+                <h3 style="font-family:var(--font-title);font-weight:700;color:var(--color-gray);">Eventos anteriores</h3>
             </div>
+            <div class="row g-4">
+                {% for evento in finalizados %}
+                <div class="col-md-4">
+                    <div class="ev-card-past">
+                        {% if evento.imagen %}
+                            <img src="{{ evento.imagen.url }}"
+                                 style="width:100%;height:160px;object-fit:cover;display:block;filter:grayscale(30%);"
+                                 alt="{{ evento.titulo }}" loading="lazy">
+                        {% else %}
+                            <div class="ev-placeholder-past">
+                                <i class="bi bi-calendar-check" style="font-size:3rem;color:var(--color-gray);"></i>
+                            </div>
+                        {% endif %}
+                        <div class="ev-card-body">
+                            <h6 style="font-family:var(--font-title);font-weight:600;margin-bottom:0.3rem;">{{ evento.titulo }}</h6>
+                            <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y" }}</p>
+                            <p class="ev-meta" style="margin:0;"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% endif %}
 
     </div>

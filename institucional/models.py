@@ -91,8 +91,10 @@ class Evento(models.Model):
         return self.titulo
 
     def cupos_disponibles(self):
-        inscritos = self.inscripciones.count()
-        return self.capacidad - inscritos
+        # Si la queryset viene anotada con Count, evita la query extra
+        if hasattr(self, 'num_inscritos'):
+            return self.capacidad - self.num_inscritos
+        return self.capacidad - self.inscripciones.count()
 
     def esta_lleno(self):
         return self.cupos_disponibles() <= 0

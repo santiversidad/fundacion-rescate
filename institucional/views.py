@@ -82,8 +82,15 @@ def _procesar_testimonio(request):
 
 
 def eventos(request):
-    proximos    = Evento.objects.filter(estado='proximo').order_by('fecha')
-    en_curso    = Evento.objects.filter(estado='en_curso').order_by('fecha')
+    from django.db.models import Count
+    proximos = (Evento.objects
+                .filter(estado='proximo')
+                .annotate(num_inscritos=Count('inscripciones'))
+                .order_by('fecha'))
+    en_curso = (Evento.objects
+                .filter(estado='en_curso')
+                .annotate(num_inscritos=Count('inscripciones'))
+                .order_by('fecha'))
     finalizados = Evento.objects.filter(estado='finalizado').order_by('-fecha')[:3]
 
     return render(request, 'institucional/eventos.html', {
