@@ -6,4 +6,5 @@ app_name = 'adopciones'
 urlpatterns = [
     path('solicitar/<int:mascota_pk>/', views.solicitar_adopcion, name='solicitar'),
     path('mis-solicitudes/', views.mis_solicitudes, name='mis_solicitudes'),
+    path('cancelar/<int:pk>/', views.cancelar_solicitud, name='cancelar'),
 ]

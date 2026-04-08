@@ -12,14 +12,15 @@
         body { background-color: #F3F4F6; }
         .sidebar {
             width: 260px;
-            min-height: 100vh;
+            height: 100vh;
             background: var(--color-dark);
             position: fixed;
             top: 0;
             left: 0;
             z-index: 100;
             padding: 0;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         .sidebar-brand {
             padding: 1.5rem;
@@ -89,25 +90,35 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-        .badge-pendiente  { background: #FEF3C7; color: #92400E; }
-        .badge-revision   { background: #DBEAFE; color: #1E40AF; }
-        .badge-aprobada   { background: #D1FAE5; color: #065F46; }
-        .badge-rechazada  { background: #FEE2E2; color: #991B1B; }
-        .badge-verificada { background: #D1FAE5; color: #065F46; }
-        .badge-disponible { background: #D1FAE5; color: #065F46; }
-        .badge-adoptada   { background: #DBEAFE; color: #1E40AF; }
-        .badge-inactiva   { background: #F3F4F6; color: #6B7280; }
+        .badge-pendiente   { background: #FEF3C7; color: #92400E; }
+        .badge-revision    { background: #DBEAFE; color: #1E40AF; }
+        .badge-en_revision { background: #DBEAFE; color: #1E40AF; }
+        .badge-aprobada    { background: #D1FAE5; color: #065F46; }
+        .badge-rechazada   { background: #FEE2E2; color: #991B1B; }
+        .badge-verificada  { background: #D1FAE5; color: #065F46; }
+        .badge-disponible  { background: #D1FAE5; color: #065F46; }
+        .badge-adoptada    { background: #DBEAFE; color: #1E40AF; }
+        .badge-inactiva    { background: #F3F4F6; color: #6B7280; }
+        /* Estados de eventos */
+        .badge-proximo     { background: #DBEAFE; color: #1E40AF; }
+        .badge-en_curso    { background: #D1FAE5; color: #065F46; }
+        .badge-finalizado  { background: #F3F4F6; color: #374151; }
+        .badge-cancelado   { background: #FEE2E2; color: #991B1B; }
     </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="sidebar-brand">
+
+        <!-- Logo — fijo arriba -->
+        <div class="sidebar-brand" style="flex-shrink: 0;">
             <h6>🐾 Fundación Rescate</h6>
             <p>Panel de administración</p>
         </div>
-        <nav class="sidebar-nav">
+
+        <!-- Nav — scrollable -->
+        <nav class="sidebar-nav" style="flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent;">
             <div class="sidebar-section">Principal</div>
             <a href="{% url 'dashboard:inicio' %}"
                 class="sidebar-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">
@@ -149,14 +160,13 @@
                 class="sidebar-link {% if request.resolver_match.url_name == 'contenido_institucional' %}active{% endif %}">
                 <i class="bi bi-building"></i> Contenido institucional
             </a>
-
             <a href="{% url 'dashboard:mensajes' %}"
                 class="sidebar-link {% if 'mensaje' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="bi bi-envelope"></i> Mensajes
                 {% if mensajes_no_leidos %}
                     <span style="margin-left: auto; background: #EF4444; color: white;
-                                font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem;
-                                border-radius: 50px; line-height: 1.6;">
+                                 font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem;
+                                 border-radius: 50px; line-height: 1.6;">
                         {{ mensajes_no_leidos }}
                     </span>
                 {% endif %}
@@ -167,15 +177,19 @@
                 class="sidebar-link {% if 'usuario' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="bi bi-people"></i> Usuarios registrados
             </a>
+        </nav>
 
-            <div class="sidebar-section mt-2">Sistema</div>
+        <!-- Sistema — fijo abajo -->
+        <div style="flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.08); padding: 0.5rem 0;">
+            <div class="sidebar-section">Sistema</div>
             <a href="{% url 'institucional:inicio' %}" class="sidebar-link">
                 <i class="bi bi-eye"></i> Ver sitio web
             </a>
             <a href="{% url 'usuarios:logout' %}" class="sidebar-link">
                 <i class="bi bi-box-arrow-right"></i> Cerrar sesión
             </a>
-        </nav>
+        </div>
+
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->

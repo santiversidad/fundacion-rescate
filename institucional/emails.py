@@ -29,3 +29,32 @@ def email_inscripcion_evento(inscripcion):
         context={'inscripcion': inscripcion},
         to_email=inscripcion.usuario.email,
     )
+
+
+def email_evento_cancelado(evento):
+    """Notifica la cancelación del evento a todos los inscritos.
+    Retorna (enviados, fallidos)."""
+    enviados = 0
+    fallidos = 0
+    for inscripcion in evento.inscripciones.select_related('usuario').all():
+        email = inscripcion.usuario.email
+        if not email:
+            continue
+        try:
+            html = render_to_string('emails/evento_cancelado.html', {
+                'evento': evento,
+                'usuario': inscripcion.usuario,
+            })
+            send_mail(
+                subject=f'Evento cancelado: {evento.titulo}',
+                message='',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                html_message=html,
+                fail_silently=False,
+            )
+            enviados += 1
+        except Exception as exc:
+            logger.error('Error enviando cancelación [%s] a %s: %s', evento.titulo, email, exc)
+            fallidos += 1
+    return enviados, fallidos

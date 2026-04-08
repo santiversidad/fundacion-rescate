@@ -92,6 +92,15 @@ class ContenidoNosotrosForm(forms.Form):
 class AdopcionEstadoForm(forms.Form):
     from adopciones.models import SolicitudAdopcion
     estado = forms.ChoiceField(choices=SolicitudAdopcion.ESTADO_CHOICES)
+    fecha_entrevista = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        required=False,
+        error_messages={'invalid': 'Ingresa una fecha y hora válidas.'},
+    )
+    notas_entrevista = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ej: Entrevista virtual por Google Meet, enlace enviado al correo.'}),
+        required=False, max_length=500
+    )
     observaciones_admin = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 3}),
         required=False, max_length=1000

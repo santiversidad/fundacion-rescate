@@ -1,6 +1,6 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
-{% block titulo %}Detalle adopción{% endblock %}
+{% block titulo %}Detalle adopción — {{ solicitud.usuario.username }}{% endblock %}
 
 {% block contenido %}
 
@@ -9,64 +9,220 @@
         style="color: var(--color-gray); text-decoration: none;">
         <i class="bi bi-arrow-left"></i>
     </a>
-    <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
-        Solicitud de {{ solicitud.usuario.username }}
-    </h4>
+    <div>
+        <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+            Solicitud de {{ solicitud.usuario.get_full_name|default:solicitud.usuario.username }}
+        </h4>
+        <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+            {{ solicitud.mascota.nombre }} · {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
+        </p>
+    </div>
+    <div class="ms-auto">
+        <span class="badge badge-{{ solicitud.estado }}"
+                style="padding: 0.5em 1em; border-radius: 50px; font-size: 0.85rem;">
+            {{ solicitud.get_estado_display }}
+        </span>
+    </div>
 </div>
 
 <div class="row g-4">
 
-    <!-- INFORMACIÓN -->
-    <div class="col-md-7">
-        <div class="stat-card mb-4">
-            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 1rem;">
-                Información del solicitante
+    <!-- ── INFORMACIÓN DEL SOLICITANTE ── -->
+    <div class="col-lg-7">
+
+        <!-- Sección 1: Contacto -->
+        <div class="stat-card mb-3">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; color: var(--color-dark);">
+                <i class="bi bi-person-fill me-2" style="color: var(--color-primary);"></i>Información de contacto
             </h6>
-            <table class="table table-bordered">
+            <table class="table table-sm table-borderless mb-0">
                 <tr>
-                    <th>Usuario</th>
+                    <th style="width: 38%; color: var(--color-gray); font-weight: 500;">Usuario</th>
                     <td>{{ solicitud.usuario.username }}</td>
                 </tr>
                 <tr>
-                    <th>Mascota solicitada</th>
-                    <td>{{ solicitud.mascota.nombre }}</td>
+                    <th style="color: var(--color-gray); font-weight: 500;">Nombre</th>
+                    <td>{{ solicitud.nombre_completo|default:solicitud.usuario.get_full_name|default:"—" }}</td>
                 </tr>
                 <tr>
-                    <th>Fecha de solicitud</th>
-                    <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                    <th style="color: var(--color-gray); font-weight: 500;">Email</th>
+                    <td><a href="mailto:{{ solicitud.usuario.email }}">{{ solicitud.usuario.email }}</a></td>
                 </tr>
+                {% if solicitud.telefono %}
                 <tr>
-                    <th>Tipo de vivienda</th>
-                    <td>{{ solicitud.tipo_vivienda|capfirst }}</td>
+                    <th style="color: var(--color-gray); font-weight: 500;">Teléfono</th>
+                    <td>{{ solicitud.telefono }}</td>
                 </tr>
+                {% endif %}
+                {% if solicitud.ciudad %}
                 <tr>
-                    <th>Otros animales</th>
-                    <td>{% if solicitud.tiene_otros_animales %}Sí{% else %}No{% endif %}</td>
+                    <th style="color: var(--color-gray); font-weight: 500;">Ciudad</th>
+                    <td>{{ solicitud.ciudad }}</td>
                 </tr>
+                {% endif %}
                 <tr>
-                    <th>Estado actual</th>
-                    <td>
-                        <span class="badge badge-{{ solicitud.estado }}"
-                                style="padding: 0.4em 0.8em; border-radius: 6px;">
-                            {{ solicitud.get_estado_display }}
-                        </span>
-                    </td>
+                    <th style="color: var(--color-gray); font-weight: 500;">Mascota solicitada</th>
+                    <td><strong>{{ solicitud.mascota.nombre }}</strong> ({{ solicitud.mascota.especie|capfirst }})</td>
                 </tr>
             </table>
-
-            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.5rem;">
-                Motivo
-            </h6>
-            <p style="color: var(--color-gray); background: var(--color-gray-light); padding: 1rem; border-radius: var(--radius-sm);">
-                {{ solicitud.motivo }}
-            </p>
         </div>
+
+        <!-- Sección 2: Hogar -->
+        <div class="stat-card mb-3">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; color: var(--color-dark);">
+                <i class="bi bi-house-fill me-2" style="color: var(--color-primary);"></i>Su hogar
+            </h6>
+            <table class="table table-sm table-borderless mb-0">
+                {% if solicitud.tipo_vivienda %}
+                <tr>
+                    <th style="width: 38%; color: var(--color-gray); font-weight: 500;">Tipo de vivienda</th>
+                    <td>{{ solicitud.get_tipo_vivienda_display|default:solicitud.tipo_vivienda|capfirst }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Vivienda propia</th>
+                    <td>{% if solicitud.vivienda_propia %}<span class="text-success fw-semibold">Sí</span>{% else %}No (arriendo){% endif %}</td>
+                </tr>
+                {% if not solicitud.vivienda_propia %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Permiso arrendador</th>
+                    <td>{% if solicitud.permiso_arrendador %}<span class="text-success fw-semibold">Sí</span>{% else %}<span class="text-danger fw-semibold">No indicado</span>{% endif %}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Patio / zona exterior</th>
+                    <td>{% if solicitud.tiene_patio %}Sí{% if solicitud.patio_cercado %}, cercado{% endif %}{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Personas en el hogar</th>
+                    <td>{{ solicitud.personas_en_hogar }}</td>
+                </tr>
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Niños en el hogar</th>
+                    <td>{% if solicitud.ninos_en_hogar %}Sí{% if solicitud.edad_ninos %} ({{ solicitud.edad_ninos }}){% endif %}{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Alergias</th>
+                    <td>{% if solicitud.alguien_alergico %}<span class="text-warning fw-semibold">Sí — hay algún alérgico</span>{% else %}No{% endif %}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Sección 3: Experiencia -->
+        <div class="stat-card mb-3">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; color: var(--color-dark);">
+                <i class="bi bi-emoji-heart-eyes me-2" style="color: var(--color-primary);"></i>Experiencia con animales
+            </h6>
+            <table class="table table-sm table-borderless mb-0">
+                <tr>
+                    <th style="width: 38%; color: var(--color-gray); font-weight: 500;">Tiene otras mascotas</th>
+                    <td>
+                        {% if solicitud.tiene_otros_animales %}
+                            Sí{% if solicitud.descripcion_otros_animales %} — {{ solicitud.descripcion_otros_animales }}{% endif %}
+                        {% else %}No{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Experiencia previa</th>
+                    <td>
+                        {% if solicitud.experiencia_previa %}
+                            Sí{% if solicitud.que_paso_mascotas_anteriores %} — {{ solicitud.que_paso_mascotas_anteriores }}{% endif %}
+                        {% else %}No{% endif %}
+                    </td>
+                </tr>
+                {% if solicitud.veterinario_referencia %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Veterinario de referencia</th>
+                    <td>{{ solicitud.veterinario_referencia }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+
+        <!-- Sección 4: Estilo de vida -->
+        <div class="stat-card mb-3">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; color: var(--color-dark);">
+                <i class="bi bi-sun me-2" style="color: var(--color-primary);"></i>Estilo de vida
+            </h6>
+            <table class="table table-sm table-borderless mb-0">
+                {% if solicitud.horas_fuera_casa %}
+                <tr>
+                    <th style="width: 38%; color: var(--color-gray); font-weight: 500;">Horas fuera de casa</th>
+                    <td>{{ solicitud.get_horas_fuera_casa_display }}</td>
+                </tr>
+                {% endif %}
+                {% if solicitud.nivel_actividad %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Nivel de actividad</th>
+                    <td>{{ solicitud.get_nivel_actividad_display }}</td>
+                </tr>
+                {% endif %}
+                {% if solicitud.presupuesto_veterinario %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Presupuesto veterinario</th>
+                    <td>{{ solicitud.get_presupuesto_veterinario_display }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th style="color: var(--color-gray); font-weight: 500;">Viaja frecuentemente</th>
+                    <td>{% if solicitud.viaja_frecuentemente %}Sí{% if solicitud.plan_cuidado_viajes %} — {{ solicitud.plan_cuidado_viajes }}{% endif %}{% else %}No{% endif %}</td>
+                </tr>
+            </table>
+            {% if solicitud.motivo %}
+            <div style="background: var(--color-gray-light); padding: 1rem; border-radius: var(--radius-sm); margin-top: 1rem;">
+                <p style="color: var(--color-gray); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Motivación</p>
+                <p style="color: var(--color-dark); margin: 0; font-size: 0.9rem; line-height: 1.7;">{{ solicitud.motivo }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sección 5: Compromisos -->
+        <div class="stat-card mb-3">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; color: var(--color-dark);">
+                <i class="bi bi-patch-check-fill me-2" style="color: #C07A10;"></i>Compromisos aceptados
+            </h6>
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-items-start gap-2">
+                    {% if solicitud.compromiso_veterinario %}
+                        <i class="bi bi-check-circle-fill text-success mt-1" style="flex-shrink:0;"></i>
+                    {% else %}
+                        <i class="bi bi-x-circle-fill text-danger mt-1" style="flex-shrink:0;"></i>
+                    {% endif %}
+                    <span style="font-size: 0.88rem;">Atención veterinaria oportuna</span>
+                </div>
+                <div class="d-flex align-items-start gap-2">
+                    {% if solicitud.compromiso_no_abandono %}
+                        <i class="bi bi-check-circle-fill text-success mt-1" style="flex-shrink:0;"></i>
+                    {% else %}
+                        <i class="bi bi-x-circle-fill text-danger mt-1" style="flex-shrink:0;"></i>
+                    {% endif %}
+                    <span style="font-size: 0.88rem;">No abandono ni cesión sin coordinación</span>
+                </div>
+                <div class="d-flex align-items-start gap-2">
+                    {% if solicitud.acepta_seguimiento %}
+                        <i class="bi bi-check-circle-fill text-success mt-1" style="flex-shrink:0;"></i>
+                    {% else %}
+                        <i class="bi bi-x-circle-fill text-danger mt-1" style="flex-shrink:0;"></i>
+                    {% endif %}
+                    <span style="font-size: 0.88rem;">Acepta visitas de seguimiento post-adopción</span>
+                </div>
+                <div class="d-flex align-items-start gap-2">
+                    {% if solicitud.acepta_terminos %}
+                        <i class="bi bi-check-circle-fill text-success mt-1" style="flex-shrink:0;"></i>
+                    {% else %}
+                        <i class="bi bi-x-circle-fill text-danger mt-1" style="flex-shrink:0;"></i>
+                    {% endif %}
+                    <span style="font-size: 0.88rem;">Acepta los términos del proceso de adopción</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- GESTIONAR -->
-    <div class="col-md-5">
-        <div class="stat-card">
-            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 1rem;">
+    <!-- ── GESTIONAR ── -->
+    <div class="col-lg-5">
+        <div class="stat-card" style="position: sticky; top: 1.5rem;">
+            <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1.25rem;">
                 Gestionar solicitud
             </h6>
             <form method="POST">
@@ -77,33 +233,88 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 {% endif %}
+
                 <div class="mb-3">
-                    <label class="form-label">Estado</label>
+                    <label class="form-label fw-semibold">Estado de la solicitud</label>
                     <select name="estado" class="form-select {% if form.errors.estado %}is-invalid{% endif %}" required>
-                        <option value="pendiente" {% if solicitud.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="pendiente" {% if solicitud.estado == 'pendiente' %}selected{% endif %}>Pendiente de revisión</option>
                         <option value="en_revision" {% if solicitud.estado == 'en_revision' %}selected{% endif %}>En revisión</option>
+                        <option value="entrevista" {% if solicitud.estado == 'entrevista' %}selected{% endif %}>Entrevista programada</option>
                         <option value="aprobada" {% if solicitud.estado == 'aprobada' %}selected{% endif %}>Aprobada</option>
-                        <option value="rechazada" {% if solicitud.estado == 'rechazada' %}selected{% endif %}>Rechazada</option>
+                        <option value="rechazada" {% if solicitud.estado == 'rechazada' %}selected{% endif %}>No aprobada</option>
+                        <option value="completada" {% if solicitud.estado == 'completada' %}selected{% endif %}>Adopción completada</option>
+                        <option value="cancelada" {% if solicitud.estado == 'cancelada' %}selected{% endif %}>Cancelada</option>
                     </select>
                     {% if form.errors.estado %}
                         <div class="invalid-feedback">{{ form.errors.estado.0 }}</div>
                     {% endif %}
                 </div>
+
+                <!-- Campos de entrevista (solo visibles cuando estado = entrevista) -->
+                <div id="bloque-entrevista" style="display:none;">
+                    <div style="background: #EDE9FE; border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; border-left: 3px solid #7C3AED;">
+                        <p style="font-size: 0.8rem; color: #5B21B6; font-weight: 600; margin-bottom: 0.75rem;">
+                            <i class="bi bi-calendar-check me-1"></i>Datos de la entrevista
+                        </p>
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold" style="font-size: 0.85rem;">Fecha y hora</label>
+                            <input type="datetime-local" name="fecha_entrevista"
+                                   class="form-control form-control-sm {% if form.errors.fecha_entrevista %}is-invalid{% endif %}"
+                                   value="{{ form.fecha_entrevista.value|default:'' }}">
+                            {% if form.errors.fecha_entrevista %}
+                                <div class="invalid-feedback">{{ form.errors.fecha_entrevista.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="form-label fw-semibold" style="font-size: 0.85rem;">Notas (opcional)</label>
+                            <textarea name="notas_entrevista" class="form-control form-control-sm" rows="2"
+                                      placeholder="Ej: Virtual por Google Meet, enlace al correo.">{{ solicitud.notas_entrevista }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mb-3">
-                    <label class="form-label">Observaciones para el solicitante</label>
+                    <label class="form-label fw-semibold">Observaciones para el solicitante</label>
                     <textarea name="observaciones_admin" class="form-control {% if form.errors.observaciones_admin %}is-invalid{% endif %}"
-                                rows="4">{{ solicitud.observaciones_admin }}</textarea>
+                                rows="4" placeholder="Mensaje visible para el adoptante (opcional)...">{{ solicitud.observaciones_admin }}</textarea>
                     {% if form.errors.observaciones_admin %}
                         <div class="invalid-feedback">{{ form.errors.observaciones_admin.0 }}</div>
                     {% endif %}
                 </div>
+
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-check-lg me-2"></i>Guardar cambios
                 </button>
+
+                {% if solicitud.fecha_entrevista %}
+                <div style="background: var(--color-gray-light); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 1rem;">
+                    <p style="color: var(--color-gray); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem;">Entrevista guardada</p>
+                    <p style="color: var(--color-dark); font-size: 0.85rem; margin: 0; font-weight: 500;">
+                        {{ solicitud.fecha_entrevista|date:"d/m/Y" }} a las {{ solicitud.fecha_entrevista|time:"H:i" }}
+                    </p>
+                </div>
+                {% endif %}
+
             </form>
         </div>
     </div>
 
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var estadoSelect = document.querySelector('select[name="estado"]');
+    var bloqueEntrevista = document.getElementById('bloque-entrevista');
+    if (estadoSelect && bloqueEntrevista) {
+        function actualizarEntrevista() {
+            bloqueEntrevista.style.display = estadoSelect.value === 'entrevista' ? '' : 'none';
+        }
+        estadoSelect.addEventListener('change', actualizarEntrevista);
+        actualizarEntrevista();
+    }
+})();
+</script>
 {% endblock %}

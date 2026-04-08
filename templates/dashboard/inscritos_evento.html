@@ -1,0 +1,95 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block titulo %}Inscritos — {{ evento.titulo }}{% endblock %}
+
+{% block contenido %}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+    <a href="{% url 'dashboard:eventos' %}"
+        style="color: var(--color-gray); text-decoration: none;">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h4 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
+            Inscritos — {{ evento.titulo }}
+        </h4>
+        <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
+            {{ evento.fecha|date:"d/m/Y H:i" }} · {{ evento.lugar }}
+        </p>
+    </div>
+    <div class="ms-auto d-flex align-items-center gap-2">
+        <span style="
+            background: {% if evento.esta_lleno %}#FEE2E2; color:#991B1B;{% else %}#D1FAE5; color:#065F46;{% endif %}
+            padding: 0.4em 1em; border-radius: 50px; font-size: 0.82rem; font-weight: 600;">
+            {{ inscripciones.count }} / {{ evento.capacidad }} inscritos
+        </span>
+        <a href="{% url 'dashboard:editar_evento' evento.pk %}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-pencil me-1"></i>Editar evento
+        </a>
+    </div>
+</div>
+
+{% if inscripciones %}
+<div class="stat-card">
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Fecha inscripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscripcion in inscripciones %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        {% if inscripcion.usuario.perfil.foto %}
+                            <img src="{{ inscripcion.usuario.perfil.foto.url }}"
+                                style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                        {% else %}
+                            <div style="
+                                width:32px;height:32px;border-radius:50%;
+                                background:var(--color-primary);
+                                display:flex;align-items:center;justify-content:center;
+                                color:white;font-weight:700;font-size:0.8rem;flex-shrink:0;">
+                                {{ inscripcion.usuario.username|first|upper }}
+                            </div>
+                        {% endif %}
+                        <span style="font-weight:500;">{{ inscripcion.usuario.username }}</span>
+                    </div>
+                </td>
+                <td style="color:var(--color-gray);">
+                    {{ inscripcion.usuario.get_full_name|default:"—" }}
+                </td>
+                <td>
+                    <a href="mailto:{{ inscripcion.usuario.email }}"
+                        style="color:var(--color-primary);font-size:0.88rem;">
+                        {{ inscripcion.usuario.email }}
+                    </a>
+                </td>
+                <td style="color:var(--color-gray);font-size:0.85rem;">
+                    {{ inscripcion.fecha|date:"d/m/Y H:i" }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="stat-card text-center py-5">
+    <div style="
+        width:64px;height:64px;border-radius:50%;
+        background:rgba(92,138,60,0.1);
+        display:flex;align-items:center;justify-content:center;
+        margin:0 auto 1rem;">
+        <i class="bi bi-people" style="font-size:1.8rem;color:var(--color-primary);"></i>
+    </div>
+    <h5 style="font-family:var(--font-title);font-weight:700;margin-bottom:0.4rem;">Sin inscritos aún</h5>
+    <p style="color:var(--color-gray);margin:0;">Nadie se ha inscrito a este evento todavía.</p>
+</div>
+{% endif %}
+
+{% endblock %}

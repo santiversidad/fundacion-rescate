@@ -7,7 +7,7 @@ from .decorators import admin_requerido
 from .models import RegistroActividad
 from mascotas.models import Mascota, FotoMascota
 from adopciones.models import SolicitudAdopcion
-from adopciones.emails import email_solicitud_aprobada, email_solicitud_rechazada
+from adopciones.emails import email_solicitud_aprobada, email_solicitud_rechazada, email_entrevista_programada
 from donaciones.models import Donacion
 from donaciones.emails import email_donacion_verificada, email_donacion_rechazada
 from institucional.models import (
@@ -15,6 +15,7 @@ from institucional.models import (
     PreguntaFrecuente, ContenidoNosotros,
     InscripcionEvento, MensajeContacto,
 )
+from institucional.emails import email_evento_cancelado
 from .forms import (
     MascotaForm, EventoForm, MiembroEquipoForm,
     PreguntaFrecuenteForm, ContenidoNosotrosForm,
@@ -148,14 +149,23 @@ def detalle_adopcion(request, pk):
     if request.method == 'POST':
         form = AdopcionEstadoForm(request.POST)
         if form.is_valid():
-            solicitud.estado = form.cleaned_data['estado']
+            nuevo_estado = form.cleaned_data['estado']
+            solicitud.estado = nuevo_estado
             solicitud.observaciones_admin = form.cleaned_data.get('observaciones_admin', '')
+            if nuevo_estado == 'entrevista' and form.cleaned_data.get('fecha_entrevista'):
+                solicitud.fecha_entrevista = form.cleaned_data['fecha_entrevista']
+                solicitud.notas_entrevista = form.cleaned_data.get('notas_entrevista', '')
+            if nuevo_estado in ('aprobada', 'rechazada', 'completada'):
+                from django.utils import timezone
+                solicitud.fecha_resolucion = timezone.now()
             solicitud.save()
             _registrar_actividad(request.user, 'editar', 'SolicitudAdopcion', solicitud.pk, f'Solicitud actualizada a {solicitud.get_estado_display()}')
-            if solicitud.estado == 'aprobada':
+            if nuevo_estado == 'aprobada':
                 email_solicitud_aprobada(solicitud)
-            elif solicitud.estado == 'rechazada':
+            elif nuevo_estado == 'rechazada':
                 email_solicitud_rechazada(solicitud)
+            elif nuevo_estado == 'entrevista':
+                email_entrevista_programada(solicitud)
             messages.success(request, '✅ Solicitud actualizada correctamente.')
             return redirect('dashboard:adopciones')
     else:
@@ -231,6 +241,7 @@ def editar_evento(request, pk):
     if request.method == 'POST':
         form = EventoForm(request.POST, request.FILES)
         if form.is_valid():
+            estado_anterior = evento.estado
             evento.titulo      = form.cleaned_data['titulo']
             evento.descripcion = form.cleaned_data['descripcion']
             evento.fecha       = form.cleaned_data['fecha']
@@ -241,12 +252,33 @@ def editar_evento(request, pk):
                 evento.imagen  = form.cleaned_data['imagen']
             evento.save()
             _registrar_actividad(request.user, 'editar', 'Evento', evento.pk, f'Evento editado: {evento.titulo}')
-            messages.success(request, '✅ Evento actualizado correctamente.')
+            # Notificar cancelación a todos los inscritos
+            if estado_anterior != 'cancelado' and evento.estado == 'cancelado':
+                enviados, fallidos = email_evento_cancelado(evento)
+                total = enviados + fallidos
+                if total == 0:
+                    messages.warning(request, '⚠️ Evento cancelado. No había inscritos para notificar.')
+                elif fallidos == 0:
+                    messages.warning(request, f'⚠️ Evento cancelado. Se notificó correctamente a {enviados} persona{"s" if enviados != 1 else ""} inscrita{"s" if enviados != 1 else ""}.')
+                else:
+                    messages.warning(request, f'⚠️ Evento cancelado. {enviados} notificaciones enviadas, {fallidos} fallaron (revisa la configuración de correo).')
+            else:
+                messages.success(request, '✅ Evento actualizado correctamente.')
             return redirect('dashboard:eventos')
     else:
         form = EventoForm()
 
     return render(request, 'dashboard/editar_evento.html', {'evento': evento, 'form': form})
+
+
+@admin_requerido
+def inscritos_evento(request, pk):
+    evento = get_object_or_404(Evento, pk=pk)
+    inscripciones = evento.inscripciones.select_related('usuario').order_by('fecha')
+    return render(request, 'dashboard/inscritos_evento.html', {
+        'evento': evento,
+        'inscripciones': inscripciones,
+    })
 
 
 @admin_requerido

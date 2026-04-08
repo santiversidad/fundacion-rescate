@@ -12,422 +12,379 @@
 {% block twitter_description %}{{ evento.descripcion|truncatewords:25 }}{% endblock %}
 
 {% block contenido %}
+<style>
+/* ── Liquid Glass base ───────────────────────── */
+.lg {
+    background: rgba(255,255,255,0.09);
+    backdrop-filter: blur(32px) saturate(1.7);
+    -webkit-backdrop-filter: blur(32px) saturate(1.7);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 22px;
+    box-shadow:
+        0 28px 64px rgba(0,0,0,0.30),
+        inset 0 1.5px 0 rgba(255,255,255,0.38),
+        inset 0 -1px 0 rgba(0,0,0,0.10);
+}
+
+/* Panel secundario (más opaco, para el card lateral) */
+.lg-inner {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Píldora de cristal */
+.lg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.28);
+    padding: 0.38em 1em;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.lg-pill:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* Divider de cristal */
+.lg-hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right,
+        transparent, rgba(255,255,255,0.22) 25%,
+        rgba(255,255,255,0.22) 75%, transparent);
+    margin: 1.5rem 0;
+}
+
+/* Botón primario glass-green */
+.lg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    background: linear-gradient(135deg, #6aad3a 0%, #4a8a28 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow:
+        0 6px 20px rgba(92,138,60,0.50),
+        inset 0 1px 0 rgba(255,255,255,0.28);
+}
+.lg-btn:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(92,138,60,0.60), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Barra de progreso */
+.lg-track {
+    height: 6px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.14);
+    overflow: hidden;
+}
+.lg-fill-green {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, rgba(163,224,122,0.75), #A3E07A);
+}
+.lg-fill-red {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, rgba(252,165,165,0.7), #FCA5A5);
+}
+
+/* Separador vertical */
+.lg-vr {
+    width: 1px;
+    background: linear-gradient(to bottom,
+        transparent, rgba(255,255,255,0.2) 20%,
+        rgba(255,255,255,0.2) 80%, transparent);
+    flex-shrink: 0;
+}
+
+/* Animación scroll indicator */
+@keyframes lg-bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .lg-layout { flex-direction: column !important; }
+    .lg-vr { display: none !important; }
+    .lg-col-right { padding-left: 0 !important; padding-top: 1.5rem !important; border-top: 1px solid rgba(255,255,255,0.15); }
+}
+</style>
 
 <!-- =============================================
-    SECCIÓN 1 — HERO
-    Imagen full-width con overlay oscuro.
-    Fallback: gradiente del design system.
+    HERO — Imagen full-screen, todo en glass
     ============================================= -->
 <section style="
     position: relative;
-    min-height: 440px;
+    min-height: 100vh;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    padding: 1.1rem 0 3.5rem;">
+
+    <!-- Imagen de fondo -->
     {% if evento.imagen %}
-        background-image: url('{{ evento.imagen.url }}');
-        background-size: cover;
-        background-position: center;
+        <img src="{{ evento.imagen.url }}"
+             alt="{{ evento.titulo }}"
+             style="
+                position: absolute; inset: 0;
+                width: 100%; height: 100%;
+                object-fit: cover; object-position: center;
+                z-index: 0;">
     {% else %}
-        background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary-dark) 100%);
-    {% endif %}">
+        <div style="position:absolute;inset:0;z-index:0;
+            background:linear-gradient(140deg,#1a2e0f 0%,#2d5a16 55%,#0d1a07 100%);"></div>
+    {% endif %}
 
-    <!-- Overlay degradado (transparente arriba → oscuro abajo) -->
+    <!-- Overlay: doble capa para profundidad -->
     <div style="
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.80) 100%);">
+        position: absolute; inset: 0; z-index: 1;
+        background:
+            radial-gradient(ellipse 80% 60% at 55% 35%, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.38) 100%),
+            linear-gradient(170deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.30) 40%, rgba(0,0,0,0.68) 100%);
+    "></div>
+
+    <!-- ── Breadcrumb ── -->
+    <div class="container" style="position:relative;z-index:2;">
+        <a href="{% url 'institucional:eventos' %}" class="lg-pill">
+            <i class="bi bi-arrow-left" style="font-size:0.78rem;"></i>
+            Todos los eventos
+        </a>
     </div>
 
-    <div class="container" style="position: relative; z-index: 1; padding-top: 5rem; padding-bottom: 3rem;">
-        <header>
+    <!-- ── Panel principal (flex: 1 para empujar hasta el fondo si es pantalla corta) ── -->
+    <div class="container" style="position:relative;z-index:2;margin-top:1.25rem;flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="lg" style="padding: 2.25rem 2.5rem;">
 
-            <!-- BREADCRUMB -->
-            <a href="{% url 'institucional:eventos' %}"
-                style="
-                    color: rgba(255,255,255,0.65);
-                    text-decoration: none;
-                    font-size: 0.83rem;
-                    font-weight: 500;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.4rem;
-                    margin-bottom: 1.4rem;
-                    transition: var(--transition);"
-                onmouseover="this.style.color='white'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                <i class="bi bi-arrow-left"></i> Volver a eventos
-            </a>
+            <!-- Layout de dos columnas -->
+            <div class="lg-layout d-flex" style="gap:0;align-items:stretch;">
 
-            <!-- BADGE DE ESTADO -->
-            <div class="mb-3">
-                {% if evento.estado == 'proximo' %}
-                    <span style="
-                        background: rgba(92,138,60,0.88);
+                <!-- ─── COLUMNA IZQUIERDA: Título + descripción ─── -->
+                <div style="flex:1;min-width:0;">
+
+                    <!-- Badge estado -->
+                    <div style="margin-bottom:0.9rem;">
+                        {% if evento.estado == 'proximo' %}
+                            <span class="lg-pill" style="color:#A3E07A;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">
+                                <span style="width:6px;height:6px;border-radius:50%;background:#7DC855;box-shadow:0 0 0 3px rgba(125,200,85,0.3);flex-shrink:0;"></span>
+                                Próximo evento
+                            </span>
+                        {% elif evento.estado == 'en_curso' %}
+                            <span class="lg-pill" style="color:#6EE7B7;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">
+                                <span style="width:6px;height:6px;border-radius:50%;background:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,0.35);flex-shrink:0;"></span>
+                                En curso
+                            </span>
+                        {% elif evento.estado == 'finalizado' %}
+                            <span class="lg-pill" style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">
+                                Finalizado
+                            </span>
+                        {% elif evento.estado == 'cancelado' %}
+                            <span style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(220,38,38,0.28);border:1px solid rgba(252,165,165,0.4);border-radius:50px;padding:0.3em 1em;color:#FCA5A5;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">
+                                Cancelado
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Título -->
+                    <h1 style="
+                        font-family: var(--font-title);
+                        font-weight: 700;
                         color: white;
-                        padding: 0.35em 1.1em;
-                        border-radius: 50px;
-                        font-family: var(--font-title);
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 1.5px;">
-                        Próximo
-                    </span>
-                {% elif evento.estado == 'en_curso' %}
-                    <span style="
-                        background: #D1FAE5;
-                        color: #065F46;
-                        padding: 0.35em 1.1em;
-                        border-radius: 50px;
-                        font-family: var(--font-title);
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 1.5px;">
-                        <span style="
-                            width: 7px; height: 7px;
-                            border-radius: 50%;
-                            background: #10B981;
-                            display: inline-block;
-                            margin-right: 0.4rem;
-                            box-shadow: 0 0 0 3px rgba(16,185,129,0.3);">
-                        </span>En curso
-                    </span>
-                {% elif evento.estado == 'finalizado' %}
-                    <span style="
-                        background: rgba(255,255,255,0.15);
-                        color: rgba(255,255,255,0.75);
-                        padding: 0.35em 1.1em;
-                        border-radius: 50px;
-                        font-family: var(--font-title);
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 1.5px;">
-                        Finalizado
-                    </span>
-                {% elif evento.estado == 'cancelado' %}
-                    <span style="
-                        background: rgba(220,38,38,0.85);
-                        color: white;
-                        padding: 0.35em 1.1em;
-                        border-radius: 50px;
-                        font-family: var(--font-title);
-                        font-size: 0.75rem;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 1.5px;">
-                        Cancelado
-                    </span>
-                {% endif %}
-            </div>
+                        font-size: clamp(1.65rem, 3.2vw, 2.8rem);
+                        line-height: 1.18;
+                        margin-bottom: 1.1rem;
+                        text-shadow: 0 2px 16px rgba(0,0,0,0.35);">
+                        {{ evento.titulo }}
+                    </h1>
 
-            <!-- TÍTULO PRINCIPAL -->
-            <h1 style="
-                font-family: var(--font-title);
-                font-weight: 700;
-                color: white;
-                font-size: clamp(1.8rem, 4vw, 3rem);
-                line-height: 1.2;
-                margin-bottom: 1.2rem;
-                max-width: 820px;
-                text-shadow: 0 2px 14px rgba(0,0,0,0.35);">
-                {{ evento.titulo }}
-            </h1>
-
-            <!-- METADATOS RÁPIDOS EN EL HERO -->
-            <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: center;">
-                <span style="color: rgba(255,255,255,0.82); font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem;">
-                    <i class="bi bi-calendar3" style="color: var(--color-accent);"></i>
-                    {{ evento.fecha|date:"d \d\e F, Y" }}
-                </span>
-                <span style="color: rgba(255,255,255,0.35);">·</span>
-                <span style="color: rgba(255,255,255,0.82); font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem;">
-                    <i class="bi bi-clock" style="color: var(--color-accent);"></i>
-                    {{ evento.fecha|date:"H:i" }} horas
-                </span>
-                <span style="color: rgba(255,255,255,0.35);">·</span>
-                <span style="color: rgba(255,255,255,0.82); font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem;">
-                    <i class="bi bi-geo-alt-fill" style="color: var(--color-accent);"></i>
-                    {{ evento.lugar }}
-                </span>
-            </div>
-
-        </header>
-    </div>
-</section>
-
-<!-- =============================================
-    SECCIÓN 2 — CONTENIDO PRINCIPAL
-    Dos columnas: descripción izq · metadatos+CTA der
-    ============================================= -->
-<section style="background-color: var(--color-light); padding: 3.5rem 0 5rem;">
-    <div class="container">
-        <div class="row g-5">
-
-            <!-- ─────────────────────────────────────────
-                COLUMNA IZQUIERDA — Descripción del evento
-                ───────────────────────────────────────── -->
-            <article class="col-lg-7">
-
-                <span class="section-label">Sobre el evento</span>
-
-                <p style="
-                    color: var(--color-dark);
-                    line-height: 1.9;
-                    font-size: 1.05rem;
-                    font-family: var(--font-body);">
-                    {{ evento.descripcion }}
-                </p>
-
-            </article>
-
-            <!-- ─────────────────────────────────────────
-                COLUMNA DERECHA — Card de info + CTA
-                ───────────────────────────────────────── -->
-            <aside class="col-lg-5">
-                <div class="card" style="padding: 1.75rem; position: sticky; top: 6rem; overflow: visible;">
-
-                    <!-- ── Ítem: Fecha ── -->
-                    <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem;">
-                        <div style="
-                            width: 40px; height: 40px; flex-shrink: 0;
-                            background: rgba(92,138,60,0.1);
-                            border-radius: var(--radius-sm);
-                            display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-calendar3" style="color: var(--color-primary);"></i>
-                        </div>
-                        <div>
-                            <div style="
-                                font-family: var(--font-title); font-weight: 600;
-                                font-size: 0.72rem; text-transform: uppercase;
-                                letter-spacing: 1px; color: var(--color-gray);
-                                margin-bottom: 0.2rem;">
-                                Fecha
-                            </div>
-                            <div style="font-size: 0.92rem; color: var(--color-dark); font-weight: 500;">
-                                {{ evento.fecha|date:"l d \d\e F, Y" }}
-                            </div>
-                            <div style="font-size: 0.83rem; color: var(--color-gray);">
-                                {{ evento.fecha|date:"H:i" }} horas
-                            </div>
-                        </div>
+                    <!-- Chips de metadatos -->
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.4rem;">
+                        <span class="lg-pill">
+                            <i class="bi bi-calendar3" style="color:#A3E07A;"></i>
+                            {{ evento.fecha|date:"d \d\e F, Y" }}
+                        </span>
+                        <span class="lg-pill">
+                            <i class="bi bi-clock" style="color:#A3E07A;"></i>
+                            {{ evento.fecha|date:"H:i" }} h
+                        </span>
+                        <span class="lg-pill">
+                            <i class="bi bi-geo-alt-fill" style="color:#A3E07A;"></i>
+                            {{ evento.lugar }}
+                        </span>
+                        <span class="lg-pill">
+                            <i class="bi bi-people-fill" style="color:#A3E07A;"></i>
+                            {{ evento.capacidad }} personas
+                        </span>
                     </div>
 
-                    <!-- ── Ítem: Lugar ── -->
-                    <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.25rem;">
-                        <div style="
-                            width: 40px; height: 40px; flex-shrink: 0;
-                            background: rgba(92,138,60,0.1);
-                            border-radius: var(--radius-sm);
-                            display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-geo-alt-fill" style="color: var(--color-primary);"></i>
-                        </div>
-                        <div>
-                            <div style="
-                                font-family: var(--font-title); font-weight: 600;
-                                font-size: 0.72rem; text-transform: uppercase;
-                                letter-spacing: 1px; color: var(--color-gray);
-                                margin-bottom: 0.2rem;">
-                                Lugar
-                            </div>
-                            <div style="font-size: 0.92rem; color: var(--color-dark); font-weight: 500;">
-                                {{ evento.lugar }}
-                            </div>
-                        </div>
-                    </div>
+                    <div class="lg-hr"></div>
 
-                    <!-- ── Ítem: Capacidad con barra de progreso ── -->
-                    <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.25rem;">
-                        <div style="
-                            width: 40px; height: 40px; flex-shrink: 0;
-                            background: rgba(92,138,60,0.1);
-                            border-radius: var(--radius-sm);
-                            display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-people-fill" style="color: var(--color-primary);"></i>
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="
-                                font-family: var(--font-title); font-weight: 600;
-                                font-size: 0.72rem; text-transform: uppercase;
-                                letter-spacing: 1px; color: var(--color-gray);
-                                margin-bottom: 0.3rem;">
-                                Cupos
-                            </div>
-                            <div style="font-size: 0.92rem; font-weight: 500; margin-bottom: 0.5rem;">
-                                {% if evento.esta_lleno %}
-                                    <span style="color: #DC2626;">Sin cupos disponibles</span>
-                                {% else %}
-                                    <span style="color: var(--color-primary);">{{ evento.cupos_disponibles }}</span>
-                                    <span style="color: var(--color-gray); font-weight: 400; font-size: 0.83rem;">
-                                        disponibles de {{ evento.capacidad }}
-                                    </span>
-                                {% endif %}
-                            </div>
-                            <!-- Barra de progreso de disponibilidad -->
-                            <div style="
-                                background: var(--color-gray-light);
-                                border-radius: 50px;
-                                height: 7px;
-                                overflow: hidden;">
-                                <div style="
-                                    height: 100%;
-                                    width: {% widthratio evento.cupos_disponibles evento.capacidad 100 %}%;
-                                    background: {% if evento.esta_lleno %}#DC2626{% else %}var(--color-primary){% endif %};
-                                    border-radius: 50px;
-                                    transition: width 0.4s ease;">
-                                </div>
-                            </div>
-                            <div style="
-                                display: flex; justify-content: space-between;
-                                font-size: 0.72rem; color: var(--color-gray); margin-top: 0.3rem;">
-                                <span>{{ evento.cupos_disponibles }} libres</span>
-                                <span>{{ evento.capacidad }} total</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Descripción -->
+                    <p style="
+                        color: rgba(255,255,255,0.82);
+                        line-height: 1.85;
+                        font-size: 0.97rem;
+                        margin: 0;">
+                        {{ evento.descripcion }}
+                    </p>
 
-                    <hr style="border-color: var(--color-gray-light); margin: 1.5rem 0;">
+                </div>
 
-                    <!-- ── BLOQUE CTA — 5 estados posibles ── -->
-                    {% if evento.estado == 'proximo' or evento.estado == 'en_curso' %}
+                <!-- Separador vertical -->
+                <div class="lg-vr" style="margin: 0 2rem;"></div>
 
-                        {% if user.is_authenticated %}
+                <!-- ─── COLUMNA DERECHA: CTA + cupos ─── -->
+                <div class="lg-col-right" style="width:280px;flex-shrink:0;padding-left:0;display:flex;flex-direction:column;gap:1.1rem;justify-content:center;">
 
-                            {% if inscrito %}
-                                {# Estado A: ya inscrito #}
-                                <div style="
-                                    background: #ECFDF5;
-                                    border: 1px solid #6EE7B7;
-                                    border-radius: var(--radius-sm);
-                                    padding: 1rem 1.25rem;
-                                    margin-bottom: 0.75rem;
-                                    display: flex; align-items: center; gap: 0.6rem;">
-                                    <i class="bi bi-check-circle-fill" style="color: #059669; font-size: 1.2rem; flex-shrink: 0;"></i>
-                                    <span style="font-weight: 600; color: #065F46; font-size: 0.92rem;">
-                                        Ya estás inscrito en este evento.
-                                    </span>
-                                </div>
-
-                            {% elif evento.esta_lleno %}
-                                {# Estado B: sin cupos #}
-                                <div style="
-                                    background: #FEF9C3;
-                                    border: 1px solid var(--color-accent);
-                                    border-radius: var(--radius-sm);
-                                    padding: 1rem 1.25rem;
-                                    margin-bottom: 0.75rem;
-                                    display: flex; align-items: center; gap: 0.6rem;">
-                                    <i class="bi bi-exclamation-circle-fill" style="color: #854D0E; font-size: 1.2rem; flex-shrink: 0;"></i>
-                                    <span style="font-weight: 600; color: #854D0E; font-size: 0.92rem;">
-                                        Este evento ya no tiene cupos disponibles.
-                                    </span>
-                                </div>
-
+                    <!-- Cupos -->
+                    {% if evento.estado != 'cancelado' %}
+                    <div class="lg-inner" style="padding:1.1rem 1.25rem;">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.55rem;">
+                            <span style="color:rgba(255,255,255,0.55);font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;">Cupos disponibles</span>
+                            {% if evento.esta_lleno %}
+                                <span style="color:#FCA5A5;font-size:0.82rem;font-weight:700;">Agotados</span>
                             {% else %}
-                                {# Estado C: disponible — CTA principal #}
-                                <a href="{% url 'institucional:inscribirse_evento' evento.pk %}"
-                                    class="btn btn-primary btn-lg w-100"
-                                    style="margin-bottom: 0.6rem;">
-                                    <i class="bi bi-calendar-check me-2"></i>
+                                <span style="color:white;font-size:1rem;font-weight:700;">
+                                    {{ evento.cupos_disponibles }}
+                                    <span style="color:rgba(255,255,255,0.4);font-weight:400;font-size:0.78rem;">/ {{ evento.capacidad }}</span>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="lg-track">
+                            <div class="{% if evento.esta_lleno %}lg-fill-red{% else %}lg-fill-green{% endif %}"
+                                 style="width:{% widthratio evento.cupos_disponibles evento.capacidad 100 %}%;"></div>
+                        </div>
+                        <p style="color:rgba(255,255,255,0.38);font-size:0.72rem;margin:0.4rem 0 0;text-align:right;">
+                            {{ evento.capacidad }} total
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Fecha y lugar resumidos -->
+                    <div class="lg-inner" style="padding:1.1rem 1.25rem;">
+                        <div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.85rem;">
+                            <i class="bi bi-calendar3" style="color:#A3E07A;margin-top:2px;flex-shrink:0;"></i>
+                            <div>
+                                <p style="color:rgba(255,255,255,0.5);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;margin:0 0 0.1rem;">Fecha</p>
+                                <p style="color:white;font-size:0.86rem;font-weight:500;margin:0;">{{ evento.fecha|date:"l d \d\e F" }}</p>
+                                <p style="color:rgba(255,255,255,0.55);font-size:0.8rem;margin:0;">{{ evento.fecha|date:"H:i" }} horas</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+                            <i class="bi bi-geo-alt-fill" style="color:#A3E07A;margin-top:2px;flex-shrink:0;"></i>
+                            <div>
+                                <p style="color:rgba(255,255,255,0.5);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;margin:0 0 0.1rem;">Lugar</p>
+                                <p style="color:white;font-size:0.86rem;font-weight:500;margin:0;">{{ evento.lugar }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA según estado -->
+                    {% if evento.estado == 'proximo' or evento.estado == 'en_curso' %}
+                        {% if user.is_authenticated %}
+                            {% if inscrito %}
+                                <div class="lg-inner" style="padding:1rem 1.25rem;display:flex;align-items:center;gap:0.65rem;">
+                                    <i class="bi bi-check-circle-fill" style="color:#6EE7B7;font-size:1.2rem;flex-shrink:0;"></i>
+                                    <span style="color:#A7F3D0;font-size:0.88rem;font-weight:600;">Ya estás inscrito</span>
+                                </div>
+                            {% elif evento.esta_lleno %}
+                                <div class="lg-inner" style="padding:1rem 1.25rem;text-align:center;">
+                                    <i class="bi bi-exclamation-circle" style="color:#FCA5A5;font-size:1.3rem;display:block;margin-bottom:0.3rem;"></i>
+                                    <span style="color:#FCA5A5;font-size:0.85rem;font-weight:600;">Sin cupos disponibles</span>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'institucional:inscribirse_evento' evento.pk %}" class="lg-btn">
+                                    <i class="bi bi-calendar-check"></i>
                                     Inscribirme al evento
                                 </a>
-                                <p style="
-                                    text-align: center;
-                                    font-size: 0.8rem;
-                                    color: var(--color-gray);
-                                    margin-bottom: 0.75rem;">
-                                    Quedan
-                                    <strong style="color: var(--color-primary);">{{ evento.cupos_disponibles }}</strong>
-                                    cupos disponibles
+                                <p style="color:rgba(255,255,255,0.45);font-size:0.77rem;text-align:center;margin:0;">
+                                    {{ evento.cupos_disponibles }} cupo{% if evento.cupos_disponibles != 1 %}s{% endif %} disponible{% if evento.cupos_disponibles != 1 %}s{% endif %}
                                 </p>
                             {% endif %}
-
                         {% else %}
-                            {# Estado D: no autenticado #}
-                            <div style="
-                                background: #FEF9E7;
-                                border: 1px solid #F0C040;
-                                border-radius: var(--radius-sm);
-                                padding: 1rem 1.25rem;
-                                margin-bottom: 0.75rem;">
-                                <p style="margin: 0; font-size: 0.9rem; color: var(--color-dark);">
-                                    <i class="bi bi-info-circle-fill me-2" style="color: #F0C040;"></i>
-                                    <a href="{% url 'usuarios:login' %}"
-                                        style="color: var(--color-primary); font-weight: 600;">
-                                        Inicia sesión
-                                    </a>
-                                    para inscribirte en este evento.
+                            <div class="lg-inner" style="padding:1rem 1.25rem;text-align:center;">
+                                <p style="color:rgba(255,255,255,0.55);font-size:0.82rem;margin-bottom:0.75rem;">
+                                    Inicia sesión para inscribirte
                                 </p>
+                                <a href="{% url 'usuarios:login' %}"
+                                   style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:0.65rem 1.25rem;color:white;font-weight:600;font-size:0.88rem;text-decoration:none;transition:all 0.2s;"
+                                   onmouseover="this.style.background='rgba(255,255,255,0.22)'"
+                                   onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                                    <i class="bi bi-person-fill"></i> Iniciar sesión
+                                </a>
                             </div>
                         {% endif %}
-
                     {% elif evento.estado == 'finalizado' %}
-                        {# Estado E: finalizado #}
-                        <div style="
-                            background: var(--color-gray-light);
-                            border-radius: var(--radius-sm);
-                            padding: 1rem 1.25rem;
-                            text-align: center;
-                            margin-bottom: 0.75rem;">
-                            <i class="bi bi-calendar-check me-2" style="color: var(--color-gray);"></i>
-                            <span style="color: var(--color-gray); font-size: 0.92rem; font-weight: 500;">
-                                Este evento ya finalizó.
-                            </span>
+                        <div class="lg-inner" style="padding:1rem 1.25rem;text-align:center;">
+                            <i class="bi bi-calendar-check" style="color:rgba(255,255,255,0.35);font-size:1.5rem;display:block;margin-bottom:0.4rem;"></i>
+                            <span style="color:rgba(255,255,255,0.45);font-size:0.85rem;">Este evento ya finalizó</span>
                         </div>
-
                     {% elif evento.estado == 'cancelado' %}
-                        {# Estado F: cancelado #}
-                        <div style="
-                            background: #FEE2E2;
-                            border: 1px solid #FECACA;
-                            border-radius: var(--radius-sm);
-                            padding: 1rem 1.25rem;
-                            text-align: center;
-                            margin-bottom: 0.75rem;">
-                            <i class="bi bi-x-circle me-2" style="color: #DC2626;"></i>
-                            <span style="color: #991B1B; font-size: 0.92rem; font-weight: 500;">
-                                Este evento fue cancelado.
-                            </span>
+                        <div style="background:rgba(220,38,38,0.15);border:1px solid rgba(252,165,165,0.22);border-radius:16px;padding:1rem 1.25rem;text-align:center;">
+                            <i class="bi bi-x-circle" style="color:#FCA5A5;font-size:1.5rem;display:block;margin-bottom:0.4rem;"></i>
+                            <span style="color:#FCA5A5;font-size:0.85rem;">Evento cancelado</span>
                         </div>
                     {% endif %}
 
-                    <!-- Volver al listado -->
-                    <a href="{% url 'institucional:eventos' %}"
-                        class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-left me-1"></i>Ver todos los eventos
-                    </a>
-
                 </div>
-            </aside>
+            </div>
 
-        </div>
+        </div><!-- /lg panel -->
+    </div><!-- /container -->
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);z-index:2;animation:lg-bounce 2.2s ease-in-out infinite;">
+        <span class="lg-pill" style="padding:0.4em 0.8em;">
+            <i class="bi bi-chevron-down" style="font-size:0.8rem;color:rgba(255,255,255,0.65);"></i>
+        </span>
     </div>
+
 </section>
 
 {% endblock %}
 
 {% block scripts %}
-{# Schema.org Event — structured data para motores de búsqueda #}
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    "name": "{{ evento.titulo|escapejs }}",
-    "description": "{{ evento.descripcion|truncatewords:50|escapejs }}",
-    "startDate": "{{ evento.fecha|date:'c' }}",
-    "location": {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "{{ evento.titulo|escapejs }}",
+  "description": "{{ evento.descripcion|truncatewords:50|escapejs }}",
+  "startDate": "{{ evento.fecha|date:'c' }}",
+  "location": {
     "@type": "Place",
     "name": "{{ evento.lugar|escapejs }}"
-    },
-    "organizer": {
+  },
+  "organizer": {
     "@type": "Organization",
     "name": "Fundación Rescate Animal",
     "url": "https://fundacionrescateanimal.com"
-    },
-    "eventStatus": "{% if evento.estado == 'cancelado' %}https://schema.org/EventCancelled{% else %}https://schema.org/EventScheduled{% endif %}",
-    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"{% if evento.imagen %},
-    "image": "https://fundacionrescateanimal.com{{ evento.imagen.url }}"{% endif %}
+  },
+  "eventStatus": "{% if evento.estado == 'cancelado' %}https://schema.org/EventCancelled{% else %}https://schema.org/EventScheduled{% endif %}",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"{% if evento.imagen %},
+  "image": "https://fundacionrescateanimal.com{{ evento.imagen.url }}"{% endif %}
 }
 </script>
 {% endblock %}

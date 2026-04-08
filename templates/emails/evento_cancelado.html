@@ -1,0 +1,18 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Evento cancelado — {{ evento.titulo }}{% endblock %}
+
+{% block contenido %}
+<h2 style="color:#991B1B;">Evento cancelado</h2>
+<p>Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+<p>Lamentamos informarte que el siguiente evento al que estabas inscrito ha sido <strong>cancelado</strong>.</p>
+
+<div class="info-box" style="border-left-color: #DC2626; background: #FEF2F2;">
+    <p><strong>Evento:</strong> {{ evento.titulo }}</p>
+    <p><strong>Fecha programada:</strong> {{ evento.fecha|date:"d \d\e F, Y" }} a las {{ evento.fecha|date:"H:i" }}</p>
+    <p><strong>Lugar:</strong> {{ evento.lugar }}</p>
+</div>
+
+<p>Nuestro equipo trabajará para reprogramarlo o notificarte sobre próximas actividades similares. Agradecemos tu comprensión y apoyo a la causa animal.</p>
+<p>Si tienes preguntas, no dudes en contactarnos.</p>
+<p style="margin-top:1.5rem;">Con cariño,<br><strong>El equipo de Fundación Rescate Animal 🐾</strong></p>
+{% endblock %}

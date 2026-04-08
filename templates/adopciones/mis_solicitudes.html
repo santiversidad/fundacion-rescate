@@ -7,7 +7,6 @@
 
 <!-- =============================================
     HEADER
-    Fondo oscuro con título
     ============================================= -->
 <section style="background-color: var(--color-dark); padding: 4rem 0;">
     <div class="container">
@@ -44,7 +43,6 @@
 
 <!-- =============================================
     SOLICITUDES
-    Fondo crema con cards de solicitudes
     ============================================= -->
 <section style="background-color: var(--color-light); padding: 4rem 0 5rem;">
     <div class="container">
@@ -58,62 +56,47 @@
                             border-radius: var(--radius);
                             padding: 2rem;
                             box-shadow: var(--shadow-sm);
-                            transition: var(--transition);"
+                            transition: var(--transition);
+                            height: 100%;"
                             onmouseover="this.style.boxShadow='var(--shadow-md)'"
                             onmouseout="this.style.boxShadow='var(--shadow-sm)'">
 
                             <!-- Header de la card -->
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
-                                    <span class="section-label">Solicitud</span>
+                                    <span class="section-label">Solicitud de adopción</span>
                                     <h5 style="font-family: var(--font-title); font-weight: 700; margin: 0;">
                                         {{ solicitud.mascota.nombre }}
                                     </h5>
                                 </div>
                                 <!-- Badge de estado -->
                                 {% if solicitud.estado == 'pendiente' %}
-                                    <span style="
-                                        background: #FEF3C7;
-                                        color: #92400E;
-                                        padding: 0.4em 1em;
-                                        border-radius: 50px;
-                                        font-size: 0.8rem;
-                                        font-weight: 600;
-                                        white-space: nowrap;">
-                                        Pendiente
+                                    <span style="background:#FEF3C7;color:#92400E;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-clock me-1"></i>Pendiente
                                     </span>
                                 {% elif solicitud.estado == 'en_revision' %}
-                                    <span style="
-                                        background: #DBEAFE;
-                                        color: #1E40AF;
-                                        padding: 0.4em 1em;
-                                        border-radius: 50px;
-                                        font-size: 0.8rem;
-                                        font-weight: 600;
-                                        white-space: nowrap;">
-                                        En revisión
+                                    <span style="background:#DBEAFE;color:#1E40AF;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-search me-1"></i>En revisión
+                                    </span>
+                                {% elif solicitud.estado == 'entrevista' %}
+                                    <span style="background:#EDE9FE;color:#5B21B6;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-calendar-check me-1"></i>Entrevista
                                     </span>
                                 {% elif solicitud.estado == 'aprobada' %}
-                                    <span style="
-                                        background: #D1FAE5;
-                                        color: #065F46;
-                                        padding: 0.4em 1em;
-                                        border-radius: 50px;
-                                        font-size: 0.8rem;
-                                        font-weight: 600;
-                                        white-space: nowrap;">
-                                        Aprobada
+                                    <span style="background:#D1FAE5;color:#065F46;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-check-circle-fill me-1"></i>Aprobada
+                                    </span>
+                                {% elif solicitud.estado == 'completada' %}
+                                    <span style="background:#064E3B;color:#A7F3D0;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-house-heart-fill me-1"></i>Completada
                                     </span>
                                 {% elif solicitud.estado == 'rechazada' %}
-                                    <span style="
-                                        background: #FEE2E2;
-                                        color: #991B1B;
-                                        padding: 0.4em 1em;
-                                        border-radius: 50px;
-                                        font-size: 0.8rem;
-                                        font-weight: 600;
-                                        white-space: nowrap;">
-                                        Rechazada
+                                    <span style="background:#FEE2E2;color:#991B1B;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-x-circle me-1"></i>No aprobada
+                                    </span>
+                                {% elif solicitud.estado == 'cancelada' %}
+                                    <span style="background:#F3F4F6;color:#6B7280;padding:0.4em 1em;border-radius:50px;font-size:0.8rem;font-weight:600;white-space:nowrap;">
+                                        <i class="bi bi-slash-circle me-1"></i>Cancelada
                                     </span>
                                 {% endif %}
                             </div>
@@ -124,27 +107,57 @@
                             <!-- Detalles -->
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
-                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">
-                                        Fecha
-                                    </p>
-                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">
-                                        {{ solicitud.fecha_solicitud|date:"d/m/Y" }}
-                                    </p>
+                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">Fecha</p>
+                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">{{ solicitud.fecha_solicitud|date:"d/m/Y" }}</p>
                                 </div>
+                                {% if solicitud.tipo_vivienda %}
                                 <div class="col-6">
-                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">
-                                        Vivienda
-                                    </p>
-                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">
-                                        {{ solicitud.tipo_vivienda|capfirst }}
-                                    </p>
+                                    <p style="color: var(--color-gray); font-size: 0.8rem; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 1px;">Vivienda</p>
+                                    <p style="font-weight: 500; font-size: 0.9rem; margin: 0;">{{ solicitud.get_tipo_vivienda_display|default:solicitud.tipo_vivienda|capfirst }}</p>
                                 </div>
+                                {% endif %}
                             </div>
 
                             <!-- Motivo -->
-                            <p style="color: var(--color-gray); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0;">
+                            {% if solicitud.motivo %}
+                            <p style="color: var(--color-gray); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.75rem;">
                                 {{ solicitud.motivo|truncatewords:20 }}
                             </p>
+                            {% endif %}
+
+                            <!-- Entrevista agendada -->
+                            {% if solicitud.estado == 'entrevista' and solicitud.fecha_entrevista %}
+                            <div style="
+                                background: #EDE9FE;
+                                border-left: 3px solid #7C3AED;
+                                border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+                                padding: 0.75rem 1rem;
+                                margin-bottom: 0.75rem;">
+                                <p style="color: #5B21B6; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem; font-weight: 600;">
+                                    <i class="bi bi-calendar-event me-1"></i>Entrevista agendada
+                                </p>
+                                <p style="color: #4C1D95; font-size: 0.9rem; margin: 0; font-weight: 500;">
+                                    {{ solicitud.fecha_entrevista|date:"l d \d\e F \d\e Y" }} a las {{ solicitud.fecha_entrevista|time:"H:i" }}
+                                </p>
+                                {% if solicitud.notas_entrevista %}
+                                    <p style="color: #6D28D9; font-size: 0.85rem; margin: 0.3rem 0 0;">{{ solicitud.notas_entrevista }}</p>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Adopción completada -->
+                            {% if solicitud.estado == 'completada' %}
+                            <div style="
+                                background: #D1FAE5;
+                                border-left: 3px solid #059669;
+                                border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+                                padding: 0.75rem 1rem;
+                                margin-bottom: 0.75rem;">
+                                <p style="color: #065F46; font-size: 0.9rem; margin: 0; font-weight: 600;">
+                                    <i class="bi bi-house-heart-fill me-2"></i>¡Felicitaciones! {{ solicitud.mascota.nombre }} ya es parte de tu familia.
+                                </p>
+                            </div>
+                            {% endif %}
 
                             <!-- Observaciones del admin -->
                             {% if solicitud.observaciones_admin %}
@@ -153,7 +166,7 @@
                                     border-left: 3px solid var(--color-primary);
                                     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
                                     padding: 1rem;
-                                    margin-top: 1rem;">
+                                    margin-bottom: 0.75rem;">
                                     <p style="color: var(--color-gray); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">
                                         Nota de la fundación
                                     </p>
@@ -161,6 +174,19 @@
                                         {{ solicitud.observaciones_admin }}
                                     </p>
                                 </div>
+                            {% endif %}
+
+                            <!-- Botón cancelar (solo si pendiente) -->
+                            {% if solicitud.estado == 'pendiente' %}
+                            <div style="border-top: 1px solid var(--color-gray-light); margin-top: 1rem; padding-top: 1rem;">
+                                <form method="POST" action="{% url 'adopciones:cancelar' solicitud.pk %}"
+                                      onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta solicitud? Esta acción no se puede deshacer.');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-x-circle me-1"></i>Cancelar solicitud
+                                    </button>
+                                </form>
+                            </div>
                             {% endif %}
 
                         </div>
@@ -185,10 +211,10 @@
                     No tienes solicitudes aún
                 </h4>
                 <p style="color: var(--color-gray); margin-bottom: 2rem;">
-                    Explora nuestro catálogo y encuentra tu compañero ideal.
+                    Explora nuestros animales en busca de hogar y encuentra tu compañero ideal.
                 </p>
                 <a href="{% url 'mascotas:catalogo' %}" class="btn btn-primary btn-lg">
-                    Ver mascotas disponibles
+                    Conocer animales en adopción
                 </a>
             </div>
         {% endif %}

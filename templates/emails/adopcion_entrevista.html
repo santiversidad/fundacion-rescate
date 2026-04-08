@@ -1,0 +1,22 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}Entrevista de adopción agendada{% endblock %}
+
+{% block contenido %}
+<h2>Tu entrevista ha sido agendada 📅</h2>
+<p>Hola <strong>{{ solicitud.usuario.first_name|default:solicitud.usuario.email }}</strong>,</p>
+<p>Hemos revisado tu solicitud de adopción para <strong>{{ solicitud.mascota.nombre }}</strong> y nos gustaría conocerte mejor. Hemos agendado una entrevista contigo.</p>
+
+<div class="info-box">
+    <p><strong>Mascota:</strong> {{ solicitud.mascota.nombre }} ({{ solicitud.mascota.especie|capfirst }})</p>
+    {% if solicitud.fecha_entrevista %}
+    <p><strong>Fecha y hora:</strong> {{ solicitud.fecha_entrevista|date:"l d \d\e F \d\e Y" }} a las {{ solicitud.fecha_entrevista|time:"H:i" }}</p>
+    {% endif %}
+    {% if solicitud.notas_entrevista %}
+    <p><strong>Notas:</strong> {{ solicitud.notas_entrevista }}</p>
+    {% endif %}
+</div>
+
+<p>La entrevista puede ser virtual o presencial según lo que coordine nuestro equipo. Si tienes alguna pregunta o necesitas cambiar la fecha, por favor contáctanos.</p>
+<p>Recuerda que el proceso de adopción responsable busca garantizar el bienestar de <strong>{{ solicitud.mascota.nombre }}</strong> y la mejor experiencia para ti como familia adoptante.</p>
+<p>¡Gracias por tu interés en adoptar de forma responsable!</p>
+{% endblock %}

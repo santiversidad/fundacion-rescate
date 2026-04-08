@@ -47,3 +47,12 @@ def email_solicitud_rechazada(solicitud):
         context={'solicitud': solicitud},
         to_email=solicitud.usuario.email,
     )
+
+
+def email_entrevista_programada(solicitud):
+    _send(
+        subject='Tu entrevista de adopción ha sido agendada',
+        template='emails/adopcion_entrevista.html',
+        context={'solicitud': solicitud},
+        to_email=solicitud.usuario.email,
+    )
