@@ -24,14 +24,41 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def populate_user(self, request, sociallogin, data):
+        import unicodedata
+        import re
+        from django.contrib.auth.models import User as AuthUser
+
         user = super().populate_user(request, sociallogin, data)
 
-        email = data.get('email', '')
-        if email:
-            username = email.split('@')[0]
-            username = username.replace('.', '_')
-            user.username = username
+        first_name = data.get('first_name', '').strip()
+        last_name  = data.get('last_name', '').strip()
+        email      = data.get('email', '')
 
+        if first_name or last_name:
+            parts = []
+            if first_name:
+                parts.append(first_name.split()[0])
+            if last_name:
+                parts.append(last_name.split()[0])
+            raw = '_'.join(parts)
+        elif email:
+            raw = email.split('@')[0]
+        else:
+            raw = 'usuario'
+
+        # Normalize: strip accents, keep only word chars, collapse underscores
+        raw = unicodedata.normalize('NFKD', raw).encode('ascii', 'ignore').decode('ascii')
+        raw = re.sub(r'[^\w]', '_', raw).lower()
+        raw = re.sub(r'_+', '_', raw).strip('_') or 'usuario'
+
+        # Collision handling
+        username = raw
+        counter  = 1
+        while AuthUser.objects.filter(username=username).exists():
+            username = f'{raw}{counter}'
+            counter += 1
+
+        user.username = username
         return user
 
     def save_user(self, request, sociallogin, form=None):

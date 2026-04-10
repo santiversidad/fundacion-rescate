@@ -81,8 +81,24 @@ def _procesar_testimonio(request):
     })
 
 
+def _actualizar_eventos_en_curso():
+    """Cambia 'proximo' → 'en_curso' si la fecha ya llegó. Disparo lazy al visitar la página."""
+    from django.utils import timezone
+    from .emails import email_evento_iniciado
+    ahora = timezone.now()
+    a_iniciar = Evento.objects.filter(estado='proximo', fecha__lte=ahora)
+    for evento in a_iniciar:
+        evento.estado = 'en_curso'
+        evento.save(update_fields=['estado'])
+        try:
+            email_evento_iniciado(evento)
+        except Exception:
+            logger.warning('No se pudo enviar email de inicio para evento %s', evento.pk)
+
+
 def eventos(request):
     from django.db.models import Count
+    _actualizar_eventos_en_curso()
     proximos = (Evento.objects
                 .filter(estado='proximo')
                 .annotate(num_inscritos=Count('inscripciones'))

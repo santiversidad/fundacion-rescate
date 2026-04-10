@@ -1,0 +1,18 @@
+{% extends 'emails/base_email.html' %}
+{% block titulo %}¡El evento ha comenzado! — {{ evento.titulo }}{% endblock %}
+
+{% block contenido %}
+<h2 style="color:#065F46;">¡El evento está en curso!</h2>
+<p>Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+<p>¡Buenas noticias! El evento al que estás inscrito ya ha comenzado. ¡Te esperamos!</p>
+
+<div class="info-box" style="border-left-color: #059669; background: #ECFDF5;">
+    <p><strong>Evento:</strong> {{ evento.titulo }}</p>
+    <p><strong>Fecha:</strong> {{ evento.fecha|date:"d \d\e F, Y" }} a las {{ evento.fecha|date:"H:i" }}</p>
+    <p><strong>Lugar:</strong> {{ evento.lugar }}</p>
+</div>
+
+<p>Si tienes alguna pregunta o inconveniente para llegar, no dudes en contactarnos.</p>
+<p>¡Nos vemos allá!</p>
+<p style="margin-top:1.5rem;">Con cariño,<br><strong>El equipo de Fundación Rescate Animal 🐾</strong></p>
+{% endblock %}
