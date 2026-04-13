@@ -2,592 +2,815 @@
 {% load static %}
 
 {% block titulo %}Inicio — Fundación Rescate Animal{% endblock %}
+{% block meta_description %}Fundación Rescate Animal — Rescate, rehabilitación y adopción responsable de animales en Villavicencio, Colombia. Más de 850 animales rescatados y 620 adopciones exitosas.{% endblock %}
 
 {% block contenido %}
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM — Agency Style
+   ═══════════════════════════════════════════════ */
 
-<!-- =============================================
-    SECCIÓN 1 — HERO
-    ============================================= -->
-<section style="
-    background-image: url('{% static 'img/hero.jpg' %}');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    min-height: 92vh;
+/* ── HERO ──────────────────────────────────────── */
+.h-wrap {
+    position: relative;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
-    position: relative;">
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+.h-bg {
+    position: absolute; inset: 0;
+    background-image: url('{% static "img/hero.jpg" %}');
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(1.04);
+    transition: transform 6s ease;
+}
+.h-bg.loaded { transform: scale(1); }
+.h-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.25) 0%,
+        rgba(10,10,10,0.55) 50%,
+        rgba(10,10,10,0.92) 100%
+    );
+}
+.h-label {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border-radius: 2px;
+    padding: 0.38rem 0.9rem;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+}
+.h-label-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #4ADE80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.3);
+    animation: h-pulse 2.2s ease infinite;
+}
+@keyframes h-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.3); }
+    50%       { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
+}
+.h-title {
+    font-family: var(--font-title);
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 700;
+    color: white;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 1.2rem 0 1.8rem;
+}
+.h-title-outline {
+    -webkit-text-stroke: 2px rgba(255,255,255,0.55);
+    color: transparent;
+}
+.h-title-accent { color: var(--color-accent); }
+.h-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 420px;
+    margin-bottom: 2.4rem;
+}
+.h-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+.h-btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--color-primary); color: white;
+    padding: 0.9rem 2rem; border-radius: 2px;
+    text-decoration: none;
+    font-family: var(--font-title); font-weight: 700; font-size: 0.88rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.h-btn-primary:hover { background: var(--color-primary-dark); color: white; transform: translateY(-2px); }
+.h-btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.88rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.5px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+.h-btn-ghost:hover { color: white; border-color: white; }
 
-    <div style="
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 100%);">
-    </div>
+/* Hero stat pills */
+.h-stats {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    padding: 2rem 0 3rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 3rem;
+}
+.h-stat-item { text-align: left; }
+.h-stat-n {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1.9rem; color: white; line-height: 1;
+    display: block; margin-bottom: 0.2rem;
+}
+.h-stat-l { font-size: 0.75rem; color: rgba(255,255,255,0.45); letter-spacing: 1px; text-transform: uppercase; }
+.h-stat-sep { width: 1px; background: rgba(255,255,255,0.15); align-self: stretch; flex-shrink: 0; }
 
-    <div class="container" style="position: relative; z-index: 1;">
-        <div class="row align-items-center">
-            <div class="col-lg-7" style="position: relative; z-index: 2;">
+/* ── TICKER ─────────────────────────────────────── */
+.ticker-wrap {
+    background: var(--color-primary);
+    overflow: hidden;
+    padding: 0.9rem 0;
+    white-space: nowrap;
+}
+.ticker-track {
+    display: inline-flex; gap: 3rem;
+    animation: ticker 22s linear infinite;
+    will-change: transform;
+}
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.ticker-item {
+    font-family: var(--font-title); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.85);
+    display: inline-flex; align-items: center; gap: 1rem;
+}
+.ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); }
 
-                <div class="d-inline-flex align-items-center gap-2 mb-4"
-                    style="background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
-                            border: 1px solid rgba(255,255,255,0.2); border-radius: 50px;
-                            padding: 0.45rem 1.1rem;">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; display: inline-block;
-                                box-shadow: 0 0 0 3px rgba(74,222,128,0.3);"></span>
-                    <span style="color: rgba(255,255,255,0.9); font-size: 0.85rem;">+850 animales rescatados</span>
-                </div>
+/* ── SPLIT EDITORIAL ────────────────────────────── */
+.split-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 70vh;
+    overflow: hidden;
+}
+.split-img { position: relative; overflow: hidden; }
+.split-img img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+.split-img:hover img { transform: scale(1.04); }
+.split-body {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 5rem 4rem 5rem 5rem;
+    background: white;
+}
+.split-num {
+    font-family: var(--font-title); font-size: 7rem; font-weight: 700;
+    color: var(--color-primary); opacity: 0.08; line-height: 1;
+    margin-bottom: -1.5rem; display: block;
+    letter-spacing: -4px;
+}
+.split-label {
+    color: var(--color-primary); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1.2rem;
+}
+.split-h {
+    font-family: var(--font-title); font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700; color: var(--color-dark);
+    line-height: 1.2; margin-bottom: 1.4rem; letter-spacing: -0.02em;
+}
+.split-p { color: var(--color-gray); line-height: 1.85; font-size: 0.97rem; margin-bottom: 2rem; }
+.split-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--color-dark); font-weight: 700; font-size: 0.88rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-primary); padding-bottom: 2px;
+    transition: color 0.2s ease, gap 0.2s ease;
+}
+.split-link:hover { color: var(--color-primary); gap: 0.8rem; }
 
-                <h1 style="
-                    font-family: var(--font-title);
-                    font-size: clamp(2.2rem, 5vw, 3.8rem);
-                    font-weight: 700;
-                    color: white;
-                    line-height: 1.15;
-                    margin-bottom: 1.5rem;">
-                    Dale un hogar a quien<br>
-                    <span style="color: var(--color-accent);">más lo necesita</span>
-                </h1>
+/* ── BENTO GRID — MASCOTAS ──────────────────────── */
+.bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 280px 280px;
+    gap: 4px;
+}
+.bento-cell {
+    overflow: hidden; position: relative;
+    background: var(--color-gray-light);
+}
+.bento-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.55s ease;
+}
+.bento-cell:hover img { transform: scale(1.06); }
+/* Grid placements */
+.bento-a { grid-column: 1 / 7; grid-row: 1 / 3; }     /* large left */
+.bento-b { grid-column: 7 / 10; grid-row: 1; }          /* top-mid */
+.bento-c { grid-column: 10 / 13; grid-row: 1; }         /* top-right */
+.bento-d { grid-column: 7 / 10; grid-row: 2; }          /* bottom-mid */
+.bento-e { grid-column: 10 / 13; grid-row: 2; }         /* bottom-right */
 
-                <p style="
-                    font-size: 1.1rem;
-                    color: rgba(255,255,255,0.82);
-                    margin-bottom: 2.5rem;
-                    line-height: 1.8;
-                    max-width: 520px;">
-                    Somos una fundación dedicada al rescate y adopción responsable de animales en situación de vulnerabilidad.
-                </p>
+.bento-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.35s ease;
+    display: flex; align-items: flex-end; padding: 1.4rem;
+}
+.bento-cell:hover .bento-overlay { opacity: 1; }
+.bento-cta {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: white; color: var(--color-dark);
+    padding: 0.55rem 1.2rem; border-radius: 2px;
+    font-family: var(--font-title); font-weight: 700; font-size: 0.78rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s ease;
+}
+.bento-cta:hover { background: var(--color-accent); }
+.bento-badge-large {
+    position: absolute; top: 1.2rem; left: 1.2rem;
+    background: var(--color-primary); color: white;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 2px;
+}
+.bento-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+    padding: 2rem 1.4rem 1.2rem;
+    transform: translateY(8px); opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.bento-cell:hover .bento-info { transform: translateY(0); opacity: 1; }
+.bento-pet-name {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1.1rem; color: white; margin-bottom: 0.2rem; display: block;
+}
+.bento-pet-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.bento-pet-tag {
+    background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85);
+    font-size: 0.7rem; padding: 0.18rem 0.55rem; border-radius: 2px;
+}
+/* Large cell special overlay */
+.bento-a .bento-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 50%); }
+.bento-a .bento-info { transform: translateY(0); opacity: 1; }
 
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="{% url 'mascotas:catalogo' %}"
-                        class="btn btn-primary btn-lg"
-                        style="padding: 0.9rem 2.2rem; font-size: 1rem; border-radius: var(--radius-sm);">
-                        <i class="bi bi-heart-fill me-2"></i>Ver mascotas
-                    </a>
-                    <a href="{% url 'donaciones:info' %}"
-                        style="padding: 0.9rem 2.2rem; font-size: 1rem;
-                                border: 2px solid rgba(255,255,255,0.7); color: white;
-                                border-radius: var(--radius-sm); text-decoration: none;
-                                font-weight: 500; transition: var(--transition); backdrop-filter: blur(4px);
-                                background: rgba(255,255,255,0.08);"
-                        onmouseover="this.style.background='white'; this.style.color='var(--color-dark)'; this.style.borderColor='white'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.08)'; this.style.color='white'; this.style.borderColor='rgba(255,255,255,0.7)'">
-                        <i class="bi bi-gift me-2"></i>Quiero donar
-                    </a>
-                </div>
+/* ── PROCESO — EDITORIAL ────────────────────────── */
+.proc-row { display: flex; gap: 0; border-top: 1px solid var(--color-gray-light); }
+.proc-row:last-child { border-bottom: 1px solid var(--color-gray-light); }
+.proc-num {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 4.5rem; color: var(--color-primary); opacity: 0.1;
+    line-height: 1; width: 120px; flex-shrink: 0;
+    display: flex; align-items: center; padding: 2rem 1.5rem;
+    transition: opacity 0.3s ease;
+}
+.proc-row:hover .proc-num { opacity: 0.25; }
+.proc-content {
+    flex: 1; padding: 2rem 2rem 2rem 0;
+    display: flex; align-items: center; gap: 2rem;
+}
+.proc-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1.05rem; color: var(--color-dark); margin-bottom: 0.35rem;
+}
+.proc-desc { color: var(--color-gray); font-size: 0.88rem; line-height: 1.65; margin: 0; }
+.proc-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--color-gray-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: var(--color-primary);
+    flex-shrink: 0; transition: background 0.2s ease, color 0.2s ease;
+}
+.proc-row:hover .proc-icon { background: var(--color-primary); color: white; }
 
+/* ── TESTIMONIOS — DARK ─────────────────────────── */
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.testi-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.25s ease;
+}
+.testi-card:hover { background: rgba(255,255,255,0.08); }
+.testi-q-mark {
+    font-size: 5rem; line-height: 0.8; font-family: Georgia, serif;
+    color: var(--color-primary); display: block; margin-bottom: 1.2rem;
+    opacity: 0.5;
+}
+.testi-text {
+    color: rgba(255,255,255,0.72); font-size: 0.93rem;
+    line-height: 1.8; margin-bottom: 1.8rem;
+}
+.testi-author { display: flex; align-items: center; gap: 0.9rem; }
+.testi-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    border: 2px solid rgba(92,138,60,0.5);
+}
+.testi-avatar-placeholder {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(92,138,60,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.testi-name { font-weight: 700; font-size: 0.88rem; color: white; margin-bottom: 0.1rem; }
+.testi-pet { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+.testi-pet-name { color: var(--color-primary); }
+
+/* ── EVENTOS ─────────────────────────────────────── */
+.ev-item {
+    display: grid; grid-template-columns: 64px 1fr auto;
+    align-items: center; gap: 1.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--color-gray-light);
+    text-decoration: none; color: inherit;
+    transition: padding-left 0.22s ease;
+}
+.ev-item:first-child { border-top: 1px solid var(--color-gray-light); }
+.ev-item:hover { padding-left: 8px; }
+.ev-item:hover .ev-date-block { background: var(--color-primary); color: white; }
+.ev-date-block {
+    background: var(--color-gray-light);
+    border-radius: 2px; text-align: center;
+    padding: 0.5rem; transition: background 0.22s ease, color 0.22s ease;
+}
+.ev-day { font-family: var(--font-title); font-weight: 700; font-size: 1.4rem; line-height: 1; display: block; }
+.ev-mon { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.65; }
+.ev-title { font-family: var(--font-title); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+.ev-loc { font-size: 0.8rem; color: var(--color-gray); display: flex; align-items: center; gap: 0.3rem; }
+.ev-arrow { color: var(--color-gray); font-size: 0.85rem; flex-shrink: 0; }
+
+/* ── IMPACTO BAR ─────────────────────────────────── */
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.impact-item {
+    padding: 3.5rem 2rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    text-align: left;
+}
+.impact-item:last-child { border-right: none; }
+.impact-n {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    color: var(--color-accent); line-height: 1; display: block;
+    margin-bottom: 0.6rem; letter-spacing: -2px;
+}
+.impact-l { color: rgba(255,255,255,0.5); font-size: 0.88rem; line-height: 1.6; max-width: 180px; }
+
+/* ── FINAL CTA ───────────────────────────────────── */
+.fcta-wrap {
+    position: relative; min-height: 60vh;
+    display: flex; align-items: center; overflow: hidden;
+}
+.fcta-bg {
+    position: absolute; inset: 0;
+    background-image: url('{% static "img/mision-vision.jpg" %}');
+    background-size: cover; background-position: center;
+}
+.fcta-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(44,44,44,0.75) 100%);
+}
+.fcta-content { position: relative; z-index: 1; }
+.fcta-h {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: white; line-height: 1.1; letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+}
+.fcta-h span { color: var(--color-accent); }
+.fcta-p { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.8; max-width: 500px; margin-bottom: 2.5rem; }
+.fcta-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.fcta-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.9rem 2rem; border-radius: 2px;
+    font-family: var(--font-title); font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.fcta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.fcta-btn-fill { background: var(--color-primary); color: white; }
+.fcta-btn-fill:hover { background: var(--color-primary-dark); color: white; }
+.fcta-btn-accent { background: var(--color-accent); color: var(--color-dark); }
+.fcta-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.35); }
+.fcta-btn-outline:hover { border-color: white; }
+
+/* Section header editorial */
+.sh { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+.sh-label {
+    color: var(--color-primary); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; white-space: nowrap;
+}
+.sh-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    color: var(--color-dark); line-height: 1.1; letter-spacing: -0.02em; margin: 0;
+}
+.sh-line { flex: 1; height: 1px; background: var(--color-gray-light); }
+.sh-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--color-gray); font-size: 0.82rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.5px; white-space: nowrap;
+    transition: color 0.2s ease, gap 0.2s ease;
+}
+.sh-link:hover { color: var(--color-primary); gap: 0.7rem; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1023px) {
+    .split-wrap { grid-template-columns: 1fr; }
+    .split-img { min-height: 340px; }
+    .split-body { padding: 3.5rem 2rem; }
+    .bento { grid-template-columns: repeat(6, 1fr); grid-template-rows: 220px 220px 220px; }
+    .bento-a { grid-column: 1 / 7; grid-row: 1; }
+    .bento-b { grid-column: 1 / 4; grid-row: 2; }
+    .bento-c { grid-column: 4 / 7; grid-row: 2; }
+    .bento-d { grid-column: 1 / 4; grid-row: 3; }
+    .bento-e { grid-column: 4 / 7; grid-row: 3; }
+    .testi-grid { grid-template-columns: 1fr; gap: 2px; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .impact-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 2.5rem 1.5rem; }
+    .impact-item:last-child { border-bottom: none; }
+    .sh { flex-wrap: wrap; }
+    .sh-line { display: none; }
+    .proc-num { width: 70px; font-size: 3rem; padding: 1.5rem 1rem; }
+}
+@media (max-width: 767px) {
+    .h-title { font-size: clamp(2.6rem, 12vw, 4.5rem); }
+    .h-stats { gap: 1rem; flex-wrap: wrap; }
+    .bento { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px 180px; }
+    .bento-a { grid-column: 1 / 3; grid-row: 1; }
+    .bento-b { grid-column: 1; grid-row: 2; }
+    .bento-c { grid-column: 2; grid-row: 2; }
+    .bento-d { grid-column: 1; grid-row: 3; }
+    .bento-e { grid-column: 2; grid-row: 3; }
+    .ev-item { grid-template-columns: 54px 1fr; }
+    .ev-arrow { display: none; }
+}
+</style>
+
+<!-- ══════════════════════════════════════════════════
+    1. HERO — FULL VIEWPORT CINEMATOGRÁFICO
+═══════════════════════════════════════════════════ -->
+<section class="h-wrap">
+    <div class="h-bg" id="heroBg"></div>
+    <div class="h-overlay"></div>
+
+    <div class="container" style="position:relative;z-index:2;padding-bottom:0;">
+        <div style="max-width:780px; padding-top:2rem;">
+
+            <div class="h-label">
+                <span class="h-label-dot"></span>
+                Villavicencio, Colombia
             </div>
 
-            <!-- ═══════════════════════════════════════════
-                FLOATING PHOTO CLUSTER — solo desktop (≥lg)
-                Imágenes decorativas con animación CSS pura
-                ═══════════════════════════════════════════ -->
-            <div class="col-lg-5 d-none d-lg-flex align-items-center">
-                <div class="hero-float-cluster" aria-hidden="true">
+            <h1 class="h-title">
+                <span class="h-title-outline">Dale</span><br>
+                un hogar<br>
+                a quien <span class="h-title-accent">lo necesita</span>
+            </h1>
 
-                    <!-- F1: Retrato principal — centro-izquierda del cluster -->
-                    <img src="{% static 'img/galeria/foto1.jpg' %}"
-                        class="hero-float-img img-f1"
-                        alt=""
-                        loading="lazy">
+            <p class="h-sub">
+                Rescatamos, rehabilitamos y conectamos animales en situación de
+                vulnerabilidad con familias comprometidas.
+            </p>
 
-                    <!-- F2: Cuadrada — esquina superior derecha -->
-                    <img src="{% static 'img/galeria/foto2.jpg' %}"
-                        class="hero-float-img img-f2"
-                        alt=""
-                        loading="lazy">
-
-                    <!-- F3: Retrato pequeño — esquina inferior derecha -->
-                    <img src="{% static 'img/galeria/foto3.jpg' %}"
-                        class="hero-float-img img-f3"
-                        alt=""
-                        loading="lazy">
-
-                    <!-- F4: Cuadrada — esquina inferior izquierda -->
-                    <img src="{% static 'img/galeria/foto4.jpg' %}"
-                        class="hero-float-img img-f4"
-                        alt=""
-                        loading="lazy">
-
-                    <!-- F5: Pequeña — flotando en el centro -->
-                    <img src="{% static 'img/galeria/foto5.jpg' %}"
-                        class="hero-float-img img-f5"
-                        alt=""
-                        loading="lazy">
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Indicador de scroll -->
-    <div style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 1; text-align: center;">
-        <div style="width: 1px; height: 50px; background: rgba(255,255,255,0.3); margin: 0 auto 0.5rem;"></div>
-        <span style="color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;">Scroll</span>
-    </div>
-</section>
-
-<!-- =============================================
-    SECCIÓN 2 — ESTADÍSTICAS
-    ============================================= -->
-<section style="background-color: var(--color-primary); padding: 3.5rem 0;">
-    <div class="container">
-        <div class="row g-0 text-center">
-            <div class="col-md-3 col-6"
-                style="padding: 1.5rem; border-right: 1px solid rgba(255,255,255,0.15);">
-                <i class="bi bi-paw-fill" style="font-size: 1.8rem; color: rgba(255,255,255,0.4); display: block; margin-bottom: 0.5rem;"></i>
-                <h2 data-counter="850" style="font-family: var(--font-title); font-weight: 700; font-size: 2.5rem; color: white; margin-bottom: 0.2rem;">+850</h2>
-                <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;">Animales rescatados</p>
-            </div>
-            <div class="col-md-3 col-6"
-                style="padding: 1.5rem; border-right: 1px solid rgba(255,255,255,0.15);">
-                <i class="bi bi-house-heart-fill" style="font-size: 1.8rem; color: rgba(255,255,255,0.4); display: block; margin-bottom: 0.5rem;"></i>
-                <h2 data-counter="620" style="font-family: var(--font-title); font-weight: 700; font-size: 2.5rem; color: white; margin-bottom: 0.2rem;">+620</h2>
-                <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;">Adopciones exitosas</p>
-            </div>
-            <div class="col-md-3 col-6"
-                style="padding: 1.5rem; border-right: 1px solid rgba(255,255,255,0.15);">
-                <i class="bi bi-people-fill" style="font-size: 1.8rem; color: rgba(255,255,255,0.4); display: block; margin-bottom: 0.5rem;"></i>
-                <h2 data-counter="120" style="font-family: var(--font-title); font-weight: 700; font-size: 2.5rem; color: white; margin-bottom: 0.2rem;">+120</h2>
-                <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;">Voluntarios activos</p>
-            </div>
-            <div class="col-md-3 col-6"
-                style="padding: 1.5rem;">
-                <i class="bi bi-award-fill" style="font-size: 1.8rem; color: rgba(255,255,255,0.4); display: block; margin-bottom: 0.5rem;"></i>
-                <h2 data-counter="8" data-counter-prefix="" style="font-family: var(--font-title); font-weight: 700; font-size: 2.5rem; color: white; margin-bottom: 0.2rem;">8</h2>
-                <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;">Años de experiencia</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Wave: verde → claro -->
-<div style="overflow: hidden; line-height: 0; background: var(--color-primary);">
-    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
-        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-light)"/>
-    </svg>
-</div>
-
-<!-- =============================================
-    SECCIÓN 3 — CÓMO ADOPTAR
-    ============================================= -->
-<section style="background-color: var(--color-light); padding: 5rem 0 4rem;">
-    <div class="container">
-
-        <div class="text-center mb-5">
-            <h2 class="section-title">¿Cómo adoptar?</h2>
-            <p class="section-subtitle">El proceso es simple y está diseñado para garantizar hogares responsables.</p>
-        </div>
-
-        <div class="row g-4 align-items-stretch">
-
-            <!-- Paso 1 -->
-            <div class="col-md-3 text-center">
-                <div class="card h-100 card-hover" style="border: none; box-shadow: var(--shadow-sm); border-radius: var(--radius);">
-                    <div class="card-body p-4">
-                        <div style="width: 64px; height: 64px; background: var(--color-primary);
-                                    border-radius: 50%; display: flex; align-items: center;
-                                    justify-content: center; margin: 0 auto 1.2rem;
-                                    box-shadow: 0 4px 14px rgba(92,138,60,0.35);">
-                            <span style="color: white; font-family: var(--font-title); font-weight: 700; font-size: 1.4rem;">1</span>
-                        </div>
-                        <h6 style="font-family: var(--font-title); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem;">Explora</h6>
-                        <p style="color: var(--color-gray); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                            Navega nuestro catálogo y encuentra la mascota que conecte contigo.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paso 2 -->
-            <div class="col-md-3 text-center">
-                <div class="card h-100 card-hover" style="border: none; box-shadow: var(--shadow-sm); border-radius: var(--radius);">
-                    <div class="card-body p-4">
-                        <div style="width: 64px; height: 64px; background: var(--color-primary);
-                                    border-radius: 50%; display: flex; align-items: center;
-                                    justify-content: center; margin: 0 auto 1.2rem;
-                                    box-shadow: 0 4px 14px rgba(92,138,60,0.35);">
-                            <span style="color: white; font-family: var(--font-title); font-weight: 700; font-size: 1.4rem;">2</span>
-                        </div>
-                        <h6 style="font-family: var(--font-title); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem;">Regístrate</h6>
-                        <p style="color: var(--color-gray); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                            Crea tu cuenta con Google para poder enviar tu solicitud de adopción.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paso 3 -->
-            <div class="col-md-3 text-center">
-                <div class="card h-100 card-hover" style="border: none; box-shadow: var(--shadow-sm); border-radius: var(--radius);">
-                    <div class="card-body p-4">
-                        <div style="width: 64px; height: 64px; background: var(--color-primary);
-                                    border-radius: 50%; display: flex; align-items: center;
-                                    justify-content: center; margin: 0 auto 1.2rem;
-                                    box-shadow: 0 4px 14px rgba(92,138,60,0.35);">
-                            <span style="color: white; font-family: var(--font-title); font-weight: 700; font-size: 1.4rem;">3</span>
-                        </div>
-                        <h6 style="font-family: var(--font-title); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem;">Solicita</h6>
-                        <p style="color: var(--color-gray); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                            Envía tu solicitud con información sobre tu hogar y estilo de vida.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paso 4 -->
-            <div class="col-md-3 text-center">
-                <div class="card h-100 card-hover" style="border: none; box-shadow: var(--shadow-sm); border-radius: var(--radius); background: var(--color-primary);">
-                    <div class="card-body p-4">
-                        <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.2);
-                                    border-radius: 50%; display: flex; align-items: center;
-                                    justify-content: center; margin: 0 auto 1.2rem;">
-                            <span style="color: white; font-family: var(--font-title); font-weight: 700; font-size: 1.4rem;">4</span>
-                        </div>
-                        <h6 style="font-family: var(--font-title); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; color: white;">Bienvenido</h6>
-                        <p style="color: rgba(255,255,255,0.8); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                            Revisamos tu solicitud y coordinamos la entrega de tu nueva mascota.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- Wave: claro → blanco -->
-<div style="overflow: hidden; line-height: 0; background: var(--color-light);">
-    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
-        <path d="M0,60 C300,0 900,0 1200,60 L1200,60 L0,60 Z" fill="white"/>
-    </svg>
-</div>
-
-<!-- =============================================
-    SECCIÓN 4 — MASCOTAS DESTACADAS
-    ============================================= -->
-<section style="background-color: white; padding: 5rem 0;">
-    <div class="container">
-
-        <div class="text-center mb-5">
-            <h2 class="section-title">Mascotas esperando un hogar</h2>
-            <p class="section-subtitle">Conoce algunos de nuestros animales disponibles para adopción.</p>
-        </div>
-
-        {% if mascotas_destacadas %}
-            <div class="row g-4">
-                {% for mascota in mascotas_destacadas %}
-                    <div class="col-md-4">
-                        <div class="card h-100 card-hover" style="border: none; box-shadow: var(--shadow-sm); border-radius: var(--radius); overflow: hidden;">
-
-                            <div style="position: relative;">
-                                {% with mascota.fotos.first as foto %}
-                                    {% if foto %}
-                                        <img src="{{ foto.foto.url }}"
-                                            style="width: 100%; height: 260px; object-fit: cover;"
-                                            alt="{{ foto.alt_text|default:mascota.nombre }}"
-                                            loading="lazy">
-                                    {% else %}
-                                        <div style="height: 260px; background: var(--color-gray-light);
-                                                    display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-image" style="font-size: 3rem; color: var(--color-gray);"></i>
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
-                                <span style="position: absolute; top: 12px; left: 12px;
-                                            background: var(--color-primary); color: white;
-                                            font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem;
-                                            border-radius: 50px; letter-spacing: 0.5px;">
-                                    Disponible
-                                </span>
-                            </div>
-
-                            <div class="card-body p-4">
-                                <h5 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.4rem;">
-                                    {{ mascota.nombre }}
-                                </h5>
-                                <div class="d-flex gap-2 flex-wrap mb-3">
-                                    <span style="background: var(--color-light); color: var(--color-dark);
-                                                font-size: 0.78rem; padding: 0.2rem 0.7rem; border-radius: 50px;">
-                                        {{ mascota.especie|capfirst }}
-                                    </span>
-                                    <span style="background: var(--color-light); color: var(--color-dark);
-                                                font-size: 0.78rem; padding: 0.2rem 0.7rem; border-radius: 50px;">
-                                        {{ mascota.edad_anios }} año{% if mascota.edad_anios != 1 %}s{% endif %}
-                                    </span>
-                                    <span style="background: var(--color-light); color: var(--color-dark);
-                                                font-size: 0.78rem; padding: 0.2rem 0.7rem; border-radius: 50px;">
-                                        {{ mascota.sexo|capfirst }}
-                                    </span>
-                                </div>
-                                <a href="{% url 'mascotas:detalle' mascota.pk %}"
-                                    class="btn btn-primary w-100"
-                                    style="border-radius: var(--radius-sm);">
-                                    Conocer más
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="text-center mt-5">
-                <a href="{% url 'mascotas:catalogo' %}"
-                    class="btn btn-outline-secondary btn-lg"
-                    style="padding: 0.8rem 2.5rem; border-radius: var(--radius-sm);">
-                    Ver todas las mascotas <i class="bi bi-arrow-right ms-2"></i>
+            <div class="h-actions">
+                <a href="{% url 'mascotas:catalogo' %}" class="h-btn-primary">
+                    <i class="bi bi-heart-fill"></i>
+                    Ver animales
+                </a>
+                <a href="{% url 'donaciones:info' %}" class="h-btn-ghost">
+                    Quiero donar
+                    <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
-        {% endif %}
 
+        </div>
+
+        <!-- Stats strip -->
+        <div class="h-stats">
+            <div class="h-stat-item">
+                <span class="h-stat-n">+850</span>
+                <span class="h-stat-l">Animales rescatados</span>
+            </div>
+            <div class="h-stat-sep"></div>
+            <div class="h-stat-item">
+                <span class="h-stat-n">+620</span>
+                <span class="h-stat-l">Adopciones exitosas</span>
+            </div>
+            <div class="h-stat-sep"></div>
+            <div class="h-stat-item">
+                <span class="h-stat-n">+120</span>
+                <span class="h-stat-l">Voluntarios activos</span>
+            </div>
+            <div class="h-stat-sep"></div>
+            <div class="h-stat-item">
+                <span class="h-stat-n">8 años</span>
+                <span class="h-stat-l">De experiencia</span>
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- =============================================
-    SECCIÓN 5 — TESTIMONIOS
-    ============================================= -->
-{% if testimonios_recientes %}
-<!-- Wave: blanco → crema -->
-<div style="overflow: hidden; line-height: 0; background: white;">
-    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
-        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-light)"/>
-    </svg>
+<!-- ══════════════════════════════════════════════════
+    2. TICKER
+═══════════════════════════════════════════════════ -->
+<div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track">
+        {% for _ in "12345678" %}
+        <span class="ticker-item">Rescate <span class="ticker-dot"></span></span>
+        <span class="ticker-item">Rehabilitación <span class="ticker-dot"></span></span>
+        <span class="ticker-item">Adopción responsable <span class="ticker-dot"></span></span>
+        <span class="ticker-item">Bienestar animal <span class="ticker-dot"></span></span>
+        <span class="ticker-item">Amor incondicional <span class="ticker-dot"></span></span>
+        {% endfor %}
+    </div>
 </div>
 
-<section style="background-color: var(--color-light); padding: 5rem 0;">
+<!-- ══════════════════════════════════════════════════
+    3. SPLIT — EDITORIAL MISIÓN
+═══════════════════════════════════════════════════ -->
+<div class="split-wrap">
+    <div class="split-img">
+        <img src="{% static 'img/mision-vision.jpg' %}" alt="Nuestra misión" loading="lazy">
+    </div>
+    <div class="split-body">
+        <span class="split-num">01</span>
+        <span class="split-label">Nuestra misión</span>
+        <h2 class="split-h">Cada animal merece una segunda oportunidad</h2>
+        <p class="split-p">
+            Somos una fundación dedicada al rescate, rehabilitación y adopción responsable
+            de animales en situación de vulnerabilidad. Trabajamos con voluntarios comprometidos
+            para transformar vidas — tanto las de los animales como las de las familias que los adoptan.
+        </p>
+        <a href="{% url 'institucional:nosotros' %}" class="split-link">
+            Conoce nuestra historia <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+    4. BENTO GRID — MASCOTAS DESTACADAS
+═══════════════════════════════════════════════════ -->
+<section style="background:var(--color-light); padding:5rem 0;">
     <div class="container">
-
-        <div class="text-center mb-5">
-            <h2 class="section-title">Lo que dicen nuestros adoptantes</h2>
-            <p class="section-subtitle">Historias reales de familias que encontraron a su compañero ideal.</p>
-        </div>
-
-        <div class="row g-4">
-            {% for testimonio in testimonios_recientes %}
-            <div class="col-md-4">
-                <div class="card h-100 card-hover"
-                    style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm);
-                            padding: 2rem; position: relative;">
-
-                    <!-- Comillas decorativas -->
-                    <div style="font-size: 4rem; line-height: 1; color: var(--color-primary);
-                                opacity: 0.15; font-family: Georgia, serif; position: absolute;
-                                top: 1rem; left: 1.5rem; font-weight: 700;">"</div>
-
-                    <!-- Mensaje -->
-                    <p style="color: var(--color-dark); font-size: 0.93rem; line-height: 1.75;
-                                margin-bottom: 1.5rem; position: relative; z-index: 1; padding-top: 1rem;">
-                        {{ testimonio.mensaje|truncatewords:35 }}
-                    </p>
-
-                    <!-- Autor -->
-                    <div class="d-flex align-items-center gap-3" style="margin-top: auto;">
-                        {% if testimonio.foto %}
-                            <img src="{{ testimonio.foto.url }}"
-                                style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
-                                        border: 2px solid var(--color-primary);"
-                                alt="{{ testimonio.nombre }}">
-                        {% else %}
-                            <div style="width: 46px; height: 46px; border-radius: 50%;
-                                        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-                                        display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <i class="bi bi-person-fill" style="color: white; font-size: 1.2rem;"></i>
-                            </div>
-                        {% endif %}
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.9rem; color: var(--color-dark);">
-                                {{ testimonio.nombre }}
-                            </div>
-                            <div style="font-size: 0.8rem; color: var(--color-gray);">
-                                Adoptó a <span style="color: var(--color-primary); font-weight: 600;">{{ testimonio.mascota }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div class="text-center mt-5">
-            <a href="{% url 'institucional:testimonios' %}"
-                class="btn btn-outline-secondary"
-                style="padding: 0.75rem 2rem; border-radius: var(--radius-sm);">
-                Ver todos los testimonios <i class="bi bi-arrow-right ms-2"></i>
+        <div class="sh">
+            <span class="sh-label">Adopción</span>
+            <h2 class="sh-title">Esperando un hogar</h2>
+            <div class="sh-line"></div>
+            <a href="{% url 'mascotas:catalogo' %}" class="sh-link">
+                Ver todos <i class="bi bi-arrow-right"></i>
             </a>
         </div>
-
     </div>
-</section>
 
-<!-- Wave: crema → blanco -->
-<div style="overflow: hidden; line-height: 0; background: var(--color-light);">
-    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
-        <path d="M0,60 C300,0 900,0 1200,60 L1200,60 L0,60 Z" fill="white"/>
-    </svg>
-</div>
-{% endif %}
+    {% if mascotas_destacadas %}
+    <div style="padding:0 1.5rem;">
+        <div class="bento">
 
-<!-- =============================================
-    SECCIÓN 6 — PRÓXIMOS EVENTOS
-    ============================================= -->
-{% if proximos_eventos %}
-<section style="background-color: white; padding: 5rem 0;">
-    <div class="container">
-
-        <div class="text-center mb-5">
-            <h2 class="section-title">Próximos eventos</h2>
-            <p class="section-subtitle">Únete a nuestras actividades y sé parte del cambio.</p>
-        </div>
-
-        <div class="row g-4">
-            {% for evento in proximos_eventos %}
-            <div class="col-md-4">
-                <div class="card h-100 card-hover"
-                    style="border: none; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden;">
-
-                    <!-- Imagen o banner de color -->
-                    {% if evento.imagen %}
-                        <img src="{{ evento.imagen.url }}"
-                            style="width: 100%; height: 180px; object-fit: cover;"
-                            alt="{{ evento.titulo }}">
-                    {% else %}
-                        <div style="height: 180px; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-                                    display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-calendar-event" style="font-size: 3rem; color: rgba(255,255,255,0.5);"></i>
+            <!-- Celda grande izquierda -->
+            <div class="bento-cell bento-a">
+                {% with mascotas_destacadas.0 as m %}
+                    {% with m.fotos.first as foto %}
+                        {% if foto %}<img src="{{ foto.foto.url }}" alt="{{ m.nombre }}" loading="lazy">
+                        {% else %}<div style="height:100%;background:var(--color-gray-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-image" style="font-size:4rem;color:var(--color-gray);"></i></div>{% endif %}
+                    {% endwith %}
+                    <span class="bento-badge-large">Disponible</span>
+                    <div class="bento-info">
+                        <span class="bento-pet-name">{{ m.nombre }}</span>
+                        <div class="bento-pet-tags">
+                            <span class="bento-pet-tag">{{ m.especie|capfirst }}</span>
+                            <span class="bento-pet-tag">{{ m.edad_anios }} año{% if m.edad_anios != 1 %}s{% endif %}</span>
+                            <span class="bento-pet-tag">{{ m.sexo|capfirst }}</span>
                         </div>
-                    {% endif %}
-
-                    <div class="card-body p-4">
-                        <!-- Fecha y lugar -->
-                        <div class="d-flex gap-3 mb-3">
-                            <div class="d-flex align-items-center gap-1"
-                                style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600;">
-                                <i class="bi bi-calendar3"></i>
-                                {{ evento.fecha|date:"d M, Y" }}
-                            </div>
-                            <div class="d-flex align-items-center gap-1"
-                                style="font-size: 0.8rem; color: var(--color-gray);">
-                                <i class="bi bi-geo-alt"></i>
-                                {{ evento.lugar|truncatechars:22 }}
-                            </div>
-                        </div>
-
-                        <h6 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem;">
-                            {{ evento.titulo }}
-                        </h6>
-                        <p style="color: var(--color-gray); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.2rem;">
-                            {{ evento.descripcion|truncatewords:18 }}
-                        </p>
-
-                        <a href="{% url 'institucional:eventos' %}"
-                            class="btn btn-outline-primary w-100"
-                            style="border-radius: var(--radius-sm); font-size: 0.88rem;">
-                            Ver detalles
+                    </div>
+                    <div class="bento-overlay">
+                        <a href="{% url 'mascotas:detalle' m.pk %}" class="bento-cta">
+                            Conocer más <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
+                {% endwith %}
+            </div>
 
+            <!-- Celdas pequeñas -->
+            {% for m in mascotas_destacadas|slice:"1:5" %}
+            {% with forloop.counter as i %}
+            <div class="bento-cell {% if i == 1 %}bento-b{% elif i == 2 %}bento-c{% elif i == 3 %}bento-d{% else %}bento-e{% endif %}">
+                {% with m.fotos.first as foto %}
+                    {% if foto %}<img src="{{ foto.foto.url }}" alt="{{ m.nombre }}" loading="lazy">
+                    {% else %}<div style="height:100%;background:var(--color-gray-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-image" style="font-size:2.5rem;color:var(--color-gray);"></i></div>{% endif %}
+                {% endwith %}
+                <div class="bento-info">
+                    <span class="bento-pet-name" style="font-size:0.92rem;">{{ m.nombre }}</span>
+                    <div class="bento-pet-tags">
+                        <span class="bento-pet-tag">{{ m.especie|capfirst }}</span>
+                    </div>
+                </div>
+                <div class="bento-overlay">
+                    <a href="{% url 'mascotas:detalle' m.pk %}" class="bento-cta">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<!-- ══════════════════════════════════════════════════
+    5. PROCESO — LISTA EDITORIAL
+═══════════════════════════════════════════════════ -->
+<section style="background:white; padding:5rem 0;">
+    <div class="container">
+        <div class="sh">
+            <span class="sh-label">Proceso</span>
+            <h2 class="sh-title">¿Cómo adoptar?</h2>
+            <div class="sh-line"></div>
+        </div>
+        <div>
+            <div class="proc-row">
+                <span class="proc-num">01</span>
+                <div class="proc-content">
+                    <div class="proc-icon"><i class="bi bi-search-heart"></i></div>
+                    <div>
+                        <p class="proc-title">Explora el catálogo</p>
+                        <p class="proc-desc">Navega por nuestros animales disponibles y encuentra al que conecte con tu estilo de vida y hogar.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="proc-row">
+                <span class="proc-num">02</span>
+                <div class="proc-content">
+                    <div class="proc-icon"><i class="bi bi-person-plus"></i></div>
+                    <div>
+                        <p class="proc-title">Crea tu cuenta</p>
+                        <p class="proc-desc">Regístrate con Google en segundos para poder enviar tu solicitud de adopción de forma segura.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="proc-row">
+                <span class="proc-num">03</span>
+                <div class="proc-content">
+                    <div class="proc-icon"><i class="bi bi-file-earmark-text"></i></div>
+                    <div>
+                        <p class="proc-title">Envía tu solicitud</p>
+                        <p class="proc-desc">Cuéntanos sobre tu hogar, experiencia con animales y estilo de vida. Nuestro equipo lo revisa con cuidado.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="proc-row">
+                <span class="proc-num">04</span>
+                <div class="proc-content">
+                    <div class="proc-icon" style="background:var(--color-primary);color:white;"><i class="bi bi-house-heart"></i></div>
+                    <div>
+                        <p class="proc-title">Bienvenida al hogar</p>
+                        <p class="proc-desc">Coordinamos la entrega y hacemos seguimiento post-adopción para asegurar el bienestar del animal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+    6. TESTIMONIOS — FONDO OSCURO
+═══════════════════════════════════════════════════ -->
+{% if testimonios_recientes %}
+<section style="background:var(--color-dark); padding:5rem 0;">
+    <div class="container">
+        <div class="sh">
+            <span class="sh-label" style="color:var(--color-primary);">Comunidad</span>
+            <h2 class="sh-title" style="color:white;">Lo que dicen nuestros adoptantes</h2>
+            <div class="sh-line" style="background:rgba(255,255,255,0.1);"></div>
+            <a href="{% url 'institucional:testimonios' %}" class="sh-link" style="color:rgba(255,255,255,0.4);">
+                Ver todos <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="testi-grid">
+            {% for t in testimonios_recientes %}
+            <div class="testi-card">
+                <span class="testi-q-mark">"</span>
+                <p class="testi-text">{{ t.mensaje|truncatewords:34 }}</p>
+                <div class="testi-author">
+                    {% if t.foto %}
+                        <img src="{{ t.foto.url }}" class="testi-avatar" alt="{{ t.nombre }}">
+                    {% else %}
+                        <div class="testi-avatar-placeholder">
+                            <i class="bi bi-person-fill" style="color:var(--color-primary);font-size:1rem;"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <p class="testi-name">{{ t.nombre }}</p>
+                        <p class="testi-pet">Adoptó a <span class="testi-pet-name">{{ t.mascota }}</span></p>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-
-        <div class="text-center mt-5">
-            <a href="{% url 'institucional:eventos' %}"
-                class="btn btn-outline-secondary"
-                style="padding: 0.75rem 2rem; border-radius: var(--radius-sm);">
-                Ver todos los eventos <i class="bi bi-arrow-right ms-2"></i>
-            </a>
-        </div>
-
     </div>
 </section>
 {% endif %}
 
-<!-- =============================================
-    SECCIÓN 7 — IMPACTO Y DATOS
-    ============================================= -->
-<!-- Wave: blanco/crema → verde oscuro -->
-<div style="overflow: hidden; line-height: 0; background: white;">
-    <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="display: block; height: 55px; width: 100%;">
-        <path d="M0,0 C400,60 800,60 1200,0 L1200,60 L0,60 Z" fill="var(--color-primary)"/>
-    </svg>
-</div>
-
-<section style="background-color: var(--color-primary); padding: 5rem 0;">
+<!-- ══════════════════════════════════════════════════
+    7. PRÓXIMOS EVENTOS
+═══════════════════════════════════════════════════ -->
+{% if proximos_eventos %}
+<section style="background:var(--color-light); padding:5rem 0;">
     <div class="container">
-
-        <div class="text-center mb-5">
-            <h2 style="font-family: var(--font-title); font-weight: 700; color: white; font-size: 2rem;">
-                El abandono animal es una realidad
-            </h2>
-            <p style="color: rgba(255,255,255,0.6); font-size: 1rem;">
-                Cada año miles de animales necesitan un hogar en Colombia.
-            </p>
+        <div class="row g-5 align-items-start">
+            <div class="col-lg-4">
+                <span class="sh-label">Agenda</span>
+                <h2 class="sh-title" style="margin:0.8rem 0 1.2rem;">Próximos<br>eventos</h2>
+                <p style="color:var(--color-gray);line-height:1.8;font-size:0.95rem;margin-bottom:2rem;">
+                    Únete a nuestras actividades y conoce a otros amantes de los animales y a nuestros rescatados.
+                </p>
+                <a href="{% url 'institucional:eventos' %}" class="h-btn-primary" style="display:inline-flex;">
+                    Ver agenda <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="col-lg-8">
+                {% for evento in proximos_eventos %}
+                <a href="{% url 'institucional:detalle_evento' evento.pk %}" class="ev-item">
+                    <div class="ev-date-block">
+                        <span class="ev-day">{{ evento.fecha|date:"d" }}</span>
+                        <span class="ev-mon">{{ evento.fecha|date:"M" }}</span>
+                    </div>
+                    <div>
+                        <p class="ev-title">{{ evento.titulo }}</p>
+                        <p class="ev-loc">
+                            <i class="bi bi-geo-alt" style="color:var(--color-primary);"></i>
+                            {{ evento.lugar|truncatechars:40 }}
+                            <span style="margin-left:0.5rem;color:var(--color-gray-light);">·</span>
+                            <i class="bi bi-clock" style="color:var(--color-primary);margin-left:0.2rem;"></i>
+                            {{ evento.fecha|date:"H:i" }}
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right ev-arrow"></i>
+                </a>
+                {% endfor %}
+            </div>
         </div>
+    </div>
+</section>
+{% endif %}
 
-        <div class="row g-4 text-center">
-            <div class="col-md-4">
-                <div style="background: rgba(255,255,255,0.08); border-radius: var(--radius); padding: 2rem; border: 1px solid rgba(255,255,255,0.1);">
-                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 2rem; color: var(--color-accent); display: block; margin-bottom: 1rem;"></i>
-                    <h3 style="font-family: var(--font-title); font-weight: 700; color: var(--color-accent); font-size: 2.3rem; margin-bottom: 0.5rem;">+35.000</h3>
-                    <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.92rem;">Animales abandonados al año en Colombia</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div style="background: rgba(255,255,255,0.08); border-radius: var(--radius); padding: 2rem; border: 1px solid rgba(255,255,255,0.1);">
-                    <i class="bi bi-arrow-repeat" style="font-size: 2rem; color: var(--color-accent); display: block; margin-bottom: 1rem;"></i>
-                    <h3 style="font-family: var(--font-title); font-weight: 700; color: var(--color-accent); font-size: 2.3rem; margin-bottom: 0.5rem;">1 de cada 3</h3>
-                    <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.92rem;">Mascotas adoptadas son abandonadas nuevamente</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div style="background: rgba(255,255,255,0.08); border-radius: var(--radius); padding: 2rem; border: 1px solid rgba(255,255,255,0.1);">
-                    <i class="bi bi-megaphone-fill" style="font-size: 2rem; color: var(--color-accent); display: block; margin-bottom: 1rem;"></i>
-                    <h3 style="font-family: var(--font-title); font-weight: 700; color: var(--color-accent); font-size: 2.3rem; margin-bottom: 0.5rem;">70%</h3>
-                    <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.92rem;">De los rescates provienen de denuncias ciudadanas</p>
-                </div>
-            </div>
+<!-- ══════════════════════════════════════════════════
+    8. IMPACTO — CIFRAS CLAVE
+═══════════════════════════════════════════════════ -->
+<section style="background:#111; padding:5rem 0 0;">
+    <div class="container">
+        <div class="sh">
+            <span class="sh-label" style="color:var(--color-primary);">Contexto</span>
+            <h2 class="sh-title" style="color:white;">El abandono animal<br>es una realidad</h2>
         </div>
-
+    </div>
+    <div class="impact-grid">
+        <div class="impact-item">
+            <span class="impact-n">+35K</span>
+            <p class="impact-l">Animales son abandonados cada año en Colombia</p>
+        </div>
+        <div class="impact-item">
+            <span class="impact-n">1 / 3</span>
+            <p class="impact-l">Mascotas adoptadas son abandonadas nuevamente</p>
+        </div>
+        <div class="impact-item">
+            <span class="impact-n">70%</span>
+            <p class="impact-l">De los rescates provienen de denuncias ciudadanas</p>
+        </div>
     </div>
 </section>
 
-<!-- =============================================
-    SECCIÓN 8 — CTA FINAL
-    ============================================= -->
-<section style="background-color: rgb(34,85,58); padding: 5rem 0;">
-    <div class="container">
-        <div class="text-center">
-            <h3 style="font-family: var(--font-title); font-weight: 700; color: white; font-size: 2.3rem; margin-bottom: 1rem;">
-                Tú puedes hacer la diferencia
-            </h3>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; font-size: 1.05rem; max-width: 500px; margin-left: auto; margin-right: auto;">
-                Adopta, dona o comparte. Cada acción cuenta para salvar una vida.
+<!-- ══════════════════════════════════════════════════
+    9. CTA FINAL — FULL BLEED
+═══════════════════════════════════════════════════ -->
+<section class="fcta-wrap">
+    <div class="fcta-bg"></div>
+    <div class="fcta-overlay"></div>
+    <div class="container fcta-content">
+        <div style="max-width:640px;">
+            <h2 class="fcta-h">
+                Tú puedes<br>
+                hacer la <span>diferencia</span>
+            </h2>
+            <p class="fcta-p">
+                Adopta, dona o únete como voluntario. Cada acción, por pequeña que sea,
+                salva una vida y cambia la historia de un animal.
             </p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="{% url 'mascotas:catalogo' %}"
-                    style="padding: 0.9rem 2.2rem; background: white; color: var(--color-primary);
-                            border-radius: var(--radius-sm); text-decoration: none; font-weight: 600;
-                            font-family: var(--font-title); transition: var(--transition);"
-                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    <i class="bi bi-heart-fill me-2"></i>Adoptar
+            <div class="fcta-actions">
+                <a href="{% url 'mascotas:catalogo' %}" class="fcta-btn fcta-btn-fill">
+                    <i class="bi bi-heart-fill"></i> Adoptar
                 </a>
-                <a href="{% url 'donaciones:info' %}"
-                    style="padding: 0.9rem 2.2rem; border: 2px solid white; color: white;
-                            border-radius: var(--radius-sm); text-decoration: none; font-weight: 600;
-                            font-family: var(--font-title); transition: var(--transition);"
-                    onmouseover="this.style.background='white'; this.style.color='var(--color-primary)'"
-                    onmouseout="this.style.background='transparent'; this.style.color='white'">
-                    <i class="bi bi-gift-fill me-2"></i>Donar
+                <a href="{% url 'donaciones:info' %}" class="fcta-btn fcta-btn-accent">
+                    <i class="bi bi-gift-fill"></i> Donar
                 </a>
-                <a href="{% url 'institucional:como_ayudar' %}"
-                    style="padding: 0.9rem 2.2rem; border: 2px solid white; color: white;
-                            border-radius: var(--radius-sm); text-decoration: none; font-weight: 600;
-                            font-family: var(--font-title); transition: var(--transition);"
-                    onmouseover="this.style.background='white'; this.style.color='var(--color-primary)'"
-                    onmouseout="this.style.background='transparent'; this.style.color='white'">
-                    <i class="bi bi-people-fill me-2"></i>Voluntariado
+                <a href="{% url 'institucional:como_ayudar' %}" class="fcta-btn fcta-btn-outline">
+                    <i class="bi bi-people-fill"></i> Voluntariado
                 </a>
             </div>
         </div>
@@ -597,148 +820,11 @@
 {% endblock %}
 
 {% block scripts %}
-<style>
-/* ═══════════════════════════════════════════════════════
-    HERO — FLOATING PHOTO CLUSTER
-    Animación CSS pura · GPU-accelerated via translateY
-   ═══════════════════════════════════════════════════════ */
-
-.hero-float-cluster {
-    position: relative;
-    width: 100%;
-    height: 480px;
-    pointer-events: none;
-}
-
-/* ── Estilos base compartidos ── */
-.hero-float-img {
-    position: absolute;
-    object-fit: cover;
-    border-radius: 18px;
-    will-change: transform;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-/* ── F1: Retrato principal — primer plano, peso visual mayor ── */
-.img-f1 {
-    width: 200px; height: 258px;
-    top: 8%; left: 14%;
-    box-shadow:
-        0 28px 70px rgba(0,0,0,0.50),
-        0 10px 24px rgba(0,0,0,0.32);
-    animation: float-f1 9s ease-in-out infinite;
-    z-index: 4;
-}
-
-/* ── F2: Cuadrada — plano medio, esquina superior ── */
-.img-f2 {
-    width: 168px; height: 168px;
-    top: 2%; right: 4%;
-    box-shadow:
-        0 18px 52px rgba(0,0,0,0.40),
-        0 7px 18px rgba(0,0,0,0.24);
-    animation: float-f2 11s ease-in-out infinite;
-    z-index: 3;
-    opacity: 0.92;
-}
-
-/* ── F3: Retrato pequeño — plano medio, inferior derecha ── */
-.img-f3 {
-    width: 136px; height: 178px;
-    bottom: 4%; right: 5%;
-    box-shadow:
-        0 14px 42px rgba(0,0,0,0.36),
-        0 5px 14px rgba(0,0,0,0.20);
-    animation: float-f3 8s ease-in-out infinite 1.4s;
-    z-index: 3;
-    opacity: 0.90;
-}
-
-/* ── F4: Cuadrada — fondo, inferior izquierda ── */
-.img-f4 {
-    width: 146px; height: 146px;
-    bottom: 7%; left: 1%;
-    box-shadow:
-        0 12px 34px rgba(0,0,0,0.30),
-        0 4px 12px rgba(0,0,0,0.18);
-    animation: float-f4 10s ease-in-out infinite 2.8s;
-    z-index: 2;
-    opacity: 0.82;
-}
-
-/* ── F5: Miniatura — flota en el vacío central ── */
-.img-f5 {
-    width: 110px; height: 110px;
-    top: 56%; left: 41%;
-    box-shadow:
-        0 10px 28px rgba(0,0,0,0.28),
-        0 4px 10px rgba(0,0,0,0.16);
-    animation: float-f5 12s ease-in-out infinite 1.8s;
-    z-index: 5;
-    opacity: 0.88;
-}
-
-/* ═══════════════════════════════════════════════════════
-    KEYFRAMES — Rotación fija por imagen + translateY flotante
-    Cada imagen mantiene su ángulo durante toda la animación
-   ═══════════════════════════════════════════════════════ */
-
-@keyframes float-f1 {
-    0%, 100% { transform: rotate(-4deg) translateY(0px); }
-    50%       { transform: rotate(-4deg) translateY(-18px); }
-}
-
-@keyframes float-f2 {
-    0%, 100% { transform: rotate(5deg) translateY(-6px); }
-    50%       { transform: rotate(5deg) translateY(11px); }
-}
-
-@keyframes float-f3 {
-    0%, 100% { transform: rotate(-6deg) translateY(0px); }
-    38%       { transform: rotate(-6deg) translateY(-15px); }
-    72%       { transform: rotate(-6deg) translateY(5px); }
-}
-
-@keyframes float-f4 {
-    0%, 100% { transform: rotate(3deg) translateY(-10px); }
-    50%       { transform: rotate(3deg) translateY(9px); }
-}
-
-@keyframes float-f5 {
-    0%, 100% { transform: rotate(-2deg) translateY(0px); }
-    50%       { transform: rotate(-2deg) translateY(-20px); }
-}
-
-/* ── Respeto por preferencias de movimiento reducido ── */
-@media (prefers-reduced-motion: reduce) {
-    .hero-float-img { animation: none !important; }
-}
-</style>
-
 <script>
-(function () {
-    var counters = document.querySelectorAll('[data-counter]');
-    if (!counters.length || !('IntersectionObserver' in window)) return;
-
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            var el = entry.target;
-            var target = parseInt(el.dataset.counter, 10);
-            var hasPlus = el.dataset.counterPrefix === undefined;
-            var count = 0;
-            var step = Math.max(1, Math.ceil(target / 60));
-            var timer = setInterval(function () {
-                count = Math.min(count + step, target);
-                el.textContent = (hasPlus ? '+' : '') + count.toLocaleString('es-CO');
-                if (count >= target) clearInterval(timer);
-            }, 20);
-            observer.unobserve(el);
-        });
-    }, { threshold: 0.5 });
-
-    counters.forEach(function (el) { observer.observe(el); });
-})();
+// Subtle ken-burns effect on hero bg
+document.addEventListener('DOMContentLoaded', function () {
+    var bg = document.getElementById('heroBg');
+    if (bg) setTimeout(function () { bg.classList.add('loaded'); }, 100);
+});
 </script>
 {% endblock %}
