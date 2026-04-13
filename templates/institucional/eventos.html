@@ -7,276 +7,560 @@
 
 {% block contenido %}
 <style>
-/* ── Tarjetas de evento ─────────────────────────────── */
-.ev-card {
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
-    height: 100%;
-}
-.ev-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
-.ev-card-past {
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    opacity: 0.72;
-    height: 100%;
-}
-.ev-card-body { padding: 1.5rem; }
+/* ═══════════════════════════════════════════════
+   EVENTOS — Agency Style
+   ═══════════════════════════════════════════════ */
 
-.ev-badge-proximo {
-    background: rgba(92,138,60,0.1);
-    color: var(--color-primary);
-    padding: 0.3em 0.8em;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* ── HERO ──────────────────────────────────────── */
+.ev-hero {
+    position: relative;
+    background: var(--color-dark);
+    padding: 7rem 0 5rem;
+    overflow: hidden;
 }
-.ev-badge-encurso {
-    background: #D1FAE5;
-    color: #065F46;
-    padding: 0.3em 0.8em;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.ev-hero-noise {
+    position: absolute; inset: 0;
+    background-image:
+        radial-gradient(ellipse at 80% 20%, rgba(92,138,60,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 90%, rgba(92,138,60,0.08) 0%, transparent 40%);
+    pointer-events: none;
 }
-.ev-meta {
-    color: var(--color-gray);
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
+.ev-hero-counter {
+    position: absolute; right: 4rem; bottom: 3rem;
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 9rem; line-height: 1;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: -6px;
+    user-select: none;
+}
+.ev-kicker {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--color-primary);
+    margin-bottom: 1.4rem;
+}
+.ev-kicker-line { width: 32px; height: 1px; background: var(--color-primary); }
+.ev-hero-h {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    color: white; line-height: 0.95;
+    letter-spacing: -0.03em; margin-bottom: 1.8rem;
+}
+.ev-hero-h span {
+    -webkit-text-stroke: 2px rgba(255,255,255,0.35);
+    color: transparent;
+}
+.ev-hero-sub {
+    color: rgba(255,255,255,0.5); font-size: 0.97rem;
+    line-height: 1.8; max-width: 500px;
 }
 
-/* ── Galería infinite scroll ─────────────────────────── */
-@keyframes scrollGallery {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+/* ── TICKER ─────────────────────────────────────── */
+.ev-ticker {
+    background: var(--color-primary);
+    overflow: hidden; padding: 0.8rem 0;
+    white-space: nowrap;
 }
-.gallery-track {
-    display: flex;
-    gap: 1rem;
-    width: max-content;
-    animation: scrollGallery 22s linear infinite;
+.ev-ticker-track {
+    display: inline-flex; gap: 2.5rem;
+    animation: evticker 28s linear infinite;
     will-change: transform;
 }
-.gallery-track:hover { animation-play-state: paused; }
-.gallery-item {
-    width: 320px;
-    height: 220px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    flex-shrink: 0;
+@keyframes evticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
 }
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.ev-ticker-item {
+    font-family: var(--font-title); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    display: inline-flex; align-items: center; gap: 0.8rem;
+}
+.ev-ticker-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+
+/* ── SECTION HEADER ─────────────────────────────── */
+.ev-sh {
+    display: flex; align-items: baseline; gap: 1.2rem;
+    margin-bottom: 2.8rem; flex-wrap: wrap;
+}
+.ev-sh-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--color-primary);
+    white-space: nowrap;
+}
+.ev-sh-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--color-dark); line-height: 1.1;
+    letter-spacing: -0.02em; margin: 0;
+}
+.ev-sh-title-light { color: white; }
+.ev-sh-line { flex: 1; height: 1px; background: var(--color-gray-light); min-width: 40px; }
+.ev-sh-line-dark { background: rgba(255,255,255,0.1); }
+
+/* ── LIVE BADGE ─────────────────────────────────── */
+.ev-live {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #065F46; color: white;
+    padding: 0.3rem 0.85rem; border-radius: 2px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.ev-live-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #4ADE80;
+    animation: ev-blink 1.5s ease infinite;
+}
+@keyframes ev-blink {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
+    50%       { opacity: 0.5; box-shadow: none; }
 }
 
-/* ── Placeholder cuando no hay imagen ───────────────── */
-.ev-placeholder {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* ── EN CURSO — FEATURED CARD ───────────────────── */
+.ev-live-card {
+    display: grid; grid-template-columns: 1fr 1fr;
+    overflow: hidden; border-radius: 2px;
+    background: var(--color-dark);
+    box-shadow: var(--shadow-lg);
+    transition: box-shadow 0.25s ease;
+    text-decoration: none; color: inherit;
+    margin-bottom: 2px;
 }
-.ev-placeholder-past {
-    height: 160px;
+.ev-live-card:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.25); color: inherit; }
+.ev-live-card-img {
+    position: relative; overflow: hidden; min-height: 320px;
+}
+.ev-live-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+}
+.ev-live-card:hover .ev-live-card-img img { transform: scale(1.04); }
+.ev-live-card-body {
+    padding: 2.5rem; display: flex; flex-direction: column; justify-content: center;
+    gap: 1rem;
+}
+.ev-live-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    color: white; line-height: 1.2; margin: 0;
+}
+.ev-live-meta { color: rgba(255,255,255,0.55); font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.ev-live-meta span { display: flex; align-items: center; gap: 0.5rem; }
+.ev-live-meta i { color: var(--color-primary); }
+.ev-btn-live {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--color-primary); color: white;
+    padding: 0.8rem 1.6rem; border-radius: 2px;
+    font-family: var(--font-title); font-weight: 700; font-size: 0.82rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none; width: fit-content;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.ev-btn-live:hover { background: var(--color-primary-dark); color: white; transform: translateY(-2px); }
+
+/* ── PRÓXIMOS — FEATURE + GRID ───────────────────── */
+.ev-feature {
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    overflow: hidden; border-radius: 2px;
+    box-shadow: var(--shadow-md);
+    text-decoration: none; color: inherit;
+    margin-bottom: 4px;
+    transition: box-shadow 0.25s ease;
+}
+.ev-feature:hover { box-shadow: var(--shadow-lg); color: inherit; }
+.ev-feature-img { position: relative; overflow: hidden; min-height: 380px; }
+.ev-feature-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+.ev-feature:hover .ev-feature-img img { transform: scale(1.04); }
+.ev-feature-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 60%);
+}
+.ev-feature-body {
+    background: white; padding: 2.5rem 2rem;
+    display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+}
+.ev-feature-date {
+    display: flex; align-items: baseline; gap: 0.5rem;
+}
+.ev-feature-day {
+    font-family: var(--font-title); font-weight: 700; font-size: 3.5rem;
+    color: var(--color-primary); line-height: 1; letter-spacing: -2px;
+}
+.ev-feature-month {
+    font-family: var(--font-title); font-weight: 700; font-size: 1rem;
+    color: var(--color-gray); text-transform: uppercase; letter-spacing: 2px;
+}
+.ev-feature-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1.5rem; color: var(--color-dark);
+    line-height: 1.2; margin: 0;
+}
+.ev-feature-meta { color: var(--color-gray); font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.ev-feature-meta span { display: flex; align-items: center; gap: 0.45rem; }
+.ev-feature-meta i { color: var(--color-primary); }
+.ev-cupos {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--color-gray-light); padding: 0.4rem 0.8rem;
+    border-radius: 2px; font-size: 0.8rem; font-weight: 600;
+    color: var(--color-dark); width: fit-content;
+}
+.ev-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--color-dark); color: white;
+    padding: 0.8rem 1.6rem; border-radius: 2px;
+    font-family: var(--font-title); font-weight: 700; font-size: 0.82rem;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none; width: fit-content;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.ev-btn:hover { background: var(--color-primary); color: white; transform: translateY(-2px); }
+
+/* Tarjetas grid (resto de próximos) */
+.ev-grid-card {
+    background: white; border-radius: 2px;
+    overflow: hidden; height: 100%;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.ev-grid-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); color: inherit; }
+.ev-grid-card-img { overflow: hidden; position: relative; }
+.ev-grid-card-img img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.ev-grid-card:hover .ev-grid-card-img img { transform: scale(1.06); }
+.ev-grid-card-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }
+.ev-grid-date-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--color-gray-light); border-radius: 2px;
+    padding: 0.3rem 0.7rem; font-size: 0.75rem; font-weight: 700;
+    color: var(--color-primary); letter-spacing: 0.5px;
+    margin-bottom: 0.75rem; width: fit-content;
+}
+.ev-grid-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1rem; color: var(--color-dark);
+    margin-bottom: 0.4rem; line-height: 1.3;
+}
+.ev-grid-loc {
+    font-size: 0.8rem; color: var(--color-gray);
+    display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.35rem;
+}
+.ev-grid-cupos {
+    font-size: 0.8rem; color: var(--color-gray);
+    display: flex; align-items: center; gap: 0.35rem;
+    margin-top: auto; padding-top: 0.8rem;
+    border-top: 1px solid var(--color-gray-light);
+}
+.ev-grid-cupos i { color: var(--color-primary); }
+.ev-no-img {
+    height: 200px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* ── GALERÍA GRID ESTÁTICO ──────────────────────── */
+.ev-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: 280px 200px;
+    gap: 4px;
+}
+/* Row 1: celda ancha izquierda */
+.ev-ph-1 { grid-column: 1 / span 4; grid-row: 1; }
+.ev-ph-2 { grid-column: 5 / span 3; grid-row: 1; }
+.ev-ph-3 { grid-column: 8 / span 3; grid-row: 1; }
+/* Row 2: celda ancha derecha (patrón Z) */
+.ev-ph-4 { grid-column: 1 / span 3; grid-row: 2; }
+.ev-ph-5 { grid-column: 4 / span 3; grid-row: 2; }
+.ev-ph-6 { grid-column: 7 / span 4; grid-row: 2; }
+.ev-ph-cell {
+    overflow: hidden; position: relative;
+}
+.ev-ph-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.5s ease;
+}
+.ev-ph-cell:hover img { transform: scale(1.05); }
+
+/* ── FINALIZADOS — LISTA ────────────────────────── */
+.ev-past-item {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 1.2rem; align-items: center;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--color-gray-light);
+    text-decoration: none; color: inherit;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+}
+.ev-past-item:first-child { border-top: 1px solid var(--color-gray-light); }
+.ev-past-item:hover { opacity: 1; padding-left: 6px; }
+.ev-past-img {
+    width: 80px; height: 60px; border-radius: 2px;
+    overflow: hidden; flex-shrink: 0;
+}
+.ev-past-img img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(40%); }
+.ev-past-no-img {
+    width: 80px; height: 60px; border-radius: 2px;
     background: var(--color-gray-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
+}
+.ev-past-title {
+    font-family: var(--font-title); font-weight: 600;
+    font-size: 0.92rem; margin-bottom: 0.25rem;
+}
+.ev-past-meta { font-size: 0.78rem; color: var(--color-gray); display: flex; gap: 0.9rem; flex-wrap: wrap; }
+
+/* ── EMPTY STATE ────────────────────────────────── */
+.ev-empty {
+    text-align: center; padding: 5rem 2rem;
+    border: 1px dashed var(--color-gray-light); border-radius: 2px;
+}
+.ev-empty-icon {
+    width: 72px; height: 72px;
+    background: var(--color-gray-light); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem; font-size: 1.8rem; color: var(--color-gray);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 991px) {
+    .ev-live-card { grid-template-columns: 1fr; }
+    .ev-live-card-img { min-height: 240px; }
+    .ev-feature { grid-template-columns: 1fr; }
+    .ev-feature-img { min-height: 240px; }
+}
+@media (max-width: 767px) {
+    .ev-hero-h { font-size: clamp(2.8rem, 12vw, 4rem); }
+    .ev-hero-counter { display: none; }
+    .ev-past-item { grid-template-columns: 60px 1fr; }
+    .ev-past-img { width: 60px; height: 50px; }
+    .ev-past-no-img { width: 60px; height: 50px; }
+    /* Galería: 2 cols en móvil */
+    .ev-photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 180px 180px 180px;
+    }
+    .ev-ph-1 { grid-column: 1; grid-row: 1; }
+    .ev-ph-2 { grid-column: 2; grid-row: 1; }
+    .ev-ph-3 { grid-column: 1; grid-row: 2; }
+    .ev-ph-4 { grid-column: 2; grid-row: 2; }
+    .ev-ph-5 { grid-column: 1; grid-row: 3; }
+    .ev-ph-6 { grid-column: 2; grid-row: 3; }
 }
 </style>
 
-<!-- ── HEADER ──────────────────────────────────────── -->
-<section style="
-    position: relative;
-    background-color: var(--color-dark);
-    padding: 5rem 0;
-    overflow: hidden;">
-    <div style="position:absolute;top:-50px;right:-50px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(92,138,60,0.2);"></div>
-    <div style="position:absolute;bottom:-80px;left:-80px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(92,138,60,0.15);"></div>
-    <div class="container text-center" style="position:relative;z-index:1;">
-        <span class="section-label" style="color:var(--color-primary);">Comunidad</span>
-        <h1 style="font-family:var(--font-title);font-weight:700;color:white;font-size:3rem;margin-bottom:0.5rem;">
-            Eventos
+<!-- ══ 1. HERO ══════════════════════════════════════════ -->
+<section class="ev-hero">
+    <div class="ev-hero-noise"></div>
+    <div class="ev-hero-counter" aria-hidden="true">EVT</div>
+    <div class="container" style="position:relative;z-index:1;">
+        <div class="ev-kicker">
+            <span class="ev-kicker-line"></span>
+            Comunidad
+        </div>
+        <h1 class="ev-hero-h">
+            Eventos<br>
+            <span>&amp; Actividades</span>
         </h1>
-        <p style="color:rgba(255,255,255,0.6);font-size:1.1rem;margin:0;max-width:680px;margin-inline:auto;">
-            Únete a nuestras actividades y conoce a otros amantes de los animales,
-            así como a nuestros rescatados. ¡Te esperamos con los brazos abiertos!
+        <p class="ev-hero-sub">
+            Únete a nuestras jornadas de adopción, charlas de bienestar animal
+            y actividades comunitarias. Cada encuentro importa.
         </p>
     </div>
 </section>
 
-<!-- Onda -->
-<div style="background-color:var(--color-dark);margin-bottom:-1px;">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height:60px;width:100%;display:block;">
-        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z" fill="#F9F6F0"/>
-    </svg>
+<!-- ══ 2. TICKER ════════════════════════════════════════ -->
+<div class="ev-ticker" aria-hidden="true">
+    <div class="ev-ticker-track">
+        {% for _ in "123456" %}
+        <span class="ev-ticker-item">Adopción <span class="ev-ticker-sep"></span></span>
+        <span class="ev-ticker-item">Bienestar animal <span class="ev-ticker-sep"></span></span>
+        <span class="ev-ticker-item">Voluntariado <span class="ev-ticker-sep"></span></span>
+        <span class="ev-ticker-item">Comunidad <span class="ev-ticker-sep"></span></span>
+        <span class="ev-ticker-item">Rescate <span class="ev-ticker-sep"></span></span>
+        {% endfor %}
+    </div>
 </div>
 
-<!-- ── GALERÍA ──────────────────────────────────────── -->
-<section style="background-color:var(--color-light);padding:4rem 0 2rem;overflow:hidden;">
-    <div class="container">
-        <div class="text-center mb-4">
-            <span class="section-label">Momentos</span>
-            <h3 style="font-family:var(--font-title);font-weight:700;">Eventos que hemos vivido</h3>
-        </div>
-    </div>
-    <div style="position:relative;overflow:hidden;">
-        <div class="gallery-track">
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto1.jpg' %}" alt="Evento" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto2.jpg' %}" alt="Evento" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto3.jpg' %}" alt="Evento" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto4.jpg' %}" alt="Evento" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto5.jpg' %}" alt="Evento" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto6.jpg' %}" alt="Evento" loading="lazy"></div>
-            <!-- Copia para el loop infinito -->
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto1.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto2.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto3.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto4.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto5.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-            <div class="gallery-item"><img src="{% static 'img/eventos/foto6.jpg' %}" alt="Evento" aria-hidden="true" loading="lazy"></div>
-        </div>
-    </div>
-</section>
-
-<!-- ── EN CURSO ─────────────────────────────────────── -->
+<!-- ══ 3. EN CURSO ══════════════════════════════════════ -->
 {% if en_curso %}
-<section style="background-color:var(--color-light);padding:4rem 0 2rem;">
+<section style="background:var(--color-dark);padding:4rem 0;">
     <div class="container">
-        <div class="mb-4">
-            <span class="section-label">Ahora</span>
-            <h3 style="font-family:var(--font-title);font-weight:700;">En curso</h3>
+        <div class="ev-sh" style="margin-bottom:2rem;">
+            <span class="ev-live"><span class="ev-live-dot"></span>En curso ahora</span>
+            <div class="ev-sh-line ev-sh-line-dark"></div>
         </div>
-        <div class="row g-4">
+        <div style="display:flex;flex-direction:column;gap:2px;">
             {% for evento in en_curso %}
-            <div class="col-md-4">
-                <div class="ev-card">
+            <a href="{% url 'institucional:detalle_evento' evento.pk %}" class="ev-live-card">
+                <div class="ev-live-card-img">
                     {% if evento.imagen %}
-                        <img src="{{ evento.imagen.url }}"
-                             style="width:100%;height:200px;object-fit:cover;display:block;"
-                             alt="{{ evento.titulo }}" loading="lazy">
+                        <img src="{{ evento.imagen.url }}" alt="{{ evento.titulo }}" loading="lazy">
                     {% else %}
-                        <div class="ev-placeholder" style="background:linear-gradient(135deg,var(--color-secondary) 0%,#4A7230 100%);">
-                            <i class="bi bi-calendar-event" style="font-size:3rem;color:white;opacity:0.5;"></i>
+                        <div style="height:100%;min-height:320px;background:linear-gradient(135deg,var(--color-secondary) 0%,#4A7230 100%);display:flex;align-items:center;justify-content:center;">
+                            <i class="bi bi-calendar-event" style="font-size:4rem;color:rgba(255,255,255,0.2);"></i>
                         </div>
                     {% endif %}
-                    <div class="ev-card-body">
-                        <span class="ev-badge-encurso">En curso</span>
-                        <h5 style="font-family:var(--font-title);font-weight:700;margin:0.8rem 0 0.5rem;">
-                            {{ evento.titulo }}
-                        </h5>
-                        <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y H:i" }}</p>
-                        <p class="ev-meta"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
-                        <a href="{% url 'institucional:detalle_evento' evento.pk %}"
-                           class="btn btn-primary w-100 btn-sm mt-2">Ver detalles</a>
-                    </div>
                 </div>
-            </div>
+                <div class="ev-live-card-body">
+                    <span class="ev-live" style="width:fit-content;"><span class="ev-live-dot"></span>Sucediendo ahora</span>
+                    <h2 class="ev-live-title">{{ evento.titulo }}</h2>
+                    <div class="ev-live-meta">
+                        <span><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d \d\e F, Y" }}</span>
+                        <span><i class="bi bi-clock"></i>{{ evento.fecha|date:"H:i" }}</span>
+                        <span><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</span>
+                    </div>
+                    <span class="ev-btn-live">Ver detalles <i class="bi bi-arrow-right"></i></span>
+                </div>
+            </a>
             {% endfor %}
         </div>
     </div>
 </section>
 {% endif %}
 
-<!-- ── PRÓXIMOS ─────────────────────────────────────── -->
-<section style="background-color:var(--color-light);padding:{% if en_curso %}2rem{% else %}4rem{% endif %} 0 5rem;">
+<!-- ══ 4. PRÓXIMOS ══════════════════════════════════════ -->
+<section style="background:var(--color-light);padding:5rem 0;">
     <div class="container">
-
         {% if proximos %}
-        <div class="mb-4">
-            <span class="section-label">Próximamente</span>
-            <h3 style="font-family:var(--font-title);font-weight:700;">Próximos eventos</h3>
+        <div class="ev-sh">
+            <span class="ev-sh-label">Próximamente</span>
+            <h2 class="ev-sh-title">Próximos eventos</h2>
+            <div class="ev-sh-line"></div>
         </div>
-        <div class="row g-4">
-            {% for evento in proximos %}
-            <div class="col-md-4">
-                <div class="ev-card">
-                    {% if evento.imagen %}
-                        <img src="{{ evento.imagen.url }}"
-                             style="width:100%;height:200px;object-fit:cover;display:block;"
-                             alt="{{ evento.titulo }}" loading="lazy">
-                    {% else %}
-                        <div class="ev-placeholder" style="background:linear-gradient(135deg,var(--color-primary) 0%,#4A7230 100%);">
-                            <i class="bi bi-calendar-event" style="font-size:3rem;color:white;opacity:0.5;"></i>
-                        </div>
-                    {% endif %}
-                    <div class="ev-card-body">
-                        <span class="ev-badge-proximo">Próximo</span>
-                        <h5 style="font-family:var(--font-title);font-weight:700;margin:0.8rem 0 0.5rem;">
-                            {{ evento.titulo }}
-                        </h5>
-                        <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y H:i" }}</p>
-                        <p class="ev-meta"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
-                        <p class="ev-meta"><i class="bi bi-people"></i>{{ evento.cupos_disponibles }} cupos disponibles</p>
-                        <a href="{% url 'institucional:detalle_evento' evento.pk %}"
-                           class="btn btn-primary w-100 btn-sm mt-2">Ver detalles</a>
+
+        <!-- Featured: primer evento -->
+        {% with proximos.0 as featured %}
+        <a href="{% url 'institucional:detalle_evento' featured.pk %}" class="ev-feature">
+            <div class="ev-feature-img">
+                {% if featured.imagen %}
+                    <img src="{{ featured.imagen.url }}" alt="{{ featured.titulo }}" loading="lazy">
+                {% else %}
+                    <div style="height:100%;min-height:380px;background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-dark) 100%);display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-calendar-event" style="font-size:5rem;color:rgba(255,255,255,0.15);"></i>
                     </div>
+                {% endif %}
+                <div class="ev-feature-overlay"></div>
+            </div>
+            <div class="ev-feature-body">
+                <div class="ev-feature-date">
+                    <span class="ev-feature-day">{{ featured.fecha|date:"d" }}</span>
+                    <span class="ev-feature-month">{{ featured.fecha|date:"M Y" }}</span>
                 </div>
+                <h2 class="ev-feature-title">{{ featured.titulo }}</h2>
+                <div class="ev-feature-meta">
+                    <span><i class="bi bi-clock"></i>{{ featured.fecha|date:"H:i" }}</span>
+                    <span><i class="bi bi-geo-alt"></i>{{ featured.lugar }}</span>
+                </div>
+                <span class="ev-cupos">
+                    <i class="bi bi-people" style="color:var(--color-primary);"></i>
+                    {{ featured.cupos_disponibles }} cupos disponibles
+                </span>
+                <span class="ev-btn">Ver detalles <i class="bi bi-arrow-right"></i></span>
+            </div>
+        </a>
+        {% endwith %}
+
+        <!-- Resto de próximos en grid -->
+        {% if proximos|length > 1 %}
+        <div class="row g-1 mt-1">
+            {% for evento in proximos|slice:"1:" %}
+            <div class="col-md-4">
+                <a href="{% url 'institucional:detalle_evento' evento.pk %}" class="ev-grid-card">
+                    <div class="ev-grid-card-img">
+                        {% if evento.imagen %}
+                            <img src="{{ evento.imagen.url }}" alt="{{ evento.titulo }}" loading="lazy">
+                        {% else %}
+                            <div class="ev-no-img">
+                                <i class="bi bi-calendar-event" style="font-size:2.5rem;color:rgba(255,255,255,0.3);"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="ev-grid-card-body">
+                        <span class="ev-grid-date-pill">
+                            <i class="bi bi-calendar3"></i>
+                            {{ evento.fecha|date:"d M, Y" }}
+                        </span>
+                        <p class="ev-grid-title">{{ evento.titulo }}</p>
+                        <p class="ev-grid-loc"><i class="bi bi-geo-alt" style="color:var(--color-primary);"></i>{{ evento.lugar|truncatechars:38 }}</p>
+                        <p class="ev-grid-cupos"><i class="bi bi-people"></i>{{ evento.cupos_disponibles }} cupos disponibles</p>
+                    </div>
+                </a>
             </div>
             {% endfor %}
         </div>
-
-        {% elif not en_curso %}
-        <div class="text-center py-5">
-            <div style="width:80px;height:80px;background:rgba(92,138,60,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
-                <i class="bi bi-calendar-x" style="font-size:2rem;color:var(--color-primary);"></i>
-            </div>
-            <h4 style="font-family:var(--font-title);font-weight:700;margin-bottom:0.5rem;">No hay eventos programados</h4>
-            <p style="color:var(--color-gray);margin-bottom:2rem;">Síguenos en redes sociales para enterarte de los próximos eventos.</p>
-            <a href="{% url 'institucional:contacto' %}" class="btn btn-primary">Síguenos en redes</a>
-        </div>
         {% endif %}
 
-        <!-- ── FINALIZADOS ── -->
-        {% if finalizados %}
-        <div class="mt-5 pt-4" style="border-top:1px solid var(--color-gray-light);">
-            <div class="mb-4">
-                <span class="section-label">Historial</span>
-                <h3 style="font-family:var(--font-title);font-weight:700;color:var(--color-gray);">Eventos anteriores</h3>
-            </div>
-            <div class="row g-4">
-                {% for evento in finalizados %}
-                <div class="col-md-4">
-                    <div class="ev-card-past">
-                        {% if evento.imagen %}
-                            <img src="{{ evento.imagen.url }}"
-                                 style="width:100%;height:160px;object-fit:cover;display:block;filter:grayscale(30%);"
-                                 alt="{{ evento.titulo }}" loading="lazy">
-                        {% else %}
-                            <div class="ev-placeholder-past">
-                                <i class="bi bi-calendar-check" style="font-size:3rem;color:var(--color-gray);"></i>
-                            </div>
-                        {% endif %}
-                        <div class="ev-card-body">
-                            <h6 style="font-family:var(--font-title);font-weight:600;margin-bottom:0.3rem;">{{ evento.titulo }}</h6>
-                            <p class="ev-meta"><i class="bi bi-calendar3"></i>{{ evento.fecha|date:"d/m/Y" }}</p>
-                            <p class="ev-meta" style="margin:0;"><i class="bi bi-geo-alt"></i>{{ evento.lugar }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+        {% elif not en_curso %}
+        <div class="ev-empty">
+            <div class="ev-empty-icon"><i class="bi bi-calendar-x"></i></div>
+            <h4 style="font-family:var(--font-title);font-weight:700;margin-bottom:0.5rem;">No hay eventos programados</h4>
+            <p style="color:var(--color-gray);margin-bottom:2rem;max-width:360px;margin-inline:auto;font-size:0.93rem;">Síguenos en redes sociales para enterarte de los próximos eventos y actividades.</p>
+            <a href="{% url 'institucional:contacto' %}"
+               style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--color-primary);color:white;padding:0.85rem 1.8rem;border-radius:2px;font-family:var(--font-title);font-weight:700;font-size:0.85rem;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;transition:background 0.2s ease;">
+                Contáctanos <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
         {% endif %}
 
     </div>
 </section>
+
+<!-- ══ 5. GALERÍA GRID ═══════════════════════════════════ -->
+<section style="background:white;padding:5rem 0 0;">
+    <div class="container">
+        <div class="ev-sh">
+            <span class="ev-sh-label">Momentos</span>
+            <h2 class="ev-sh-title">Eventos que hemos vivido</h2>
+            <div class="ev-sh-line"></div>
+        </div>
+    </div>
+    <div style="padding:0 1.5rem;">
+        <div class="ev-photo-grid">
+            <div class="ev-ph-cell ev-ph-1"><img src="{% static 'img/eventos/foto1.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+            <div class="ev-ph-cell ev-ph-2"><img src="{% static 'img/eventos/foto2.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+            <div class="ev-ph-cell ev-ph-3"><img src="{% static 'img/eventos/foto3.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+            <div class="ev-ph-cell ev-ph-4"><img src="{% static 'img/eventos/foto4.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+            <div class="ev-ph-cell ev-ph-5"><img src="{% static 'img/eventos/foto5.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+            <div class="ev-ph-cell ev-ph-6"><img src="{% static 'img/eventos/foto6.jpg' %}" alt="Momento del evento" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ 6. FINALIZADOS ════════════════════════════════════ -->
+{% if finalizados %}
+<section style="background:white;padding:4rem 0 5rem;">
+    <div class="container">
+        <div class="ev-sh">
+            <span class="ev-sh-label">Historial</span>
+            <h2 class="ev-sh-title" style="color:var(--color-gray);">Eventos anteriores</h2>
+            <div class="ev-sh-line"></div>
+        </div>
+        <div style="max-width:780px;">
+            {% for evento in finalizados %}
+            <a href="{% url 'institucional:detalle_evento' evento.pk %}" class="ev-past-item">
+                <div class="ev-past-img">
+                    {% if evento.imagen %}
+                        <img src="{{ evento.imagen.url }}" alt="{{ evento.titulo }}" loading="lazy">
+                    {% else %}
+                        <div class="ev-past-no-img">
+                            <i class="bi bi-calendar-check" style="color:var(--color-gray);font-size:1.1rem;"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <p class="ev-past-title">{{ evento.titulo }}</p>
+                    <div class="ev-past-meta">
+                        <span><i class="bi bi-calendar3" style="color:var(--color-gray);"></i> {{ evento.fecha|date:"d \d\e F, Y" }}</span>
+                        <span><i class="bi bi-geo-alt" style="color:var(--color-gray);"></i> {{ evento.lugar }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
 
 {% endblock %}

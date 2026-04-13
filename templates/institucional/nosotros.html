@@ -2,299 +2,479 @@
 {% load static %}
 
 {% block titulo %}Nosotros — Fundación Rescate Animal{% endblock %}
-
 {% block meta_description %}Conoce nuestra misión, visión y el equipo detrás de Fundación Rescate Animal. Rescatamos, rehabilitamos y encontramos hogares responsables para animales en situación de calle.{% endblock %}
 {% block og_description %}Conoce nuestra misión, visión y el equipo detrás de Fundación Rescate Animal. Rescatamos, rehabilitamos y encontramos hogares responsables para animales en situación de calle.{% endblock %}
 
 {% block contenido %}
+<style>
+/* ═══════════════════════════════════════════════
+    NOSOTROS — Agency Style
+   ═══════════════════════════════════════════════ */
 
-<!-- =============================================
-    HEADER + MISIÓN + VISIÓN UNIFICADOS
-    Una sola imagen de fondo con todo el contenido
-    ============================================= -->
-<section style="
+/* ── HERO ──────────────────────────────────────── */
+.ns-hero {
     position: relative;
     min-height: 100vh;
     display: flex;
-    align-items: center;
-    overflow: hidden;">
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+.ns-hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('{% static "img/mision-vision.jpg" %}');
+    background-size: cover;
+    background-position: center 40%;
+}
+.ns-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.3) 0%,
+        rgba(10,10,10,0.6) 45%,
+        rgba(10,10,10,0.93) 100%
+    );
+}
+.ns-hero-content {
+    position: relative; z-index: 2;
+    padding-bottom: 0;
+}
+.ns-kicker {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: 1.4rem;
+}
+.ns-kicker-line { width: 32px; height: 1px; background: var(--color-primary); }
+.ns-hero-h {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(3.2rem, 9vw, 7.5rem);
+    color: white; line-height: 0.95;
+    letter-spacing: -0.03em; margin-bottom: 1.8rem;
+}
+.ns-hero-h span {
+    -webkit-text-stroke: 2px rgba(255,255,255,0.4);
+    color: transparent;
+}
+.ns-hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 1rem; line-height: 1.8;
+    max-width: 480px; margin-bottom: 0;
+}
+/* Stats strip at bottom of hero */
+.ns-hero-strip {
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 3.5rem; padding: 2.5rem 0;
+}
+.ns-hero-stat {
+    flex: 1; text-align: left;
+    padding-right: 2rem; position: relative;
+}
+.ns-hero-stat + .ns-hero-stat {
+    padding-left: 2rem;
+    border-left: 1px solid rgba(255,255,255,0.12);
+}
+.ns-stat-n {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 2rem; color: white; line-height: 1;
+    display: block; margin-bottom: 0.25rem;
+}
+.ns-stat-l { font-size: 0.73rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
 
-    <!-- Imagen de fondo -->
-    <div style="
-        position: absolute;
-        inset: 0;
-        background-image: url('{% static 'img/mision-vision.jpg' %}');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;">
-    </div>
+/* ── TICKER ─────────────────────────────────────── */
+.ns-ticker {
+    background: var(--color-primary);
+    overflow: hidden; padding: 0.85rem 0; white-space: nowrap;
+}
+.ns-ticker-track {
+    display: inline-flex; gap: 2.5rem;
+    animation: nsticker 30s linear infinite;
+    will-change: transform;
+}
+@keyframes nsticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.ns-ticker-item {
+    font-family: var(--font-title); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    display: inline-flex; align-items: center; gap: 0.8rem;
+}
+.ns-ticker-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.35); }
 
-    <!-- Overlay oscuro -->
-    <div style="
-        position: absolute;
-        inset: 0;
-        background: rgba(44,44,44,0.78);">
-    </div>
+/* ── SPLIT SECTIONS ─────────────────────────────── */
+.ns-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 62vh;
+    overflow: hidden;
+}
+.ns-split-img {
+    position: relative; overflow: hidden;
+}
+.ns-split-img img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+.ns-split-img:hover img { transform: scale(1.04); }
+.ns-split-img-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+}
+.ns-split-body {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 5rem 4.5rem;
+}
+.ns-split-body-dark { background: var(--color-dark); }
+.ns-split-body-white { background: white; }
+.ns-split-num {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 7rem; line-height: 1; letter-spacing: -4px;
+    color: var(--color-primary); opacity: 0.07;
+    margin-bottom: -1.5rem; display: block;
+}
+.ns-split-label {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: 1.2rem;
+}
+.ns-split-h {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 1.4rem;
+}
+.ns-split-h-light { color: white; }
+.ns-split-h-dark  { color: var(--color-dark); }
+.ns-split-p { font-size: 0.97rem; line-height: 1.85; margin: 0; }
+.ns-split-p-light { color: rgba(255,255,255,0.6); }
+.ns-split-p-dark  { color: var(--color-gray); }
 
-    <!-- Contenido -->
-    <div class="container" style="position: relative; z-index: 3; padding: 6rem 0 8rem;">
+/* ── VALORES ────────────────────────────────────── */
+.ns-valor {
+    padding: 2.5rem 2rem;
+    border-top: 2px solid transparent;
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+.ns-valor:hover {
+    border-top-color: var(--color-primary);
+    background: rgba(0,0,0,0.03);
+}
+.ns-valor-icon {
+    width: 52px; height: 52px;
+    background: rgba(92,138,60,0.1);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; color: var(--color-primary);
+    margin-bottom: 1.4rem;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.ns-valor:hover .ns-valor-icon { background: var(--color-primary); color: white; }
+.ns-valor-title {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1.1rem; margin-bottom: 0.6rem; color: var(--color-dark);
+}
+.ns-valor-desc { font-size: 0.88rem; color: var(--color-gray); line-height: 1.7; margin: 0; }
 
-        <!-- TÍTULO PRINCIPAL -->
-        <div class="text-center mb-5">
-            <h1 style="
-                font-family: var(--font-title);
-                font-weight: 700;
-                color: white;
-                font-size: 3.5rem;
-                margin-bottom: 0.5rem;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-                Quiénes somos
-            </h1>
-            <p style="color: rgba(255,255,255,0.75); font-size: 1.1rem;">
-                Conoce la historia y los valores que nos mueven cada día.
-            </p>
+/* ── EQUIPO ─────────────────────────────────────── */
+.ns-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+}
+.ns-team-cell {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: var(--color-gray-light);
+    cursor: default;
+}
+.ns-team-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.55s ease;
+}
+.ns-team-cell:hover img { transform: scale(1.06); }
+.ns-team-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 55%);
+    transform: translateY(100%);
+    transition: transform 0.38s ease;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 1.5rem 1.2rem;
+}
+.ns-team-cell:hover .ns-team-overlay { transform: translateY(0); }
+.ns-team-name {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 1rem; color: white; margin-bottom: 0.2rem;
+}
+.ns-team-role {
+    font-size: 0.78rem; color: var(--color-primary);
+    font-weight: 600; letter-spacing: 0.5px;
+}
+.ns-team-desc {
+    font-size: 0.78rem; color: rgba(255,255,255,0.6);
+    margin-top: 0.4rem; line-height: 1.5;
+}
+/* Sin foto: iniciales */
+.ns-team-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--color-dark) 0%, #1a1a1a 100%);
+    display: flex; align-items: center; justify-content: center;
+}
+.ns-team-initials {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 2.8rem; color: rgba(255,255,255,0.1);
+    letter-spacing: -2px;
+}
+
+/* ── CTA FINAL ───────────────────────────────────── */
+.ns-cta {
+    position: relative; padding: 7rem 0;
+    overflow: hidden;
+}
+.ns-cta-bg {
+    position: absolute; inset: 0;
+    background: var(--color-dark);
+}
+.ns-cta-noise {
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse at 85% 15%, rgba(92,138,60,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 85%, rgba(92,138,60,0.08) 0%, transparent 45%);
+    pointer-events: none;
+}
+.ns-cta-h {
+    font-family: var(--font-title); font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: white; line-height: 1.05;
+    letter-spacing: -0.02em; margin-bottom: 1.2rem;
+}
+.ns-cta-h em { font-style: normal; color: var(--color-accent); }
+.ns-cta-p { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.8; max-width: 460px; margin-bottom: 2.4rem; }
+.ns-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.9rem 2rem; border-radius: 2px;
+    font-family: var(--font-title); font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.ns-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.ns-btn-fill { background: var(--color-primary); color: white; }
+.ns-btn-fill:hover { background: var(--color-primary-dark); color: white; }
+.ns-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.35); }
+.ns-btn-outline:hover { border-color: white; }
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 1023px) {
+    .ns-split { grid-template-columns: 1fr; }
+    .ns-split-img { min-height: 320px; }
+    .ns-split-body { padding: 3.5rem 2rem; }
+    .ns-team-grid { grid-template-columns: repeat(2, 1fr); }
+    .ns-hero-strip { flex-wrap: wrap; gap: 1.5rem; }
+    .ns-hero-stat + .ns-hero-stat { border-left: none; padding-left: 0; }
+}
+@media (max-width: 767px) {
+    .ns-hero-h { font-size: clamp(2.8rem, 12vw, 4.5rem); }
+    .ns-team-grid { grid-template-columns: repeat(2, 1fr); }
+    .ns-team-overlay { transform: translateY(0); background: linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 60%); }
+}
+</style>
+
+<!-- ══ 1. HERO ══════════════════════════════════════════ -->
+<section class="ns-hero">
+    <div class="ns-hero-bg"></div>
+    <div class="ns-hero-overlay"></div>
+    <div class="container ns-hero-content">
+        <div class="ns-kicker">
+            <span class="ns-kicker-line"></span>
+            Fundación Rescate Animal
         </div>
-
-        <!-- Línea divisoria superior -->
-        <div style="border-top: 1px solid rgba(255,255,255,0.15); margin: 3rem 0;"></div>
-
-        <!-- MISIÓN -->
-        <div class="row align-items-center mb-5 g-4">
-            <div class="col-md-6">
-                <span class="section-label">Nuestra misión</span>
-                <h2 style="font-family:var(--font-title);font-weight:700;font-size:2.2rem;color:white;margin:0.8rem 0 1.5rem;line-height:1.3;">
-                    Lo que nos mueve cada día
-                </h2>
-                <p style="color:rgba(255,255,255,0.85);line-height:1.9;font-size:1rem;">
-                    {% if contenido %}{{ contenido.mision }}{% else %}Somos una fundación dedicada al rescate, rehabilitación y adopción responsable de animales en situación de vulnerabilidad. Trabajamos con voluntarios comprometidos para dar una segunda oportunidad a cada animal rescatado.{% endif %}
-                </p>
+        <h1 class="ns-hero-h">
+            Quiénes<br>
+            <span>somos</span>
+        </h1>
+        <p class="ns-hero-sub">
+            Conoce la historia, los valores y las personas que hacen posible
+            nuestra misión de rescate y adopción responsable cada día.
+        </p>
+        <div class="ns-hero-strip">
+            <div class="ns-hero-stat">
+                <span class="ns-stat-n">+850</span>
+                <span class="ns-stat-l">Animales rescatados</span>
             </div>
-            {% if contenido and contenido.imagen_mision %}
-            <div class="col-md-6 text-center">
-                <img src="{{ contenido.imagen_mision.url }}"
-                     alt="Misión"
-                     style="width:100%;max-height:320px;object-fit:cover;border-radius:18px;box-shadow:0 16px 48px rgba(0,0,0,0.4);">
+            <div class="ns-hero-stat">
+                <span class="ns-stat-n">+620</span>
+                <span class="ns-stat-l">Adopciones exitosas</span>
             </div>
-            {% endif %}
-        </div>
-
-        <!-- VISIÓN -->
-        <div class="row align-items-center g-4">
-            {% if contenido and contenido.imagen_vision %}
-            <div class="col-md-6 text-center order-md-0 order-1">
-                <img src="{{ contenido.imagen_vision.url }}"
-                     alt="Visión"
-                     style="width:100%;max-height:320px;object-fit:cover;border-radius:18px;box-shadow:0 16px 48px rgba(0,0,0,0.4);">
+            <div class="ns-hero-stat">
+                <span class="ns-stat-n">8 años</span>
+                <span class="ns-stat-l">Trabajando por los animales</span>
             </div>
-            {% endif %}
-            <div class="col-md-6 {% if contenido and contenido.imagen_vision %}order-md-1 order-0{% endif %}">
-                <span class="section-label">Nuestra visión</span>
-                <h2 style="font-family:var(--font-title);font-weight:700;font-size:2.2rem;color:white;margin:0.8rem 0 1.5rem;line-height:1.3;">
-                    Hacia dónde vamos
-                </h2>
-                <p style="color:rgba(255,255,255,0.85);line-height:1.9;font-size:1rem;">
-                    {% if contenido %}{{ contenido.vision }}{% else %}Ser una organización referente en bienestar animal, promoviendo una cultura de adopción responsable y cero abandono en nuestra comunidad.{% endif %}
-                </p>
+            <div class="ns-hero-stat">
+                <span class="ns-stat-n">+120</span>
+                <span class="ns-stat-l">Voluntarios activos</span>
             </div>
         </div>
-
     </div>
 </section>
 
-<!-- =============================================
-    VALORES
-    Fondo crema con iconos circulares
-    ============================================= -->
-<section style="background-color: var(--color-light); padding: 5rem 0;">
+<!-- ══ 2. TICKER ════════════════════════════════════════ -->
+<div class="ns-ticker" aria-hidden="true">
+    <div class="ns-ticker-track">
+        {% for _ in "123456" %}
+        <span class="ns-ticker-item">Misión <span class="ns-ticker-sep"></span></span>
+        <span class="ns-ticker-item">Visión <span class="ns-ticker-sep"></span></span>
+        <span class="ns-ticker-item">Amor incondicional <span class="ns-ticker-sep"></span></span>
+        <span class="ns-ticker-item">Compromiso <span class="ns-ticker-sep"></span></span>
+        <span class="ns-ticker-item">Responsabilidad <span class="ns-ticker-sep"></span></span>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ══ 3. MISIÓN ════════════════════════════════════════ -->
+<div class="ns-split">
+    <!-- Texto izquierda -->
+    <div class="ns-split-body ns-split-body-white">
+        <span class="ns-split-num">01</span>
+        <span class="ns-split-label">Nuestra misión</span>
+        <h2 class="ns-split-h ns-split-h-dark">Lo que nos mueve cada día</h2>
+        <p class="ns-split-p ns-split-p-dark">
+            {% if contenido %}{{ contenido.mision }}{% else %}Somos una fundación dedicada al rescate, rehabilitación y adopción responsable de animales en situación de vulnerabilidad. Trabajamos con voluntarios comprometidos para dar una segunda oportunidad a cada animal rescatado.{% endif %}
+        </p>
+    </div>
+    <!-- Imagen derecha -->
+    <div class="ns-split-img">
+        {% if contenido and contenido.imagen_mision %}
+            <img src="{{ contenido.imagen_mision.url }}" alt="Nuestra misión" loading="lazy">
+        {% else %}
+            <img src="{% static 'img/mision-vision.jpg' %}" alt="Nuestra misión" loading="lazy">
+        {% endif %}
+    </div>
+</div>
+
+<!-- ══ 4. VISIÓN ════════════════════════════════════════ -->
+<div class="ns-split">
+    <!-- Imagen izquierda -->
+    <div class="ns-split-img">
+        {% if contenido and contenido.imagen_vision %}
+            <img src="{{ contenido.imagen_vision.url }}" alt="Nuestra visión" loading="lazy">
+        {% else %}
+            <img src="{% static 'img/hero.jpg' %}" alt="Nuestra visión" loading="lazy">
+        {% endif %}
+    </div>
+    <!-- Texto derecha oscuro -->
+    <div class="ns-split-body ns-split-body-dark">
+        <span class="ns-split-num">02</span>
+        <span class="ns-split-label">Nuestra visión</span>
+        <h2 class="ns-split-h ns-split-h-light">Hacia dónde vamos</h2>
+        <p class="ns-split-p ns-split-p-light">
+            {% if contenido %}{{ contenido.vision }}{% else %}Ser una organización referente en bienestar animal, promoviendo una cultura de adopción responsable y cero abandono en nuestra comunidad.{% endif %}
+        </p>
+    </div>
+</div>
+
+<!-- ══ 5. VALORES ═══════════════════════════════════════ -->
+<section style="background:var(--color-light); padding:5rem 0;">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 style="font-family: var(--font-title); font-weight: 700;">
-                Nuestros valores
-            </h2>
+        <div style="display:flex;align-items:baseline;gap:1.2rem;margin-bottom:3rem;flex-wrap:wrap;">
+            <span style="font-size:0.72rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--color-primary);white-space:nowrap;">Principios</span>
+            <h2 style="font-family:var(--font-title);font-weight:700;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--color-dark);letter-spacing:-0.02em;margin:0;">Nuestros valores</h2>
+            <div style="flex:1;height:1px;background:var(--color-gray-light);min-width:40px;"></div>
         </div>
-        <div class="row g-4 text-center">
+        <div class="row g-0">
             <div class="col-md-4">
-                <div style="padding: 2rem;">
-                    <div style="
-                        width: 70px;
-                        height: 70px;
-                        background: rgba(92,138,60,0.1);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0 auto 1rem;">
-                        <i class="bi bi-heart-fill" style="font-size: 1.8rem; color: var(--color-primary);"></i>
-                    </div>
-                    <h6 style="font-family: var(--font-title); font-weight: 600;">Amor</h6>
-                    <p style="color: var(--color-gray);">
-                        Cada animal merece amor y cuidado incondicional.
-                    </p>
+                <div class="ns-valor">
+                    <div class="ns-valor-icon"><i class="bi bi-heart-fill"></i></div>
+                    <p class="ns-valor-title">Amor</p>
+                    <p class="ns-valor-desc">Cada animal merece amor y cuidado incondicional, sin importar su historia o condición.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div style="padding: 2rem;">
-                    <div style="
-                        width: 70px;
-                        height: 70px;
-                        background: rgba(92,138,60,0.1);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0 auto 1rem;">
-                        <i class="bi bi-people-fill" style="font-size: 1.8rem; color: var(--color-primary);"></i>
-                    </div>
-                    <h6 style="font-family: var(--font-title); font-weight: 600;">Compromiso</h6>
-                    <p style="color: var(--color-gray);">
-                        Nos comprometemos con cada rescate hasta encontrar un hogar.
-                    </p>
+                <div class="ns-valor">
+                    <div class="ns-valor-icon"><i class="bi bi-people-fill"></i></div>
+                    <p class="ns-valor-title">Compromiso</p>
+                    <p class="ns-valor-desc">Nos comprometemos con cada rescate hasta encontrar el hogar responsable que merece.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div style="padding: 2rem;">
-                    <div style="
-                        width: 70px;
-                        height: 70px;
-                        background: rgba(92,138,60,0.1);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0 auto 1rem;">
-                        <i class="bi bi-shield-check" style="font-size: 1.8rem; color: var(--color-primary);"></i>
-                    </div>
-                    <h6 style="font-family: var(--font-title); font-weight: 600;">Responsabilidad</h6>
-                    <p style="color: var(--color-gray);">
-                        Promovemos la adopción responsable y el bienestar animal.
-                    </p>
+                <div class="ns-valor">
+                    <div class="ns-valor-icon"><i class="bi bi-shield-check"></i></div>
+                    <p class="ns-valor-title">Responsabilidad</p>
+                    <p class="ns-valor-desc">Promovemos la adopción responsable como la única vía sostenible para el bienestar animal.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-
-<!-- =============================================
-    EQUIPO
-    Fondo blanco con fotos del equipo
-    ============================================= -->
+<!-- ══ 6. EQUIPO ════════════════════════════════════════ -->
 {% if equipo %}
-<section style="background-color: white; padding: 5rem 0;">
+<section style="background:white; padding:5rem 0 0;">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 style="font-family: var(--font-title); font-weight: 700;">
-                Nuestro equipo
-            </h2>
-            <p style="color: var(--color-gray);">
-                Las personas que hacen posible nuestra misión cada día.
-            </p>
+        <div style="display:flex;align-items:baseline;gap:1.2rem;margin-bottom:3rem;flex-wrap:wrap;">
+            <span style="font-size:0.72rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--color-primary);white-space:nowrap;">Personas</span>
+            <h2 style="font-family:var(--font-title);font-weight:700;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--color-dark);letter-spacing:-0.02em;margin:0;">Nuestro equipo</h2>
+            <div style="flex:1;height:1px;background:var(--color-gray-light);min-width:40px;"></div>
         </div>
-        <div class="row g-4 justify-content-center">
+    </div>
+    <div style="padding:0 1.5rem;">
+        <div class="ns-team-grid">
             {% for miembro in equipo %}
-                <div class="col-md-3 col-sm-6">
-                    <div class="card h-100 text-center" style="border: none; box-shadow: var(--shadow-sm);">
-                        {% if miembro.foto %}
-                            <img src="{{ miembro.foto.url }}"
-                                class="card-img-top"
-                                style="height: 220px; object-fit: cover;"
-                                alt="{{ miembro.nombre }}">
-                        {% else %}
-                            <div style="
-                                height: 220px;
-                                background: var(--color-gray-light);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;">
-                                <i class="bi bi-person-fill" style="font-size: 4rem; color: var(--color-gray);"></i>
-                            </div>
-                        {% endif %}
-                        <div class="card-body p-3">
-                            <h6 style="font-family: var(--font-title); font-weight: 600; margin-bottom: 0.2rem;">
-                                {{ miembro.nombre }}
-                            </h6>
-                            <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
-                                {{ miembro.cargo }}
-                            </p>
-                            {% if miembro.descripcion %}
-                                <p style="color: var(--color-gray); font-size: 0.85rem; margin: 0;">
-                                    {{ miembro.descripcion }}
-                                </p>
-                            {% endif %}
-                        </div>
+            <div class="ns-team-cell">
+                {% if miembro.foto %}
+                    <img src="{{ miembro.foto.url }}" alt="{{ miembro.nombre }}" loading="lazy">
+                {% else %}
+                    <div class="ns-team-placeholder">
+                        <span class="ns-team-initials">
+                            {{ miembro.nombre|slice:":1" }}{% if miembro.nombre.split|length > 1 %}{{ miembro.nombre.split.1|slice:":1" }}{% endif %}
+                        </span>
                     </div>
+                {% endif %}
+                <div class="ns-team-overlay">
+                    <p class="ns-team-name">{{ miembro.nombre }}</p>
+                    <p class="ns-team-role">{{ miembro.cargo }}</p>
+                    {% if miembro.descripcion %}
+                        <p class="ns-team-desc">{{ miembro.descripcion|truncatewords:14 }}</p>
+                    {% endif %}
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
-
-<!-- Onda: blanco → verde -->
-<div class="wave-divider" style="background-color: white;">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="height: 60px; width: 100%; display: block;">
-        <path d="M0,0 C300,80 900,0 1200,60 L1200,80 L0,80 Z"
-                fill="#5C8A3C"/>
-    </svg>
-</div>
 {% endif %}
 
-<!-- =============================================
-    CTA FINAL
-    Fondo verde con llamado a la acción
-    ============================================= -->
-<section style="background-color: var(--color-primary); padding: 5rem 0;">
-    <div class="container text-center">
-        <h3 style="
-            font-family: var(--font-title);
-            font-weight: 700;
-            color: white;
-            margin-bottom: 1rem;">
-            ¿Quieres ser parte del cambio?
-        </h3>
-        <p style="color: rgba(255,255,255,0.85); margin-bottom: 2rem; font-size: 1.1rem;">
-            Adopta, dona o simplemente comparte nuestra causa.
-        </p>
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{% url 'mascotas:catalogo' %}"
-                style="
-                padding: 0.9rem 2.5rem;
-                background: white;
-                color: var(--color-primary);
-                border-radius: var(--radius-sm);
-                text-decoration: none;
-                font-weight: 600;
-                font-family: var(--font-title);
-                transition: var(--transition);"
-                onmouseover="this.style.transform='translateY(-2px)'"
-                onmouseout="this.style.transform='translateY(0)'">
-                Ver mascotas
-            </a>
-            <a href="{% url 'donaciones:info' %}"
-                style="
-                padding: 0.9rem 2.5rem;
-                border: 2px solid white;
-                color: white;
-                border-radius: var(--radius-sm);
-                text-decoration: none;
-                font-weight: 600;
-                font-family: var(--font-title);
-                transition: var(--transition);"
-                onmouseover="this.style.background='white'; this.style.color='var(--color-primary)'"
-                onmouseout="this.style.background='transparent'; this.style.color='white'">
-                Donar
-            </a>
+<!-- ══ 7. CTA FINAL ══════════════════════════════════════ -->
+<section class="ns-cta">
+    <div class="ns-cta-bg"></div>
+    <div class="ns-cta-noise"></div>
+    <div class="container" style="position:relative;z-index:1;">
+        <div style="max-width:600px;">
+            <h2 class="ns-cta-h">
+                ¿Quieres ser<br>
+                parte del <em>cambio?</em>
+            </h2>
+            <p class="ns-cta-p">
+                Adopta, dona o únete como voluntario. Cada acción transforma la
+                vida de un animal y enriquece la tuya.
+            </p>
+            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                <a href="{% url 'mascotas:catalogo' %}" class="ns-btn ns-btn-fill">
+                    <i class="bi bi-heart-fill"></i> Ver mascotas
+                </a>
+                <a href="{% url 'donaciones:info' %}" class="ns-btn ns-btn-outline">
+                    <i class="bi bi-gift-fill"></i> Donar
+                </a>
+            </div>
         </div>
     </div>
 </section>
 
 {% endblock %}
 
-{% block wave_footer %}
-<div style="background-color: var(--color-primary); margin-bottom: -1px;">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none"
-        style="height: 60px; width: 100%; display: block;">
-        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"
-                fill="white"/>
-    </svg>
-</div>
-{% endblock %}
+{% block wave_footer %}{% endblock %}
